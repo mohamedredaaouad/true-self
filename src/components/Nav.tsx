@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -16,12 +17,12 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between">
-        <a href="#top" className="text-xs tracking-brand uppercase font-medium">soft soul<span className="text-muted-foreground">®</span></a>
+        <Link to="/" className="text-xs tracking-brand uppercase font-medium">soft soul<span className="text-muted-foreground">®</span></Link>
         <nav className="hidden md:flex items-center gap-10 text-xs tracking-brand uppercase">
-          <a href="#shop" className="hover:opacity-60 transition-opacity">Shop</a>
-          <a href="#philosophy" className="hover:opacity-60 transition-opacity">Philosophy</a>
-          <a href="#bereal" className="hover:opacity-60 transition-opacity">Be Real</a>
-          <a href="#gallery" className="hover:opacity-60 transition-opacity">Journal</a>
+          <Link to="/" hash="shop" className="hover:opacity-60 transition-opacity">Shop</Link>
+          <Link to="/customize" className="hover:opacity-60 transition-opacity">Customize</Link>
+          <Link to="/" hash="philosophy" className="hover:opacity-60 transition-opacity">Philosophy</Link>
+          <Link to="/" hash="bereal" className="hover:opacity-60 transition-opacity">Be Real</Link>
         </nav>
         <div className="flex items-center gap-5 text-xs tracking-brand uppercase">
           <button className="hidden sm:block hover:opacity-60 transition-opacity">Search</button>

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import hero from "@/assets/hero.jpg";
@@ -187,6 +187,80 @@ function Index() {
               soft soul, since 2024
               <span className="h-px w-10 bg-foreground/40" />
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* EXPRESS YOURSELF */}
+      <section id="express" className="relative border-t border-border bg-secondary overflow-hidden">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-28 lg:py-40 grid lg:grid-cols-12 gap-12 items-center">
+          <Reveal className="lg:col-span-7">
+            <p className="text-xs tracking-brand uppercase text-muted-foreground">Create your own piece</p>
+            <h2 className="mt-6 font-display text-5xl md:text-7xl lg:text-[6rem] leading-[0.95] text-balance">
+              Express <span className="italic">yourself</span>.
+            </h2>
+            <p className="mt-8 max-w-xl text-base md:text-lg leading-relaxed text-foreground/80">
+              Create a piece that reflects who you are, not who the world wants you to be.
+              Choose your garment, your words, your thread — we stitch the rest.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link
+                to="/customize"
+                className="border border-foreground bg-foreground text-background px-7 py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-colors"
+              >
+                Start designing →
+              </Link>
+              <Link
+                to="/customize"
+                className="border border-foreground/40 px-7 py-4 text-xs tracking-brand uppercase hover:border-foreground transition-colors"
+              >
+                See the studio
+              </Link>
+            </div>
+            <ul className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs tracking-brand uppercase">
+              {[
+                { n: "01", t: "Your words" },
+                { n: "02", t: "5 fonts" },
+                { n: "03", t: "7 placements" },
+                { n: "04", t: "Stitched for one" },
+              ].map((x) => (
+                <li key={x.n} className="border-t border-foreground/30 pt-3">
+                  <p className="text-muted-foreground">{x.n}</p>
+                  <p className="mt-1 font-display text-lg normal-case tracking-normal italic">{x.t}</p>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal delay={200} className="lg:col-span-5">
+            <Link to="/customize" className="group block">
+              <div className="relative aspect-[4/5] bg-background border border-border overflow-hidden rounded-sm">
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 30%, color-mix(in oklab, var(--olive) 12%, var(--background)) 0%, var(--background) 70%)",
+                  }}
+                >
+                  <svg viewBox="0 0 400 500" className="w-3/4 transition-transform duration-[1400ms] ease-[var(--ease-soft)] group-hover:scale-[1.04]" style={{ filter: "drop-shadow(0 30px 40px rgba(0,0,0,0.15))" }}>
+                    <path
+                      d="M120,80 L155,60 Q200,95 245,60 L280,80 L335,120 L305,170 L275,150 L275,420 Q200,440 125,420 L125,150 L95,170 L65,120 Z"
+                      fill="#efe8d8"
+                      stroke="rgba(0,0,0,0.12)"
+                    />
+                    <path d="M155,60 Q200,95 245,60 Q220,82 200,82 Q180,82 155,60 Z" fill="rgba(0,0,0,0.15)" />
+                    <text x="145" y="180" fill="#5b6447" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontStyle: "italic" }}>
+                      your words.
+                    </text>
+                  </svg>
+                </div>
+                <div className="absolute top-4 left-4 text-[10px] tracking-brand uppercase bg-background/80 backdrop-blur px-2 py-1">
+                  Live preview
+                </div>
+                <div className="absolute bottom-4 right-4 text-[10px] tracking-brand uppercase">
+                  Open studio →
+                </div>
+              </div>
+            </Link>
           </Reveal>
         </div>
       </section>
