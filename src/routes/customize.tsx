@@ -632,7 +632,7 @@ function StudioPage() {
                         label="Element Scale"
                         min={60}
                         max={220}
-                        value={Math.round((selected.scale ?? selected.fontSize ? (selected.kind === "text" ? selected.fontSize ?? 22 : (selected.scale ?? 1) * 100) : 100))}
+                        value={selected.kind === "text" ? selected.fontSize ?? 22 : Math.round((selected.scale ?? 1) * 100)}
                         onChange={(v) =>
                           selected.kind === "text"
                             ? updateSelected({ fontSize: v })
