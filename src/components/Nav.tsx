@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useLanguage } from "../hooks/useLanguage";
+import { useCart } from "../hooks/useCart";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const { t, language, setLanguage } = useLanguage();
+  const { cartCount, setCartOpen } = useCart();
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
@@ -17,16 +22,50 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between">
-        <Link to="/" className="text-xs tracking-brand uppercase font-medium">soft soul<span className="text-muted-foreground">®</span></Link>
+        <Link to="/" className="text-xs tracking-brand uppercase font-semibold">
+          TRUE SELF<span className="text-muted-foreground">®</span>
+        </Link>
         <nav className="hidden md:flex items-center gap-10 text-xs tracking-brand uppercase">
-          <Link to="/" hash="shop" className="hover:opacity-60 transition-opacity">Shop</Link>
-          <Link to="/customize" className="hover:opacity-60 transition-opacity">Customize</Link>
-          <Link to="/" hash="philosophy" className="hover:opacity-60 transition-opacity">Philosophy</Link>
-          <Link to="/" hash="bereal" className="hover:opacity-60 transition-opacity">Be Real</Link>
+          <Link to="/" hash="collection" className="hover:opacity-60 transition-opacity">
+            {t("nav.shop")}
+          </Link>
+          <Link to="/" hash="philosophy" className="hover:opacity-60 transition-opacity">
+            {t("nav.philosophy")}
+          </Link>
+          <Link to="/" hash="lookbook" className="hover:opacity-60 transition-opacity">
+            {t("nav.lookbook")}
+          </Link>
+          <Link to="/" hash="journal" className="hover:opacity-60 transition-opacity">
+            {t("nav.journal")}
+          </Link>
         </nav>
         <div className="flex items-center gap-5 text-xs tracking-brand uppercase">
-          <button className="hidden sm:block hover:opacity-60 transition-opacity">Search</button>
-          <button className="relative hover:opacity-60 transition-opacity">Bag <span className="text-muted-foreground">(0)</span></button>
+          {/* Elegant Language Switcher */}
+          <div className="flex gap-2 border-r border-border/60 pr-5 select-none font-mono">
+            {(["fr", "en", "ar"] as const).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setLanguage(lang)}
+                className={`text-[9px] font-semibold tracking-normal transition-all duration-300 hover:text-foreground ${
+                  language === lang
+                    ? "text-foreground underline underline-offset-4 font-bold scale-105"
+                    : "text-muted-foreground opacity-70"
+                }`}
+              >
+                {lang.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          <button className="hidden sm:block hover:opacity-60 transition-opacity">
+            {t("nav.search")}
+          </button>
+          <button 
+            onClick={() => setCartOpen(true)}
+            className="relative hover:opacity-60 transition-opacity font-mono font-medium"
+          >
+            {t("nav.bag")} <span className="text-muted-foreground">({cartCount})</span>
+          </button>
         </div>
       </div>
     </header>
