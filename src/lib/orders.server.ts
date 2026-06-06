@@ -27,9 +27,16 @@ async function readOrders(): Promise<Order[]> {
   try {
     const fs = await import("fs");
     const path = await import("path");
-    const ordersFilePath = path.resolve("./orders.json");
+    
+    const isVercel = !!process.env.VERCEL;
+    const ordersFilePath = isVercel
+      ? "/tmp/orders.json"
+      : path.resolve("./orders.json");
     
     if (!fs.existsSync(ordersFilePath)) {
+      if (isVercel) {
+        fs.writeFileSync(ordersFilePath, "[]", "utf8");
+      }
       return [];
     }
     const content = fs.readFileSync(ordersFilePath, "utf8");
@@ -45,7 +52,11 @@ async function writeOrders(orders: Order[]) {
   try {
     const fs = await import("fs");
     const path = await import("path");
-    const ordersFilePath = path.resolve("./orders.json");
+    
+    const isVercel = !!process.env.VERCEL;
+    const ordersFilePath = isVercel
+      ? "/tmp/orders.json"
+      : path.resolve("./orders.json");
     
     fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2), "utf8");
   } catch (err) {

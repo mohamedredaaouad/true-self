@@ -249,6 +249,7 @@ function Index() {
           alt="Authentic Moroccan face looking into the distance, representing inner peace and freedom"
           width={1600}
           height={1920}
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/15 to-background/95" />
