@@ -57,6 +57,10 @@ interface Product {
   imgBack: string;
   tag: string;
   sizes: string[];
+  colors: { name: string; hex: string }[];
+  isFeatured?: boolean;
+  isNew?: boolean;
+  isBestSeller?: boolean;
 }
 
 function Index() {
@@ -80,6 +84,15 @@ function Index() {
   const [isAdding, setIsAdding] = useState(false);
   const [isAddedSuccess, setIsAddedSuccess] = useState(false);
 
+  // Quick view interactive states
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [activeQuickViewImage, setActiveQuickViewImage] = useState<string>("");
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
+
+  // Collection tabs state
+  const [activeTab, setActiveTab] = useState<"all" | "featured" | "new" | "bestsellers">("all");
+
   // Checkout form states
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "checkout" | "success">("cart");
   const [fullName, setFullName] = useState("");
@@ -91,14 +104,110 @@ function Index() {
   const [orderError, setOrderError] = useState("");
 
   const products: Product[] = [
-    { id: 1, key: "1", price: "650 MAD", imgFront: p1Front, imgBack: p1Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"] },
-    { id: 2, key: "2", price: "350 MAD", imgFront: p2Front, imgBack: p2Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"] },
-    { id: 3, key: "3", price: "550 MAD", imgFront: p3Front, imgBack: p3Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"] },
-    { id: 4, key: "4", price: "350 MAD", imgFront: p4Front, imgBack: p4Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"] },
-    { id: 5, key: "5", price: "650 MAD", imgFront: p5Front, imgBack: p5Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"] },
-    { id: 6, key: "6", price: "650 MAD", imgFront: p6Front, imgBack: p6Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"] },
-    { id: 7, key: "7", price: "550 MAD", imgFront: p7Front, imgBack: p7Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"] },
-    { id: 8, key: "8", price: "350 MAD", imgFront: p8Front, imgBack: p8Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"] },
+    { 
+      id: 1, 
+      key: "1", 
+      price: "650 MAD", 
+      imgFront: p1Front, 
+      imgBack: p1Back, 
+      tag: "collection.bestsellers", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Cream", hex: "#F9F6F0" }],
+      isFeatured: true,
+      isBestSeller: true,
+      isNew: false
+    },
+    { 
+      id: 2, 
+      key: "2", 
+      price: "350 MAD", 
+      imgFront: p2Front, 
+      imgBack: p2Back, 
+      tag: "collection.new", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Olive", hex: "#4F5243" }],
+      isFeatured: false,
+      isBestSeller: false,
+      isNew: true
+    },
+    { 
+      id: 3, 
+      key: "3", 
+      price: "550 MAD", 
+      imgFront: p3Front, 
+      imgBack: p3Back, 
+      tag: "collection.new", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Charcoal", hex: "#2C2C2A" }],
+      isFeatured: false,
+      isBestSeller: false,
+      isNew: true
+    },
+    { 
+      id: 4, 
+      key: "4", 
+      price: "350 MAD", 
+      imgFront: p4Front, 
+      imgBack: p4Back, 
+      tag: "collection.bestsellers", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Cream", hex: "#F9F6F0" }],
+      isFeatured: true,
+      isBestSeller: true,
+      isNew: false
+    },
+    { 
+      id: 5, 
+      key: "5", 
+      price: "650 MAD", 
+      imgFront: p5Front, 
+      imgBack: p5Back, 
+      tag: "collection.new", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Beige", hex: "#D8D0C5" }],
+      isFeatured: false,
+      isBestSeller: false,
+      isNew: true
+    },
+    { 
+      id: 6, 
+      key: "6", 
+      price: "650 MAD", 
+      imgFront: p6Front, 
+      imgBack: p6Back, 
+      tag: "collection.bestsellers", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Charcoal", hex: "#2C2C2A" }],
+      isFeatured: false,
+      isBestSeller: true,
+      isNew: false
+    },
+    { 
+      id: 7, 
+      key: "7", 
+      price: "550 MAD", 
+      imgFront: p7Front, 
+      imgBack: p7Back, 
+      tag: "collection.new", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Cream", hex: "#F9F6F0" }],
+      isFeatured: true,
+      isBestSeller: false,
+      isNew: true
+    },
+    { 
+      id: 8, 
+      key: "8", 
+      price: "350 MAD", 
+      imgFront: p8Front, 
+      imgBack: p8Back, 
+      tag: "collection.bestsellers", 
+      sizes: ["S", "M", "L", "XL"],
+      colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Olive", hex: "#4F5243" }],
+      isFeatured: true,
+      isBestSeller: true,
+      isNew: false
+    },
   ];
 
   const marqueePhrases = [
@@ -165,14 +274,34 @@ function Index() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [checkoutStep, setCartOpen]);
 
-  const openProduct = (p: Product) => {
+  const openProduct = (p: Product, initialColor?: string) => {
     setSelectedProduct(p);
     setSelectedSize(p.sizes[0] || "");
+    setSelectedColor(initialColor || p.colors[0]?.name || "");
+    setActiveQuickViewImage(p.imgFront);
+    setZoomStyle({});
     setIsAddedSuccess(false);
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomStyle({
+      transformOrigin: `${x}% ${y}%`,
+      transform: "scale(1.8)",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setZoomStyle({
+      transform: "scale(1)",
+      transformOrigin: "center",
+    });
+  };
+
   const handleAddToCart = () => {
-    if (!selectedProduct || !selectedSize) return;
+    if (!selectedProduct || !selectedSize || !selectedColor) return;
     setIsAdding(true);
     setTimeout(() => {
       addToCart({
@@ -181,6 +310,7 @@ function Index() {
         quote: t(`product.quote.${selectedProduct.key}`),
         image: selectedProduct.imgFront,
         size: selectedSize,
+        color: selectedColor,
         price: parseFloat(selectedProduct.price.replace(" MAD", "")),
       });
       setIsAdding(false);
@@ -206,6 +336,7 @@ function Index() {
         name: item.name,
         quote: item.quote,
         size: item.size,
+        color: item.color,
         quantity: item.quantity,
         price: item.price,
       }));
@@ -278,13 +409,109 @@ function Index() {
                   {t("hero.shop")}
                 </a>
                 <a
-                  href="#philosophy"
+                  href="#story"
                   className="border border-foreground/45 bg-background/20 backdrop-blur px-7 py-3.5 text-[10px] tracking-brand uppercase hover:bg-foreground hover:text-background transition-all duration-300 font-semibold rounded-xs shadow-xs text-center"
                 >
-                  {t("hero.explore")}
+                  {t("story.title")}
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. FEATURED PRODUCTS */}
+      <section id="featured-products" className="bg-background text-foreground py-24 border-b border-border/40">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+          <Reveal>
+            <div className="text-start mb-16 border-b border-border/40 pb-8">
+              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                {t("collection.featured")} // {t("hero.vol").split(" — ")[0]}
+              </span>
+              <h2 className="mt-3 font-display text-4xl md:text-6xl text-balance max-w-2xl">
+                {language === "fr" ? "Sélection de Saison" : language === "ar" ? "المميزة هذا الموسم" : "Seasonal Featured"}
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products
+              .filter((p) => p.isFeatured)
+              .map((p, i) => (
+                <Reveal key={p.id} delay={i * 100}>
+                  <div 
+                    className="group cursor-pointer text-start relative flex flex-col justify-between h-full"
+                    onClick={() => openProduct(p)}
+                  >
+                    {/* Image frame */}
+                    <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
+                      {/* Front Image */}
+                      <img
+                        src={p.imgFront}
+                        alt={t(`product.name.${p.key}`)}
+                        loading="lazy"
+                        className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0"
+                      />
+                      {/* Back Image */}
+                      <img
+                        src={p.imgBack}
+                        alt={`${t(`product.name.${p.key}`)} back view`}
+                        loading="lazy"
+                        className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100"
+                      />
+                      
+                      {/* Quick View Button overlay */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openProduct(p);
+                        }}
+                        className="absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0"
+                      >
+                        {language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View"}
+                      </button>
+
+                      {/* Tag Badge */}
+                      <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
+                        {t(p.tag)}
+                      </div>
+                    </div>
+
+                    {/* Metadata & Description */}
+                    <div className="mt-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        {/* Quote & Name */}
+                        <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug group-hover:text-foreground/80 transition-colors">
+                          {t(`product.quote.${p.key}`)}
+                        </h3>
+                        <p className="text-[10px] text-muted-foreground font-mono mt-1 uppercase">
+                          {t(`product.name.${p.key}`)}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
+                        {/* Price - Bold and Prominent */}
+                        <span className="font-mono text-base font-bold text-foreground">
+                          {p.price}
+                        </span>
+
+                        {/* Color Selector Pastilles */}
+                        <div className="flex gap-1.5" onClick={(e) => e.stopPropagation()}>
+                          {p.colors.map((color) => (
+                            <button
+                              key={color.name}
+                              onClick={() => openProduct(p, color.name)}
+                              className="w-3.5 h-3.5 rounded-full border border-border hover:scale-125 transition-transform duration-200"
+                              style={{ backgroundColor: color.hex }}
+                              title={color.name}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
           </div>
         </div>
       </section>
@@ -303,51 +530,213 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. THE PROBLEM SECTION */}
-      <section id="problem" className="bg-background text-foreground border-b border-border/40 py-24 lg:py-36 relative overflow-hidden">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <Reveal>
-            <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-              {t("problem.tag")}
-            </span>
-          </Reveal>
-          <Reveal delay={150}>
-            <h2 className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-3xl mx-auto italic font-light text-foreground/90">
-              {t("problem.title")}
+      {/* 3. BRAND STORY CONTAINER */}
+      <div id="story">
+        {/* 3.1 THE PROBLEM SECTION */}
+        <section id="problem" className="bg-background text-foreground border-b border-border/40 py-24 lg:py-36 relative overflow-hidden">
+          <div className="mx-auto max-w-4xl px-6 text-center">
+            <Reveal>
+              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                {t("problem.tag")}
+              </span>
+            </Reveal>
+            <Reveal delay={150}>
+              <h2 className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-3xl mx-auto italic font-light text-foreground/90">
+                {t("problem.title")}
+              </h2>
+            </Reveal>
+            <Reveal delay={300}>
+              <div className="mt-10 max-w-2xl mx-auto space-y-5 text-sm leading-relaxed text-muted-foreground font-light text-balance">
+                <p>{t("problem.desc1")}</p>
+                <p>{t("problem.desc2")}</p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* 3.2 THE SOLUTION SECTION */}
+        <section id="solution" className="theme-dark bg-background text-foreground py-24 lg:py-36 relative overflow-hidden">
+          <div className="mx-auto max-w-4xl px-6 text-center">
+            <Reveal>
+              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                {t("solution.tag")}
+              </span>
+            </Reveal>
+            <Reveal delay={150}>
+              <h2 className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-3xl mx-auto italic font-light text-foreground/95">
+                {t("solution.title")}
+              </h2>
+            </Reveal>
+            <Reveal delay={300}>
+              <div className="mt-10 max-w-2xl mx-auto space-y-5 text-sm leading-relaxed text-foreground/80 font-light text-balance">
+                <p>{t("solution.desc1")}</p>
+                <p>{t("solution.desc2")}</p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* 3.3 OUR STORY (North African Heritage Narrative) */}
+        <section className="relative py-24 lg:py-36 overflow-hidden bg-secondary/35 border-b border-border/40">
+          <div className="mx-auto max-w-[1000px] px-6 text-center">
+            <Reveal>
+              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                {t("story.title")}
+              </span>
+            </Reveal>
+            <Reveal delay={150}>
+              <blockquote className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-4xl mx-auto italic font-light text-foreground/90">
+                {t("story.quote")}
+              </blockquote>
+            </Reveal>
+            <Reveal delay={300}>
+              <p className="mt-10 max-w-2xl mx-auto text-sm leading-relaxed text-muted-foreground font-light text-balance">
+                {t("story.desc")}
+              </p>
+            </Reveal>
+            <Reveal delay={450}>
+              <div className="mt-14 inline-flex items-center gap-4 text-[10px] tracking-widest text-muted-foreground font-mono">
+                <span className="h-px w-8 bg-border/60" />
+                <span>CASABLANCA 33.5731° N</span>
+                <span className="opacity-30">·</span>
+                <span>TANGIER 35.7595° N</span>
+                <span className="h-px w-8 bg-border/60" />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </div>
+
+      {/* 4. FULL COLLECTION SECTION (with interactive tabs & clean cards) */}
+      <section id="collection" className="mx-auto max-w-[1400px] px-6 lg:px-10 py-24 lg:py-36 border-b border-border/40">
+        <Reveal>
+          <div className="text-start mb-12">
+            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+              {t("hero.vol").split(" — ")[0]}
+            </p>
+            <h2 className="mt-3 font-display text-5xl md:text-7xl text-balance max-w-2xl">
+              {t("featured.title")}
             </h2>
-          </Reveal>
-          <Reveal delay={300}>
-            <div className="mt-10 max-w-2xl mx-auto space-y-5 text-sm leading-relaxed text-muted-foreground font-light text-balance">
-              <p>{t("problem.desc1")}</p>
-              <p>{t("problem.desc2")}</p>
-            </div>
-          </Reveal>
+          </div>
+        </Reveal>
+
+        {/* Collection Filter Tabs */}
+        <div className="flex flex-wrap items-center justify-start gap-4 md:gap-8 border-b border-border/40 pb-6 mb-12 font-mono">
+          {(["all", "featured", "new", "bestsellers"] as const).map((tab) => {
+            const keyMap = {
+              all: "collection.all",
+              featured: "collection.featured",
+              new: "collection.new_arrivals",
+              bestsellers: "collection.best_sellers",
+            };
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`text-xs tracking-brand uppercase pb-2 transition-all duration-300 relative cursor-pointer ${
+                  activeTab === tab
+                    ? "text-foreground font-bold border-b-2 border-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t(keyMap[tab])}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Dynamic Products Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+          {products
+            .filter((p) => {
+              if (activeTab === "all") return true;
+              if (activeTab === "featured") return p.isFeatured;
+              if (activeTab === "new") return p.isNew;
+              if (activeTab === "bestsellers") return p.isBestSeller;
+              return true;
+            })
+            .map((p, i) => (
+              <Reveal key={p.id} delay={i * 80}>
+                <div 
+                  className="group cursor-pointer text-start relative flex flex-col justify-between h-full"
+                  onClick={() => openProduct(p)}
+                >
+                  {/* Image Frame */}
+                  <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
+                    {/* Front Image */}
+                    <img
+                      src={p.imgFront}
+                      alt={t(`product.name.${p.key}`)}
+                      loading="lazy"
+                      className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0"
+                    />
+                    {/* Back Image (Reveals on Hover) */}
+                    <img
+                      src={p.imgBack}
+                      alt={`${t(`product.name.${p.key}`)} back view`}
+                      loading="lazy"
+                      className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100"
+                    />
+                    
+                    {/* Quick View Button overlay */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openProduct(p);
+                      }}
+                      className="absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0"
+                    >
+                      {language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View"}
+                    </button>
+
+                    {/* Subtle Tag Badge */}
+                    <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
+                      {t(p.tag)}
+                    </div>
+                  </div>
+
+                  {/* Card Content - Story & Quote focused */}
+                  <div className="mt-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Quote & Name */}
+                      <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug group-hover:text-foreground/80 transition-colors">
+                        {t(`product.quote.${p.key}`)}
+                      </h3>
+                      <p className="text-[10px] text-muted-foreground font-mono mt-1 uppercase">
+                        {t(`product.name.${p.key}`)}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
+                        {t(`product.story.${p.key}`)}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
+                      {/* Price - Bold and Prominent */}
+                      <span className="font-mono text-base font-bold text-foreground">
+                        {p.price}
+                      </span>
+
+                      {/* Color selectors circles */}
+                      <div className="flex gap-1.5" onClick={(e) => e.stopPropagation()}>
+                        {p.colors.map((color) => (
+                          <button
+                            key={color.name}
+                            onClick={() => openProduct(p, color.name)}
+                            className="w-3.5 h-3.5 rounded-full border border-border hover:scale-125 transition-transform duration-200"
+                            style={{ backgroundColor: color.hex }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
         </div>
       </section>
 
-      {/* 3. THE SOLUTION SECTION */}
-      <section id="solution" className="theme-dark bg-background text-foreground py-24 lg:py-36 relative overflow-hidden">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <Reveal>
-            <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-              {t("solution.tag")}
-            </span>
-          </Reveal>
-          <Reveal delay={150}>
-            <h2 className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-3xl mx-auto italic font-light text-foreground/95">
-              {t("solution.title")}
-            </h2>
-          </Reveal>
-          <Reveal delay={300}>
-            <div className="mt-10 max-w-2xl mx-auto space-y-5 text-sm leading-relaxed text-foreground/80 font-light text-balance">
-              <p>{t("solution.desc1")}</p>
-              <p>{t("solution.desc2")}</p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 4. BRAND PHILOSOPHY */}
+      {/* 5. BRAND PHILOSOPHY */}
       <section
         id="philosophy"
         className="bg-background text-foreground border-b border-border/40"
@@ -396,7 +785,7 @@ function Index() {
         </div>
       </section>
 
-      {/* 5. MANIFESTO SECTION (The 4 Pillars) */}
+      {/* 6. MANIFESTO SECTION (The 4 Pillars) */}
       <section id="manifesto" className="bg-secondary/25 py-24 lg:py-36 border-b border-border/40">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <Reveal>
@@ -428,123 +817,6 @@ function Index() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* 6. COLLECTION SECTION (Premium Editorial Luxury Layout) */}
-      <section id="collection" className="mx-auto max-w-[1400px] px-6 lg:px-10 py-24 lg:py-36 border-b border-border/40">
-        <Reveal>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-20 border-b border-border/40 pb-8">
-            <div className="text-start">
-              <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                {t("hero.vol").split(" — ")[0]}
-              </p>
-              <h2 className="mt-3 font-display text-5xl md:text-7xl text-balance max-w-2xl">
-                {t("featured.title")}
-              </h2>
-            </div>
-            <a
-              href="#"
-              className="text-[10px] tracking-brand uppercase border-b border-foreground pb-1 hover:opacity-60 transition-opacity font-semibold self-start md:self-end font-mono"
-            >
-              {t("featured.viewAll")}
-            </a>
-          </div>
-        </Reveal>
-
-        {/* Asymmetrical Staggered Editorial Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 gap-x-8 gap-y-28 items-start">
-          {products.map((p, i) => {
-            // Assign custom column spans to create an asymmetrical editorial layout
-            let gridSpan = "xl:col-span-4"; // Default
-            if (i === 0 || i === 5) gridSpan = "xl:col-span-6"; // Highlight key items with wider columns
-            if (i === 3 || i === 7) gridSpan = "xl:col-span-3";
-
-            return (
-              <Reveal key={p.id} delay={(i % 3) * 100} className={`${gridSpan}`}>
-                <div 
-                  className="group cursor-pointer text-start"
-                  onClick={() => openProduct(p)}
-                  onMouseEnter={() => setHoveredProduct(p.id)}
-                  onMouseLeave={() => setHoveredProduct(null)}
-                >
-                  {/* Image Frame - Generous spacing & smooth swap hover transition */}
-                  <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
-                    {/* Front Image */}
-                    <img
-                      src={p.imgFront}
-                      alt={t(`product.name.${p.key}`)}
-                      loading="lazy"
-                      width={800}
-                      height={1066}
-                      className={`h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] ${
-                        hoveredProduct === p.id ? "opacity-0" : "opacity-100"
-                      }`}
-                    />
-                    {/* Back Image (Reveals on Hover) */}
-                    <img
-                      src={p.imgBack}
-                      alt={`${t(`product.name.${p.key}`)} back view`}
-                      loading="lazy"
-                      width={800}
-                      height={1066}
-                      className={`h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] ${
-                        hoveredProduct === p.id ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                    
-                    {/* Subtle Tag Badge */}
-                    <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[9px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2.5 py-1 text-foreground/90 font-mono font-medium border border-border/40`}>
-                      {t(p.tag)}
-                    </div>
-                  </div>
-
-                  {/* Card Content - Story & Quote focused */}
-                  <div className="mt-6">
-                    <span className="font-mono text-[9px] text-muted-foreground tracking-widest block uppercase mb-1">
-                      {t(`product.name.${p.key}`).split(" ")[t(`product.name.${p.key}`).split(" ").length - 1]} // {p.price}
-                    </span>
-                    <h3 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground/95 leading-none">
-                      {t(`product.quote.${p.key}`)}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
-                      {t(`product.story.${p.key}`)}
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 7. OUR STORY (North African Heritage Narrative) */}
-      <section className="relative py-24 lg:py-36 overflow-hidden bg-secondary/35 border-b border-border/40">
-        <div className="mx-auto max-w-[1000px] px-6 text-center">
-          <Reveal>
-            <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-              {t("story.title")}
-            </span>
-          </Reveal>
-          <Reveal delay={150}>
-            <blockquote className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-4xl mx-auto italic font-light text-foreground/90">
-              {t("story.quote")}
-            </blockquote>
-          </Reveal>
-          <Reveal delay={300}>
-            <p className="mt-10 max-w-2xl mx-auto text-sm leading-relaxed text-muted-foreground font-light text-balance">
-              {t("story.desc")}
-            </p>
-          </Reveal>
-          <Reveal delay={450}>
-            <div className="mt-14 inline-flex items-center gap-4 text-[10px] tracking-widest text-muted-foreground font-mono">
-              <span className="h-px w-8 bg-border/60" />
-              <span>CASABLANCA 33.5731° N</span>
-              <span className="opacity-30">·</span>
-              <span>TANGIER 35.7595° N</span>
-              <span className="h-px w-8 bg-border/60" />
-            </div>
-          </Reveal>
         </div>
       </section>
 
@@ -1018,31 +1290,51 @@ function Index() {
               <X size={18} />
             </button>
 
-            {/* Visual Column - Double view stacked side-by-side */}
-            <div className="flex-1 bg-secondary/10 p-6 md:p-12 lg:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-border/40 relative">
-              <div className="grid grid-cols-2 gap-4 max-w-4xl mx-auto w-full">
-                {/* Front view card */}
-                <div className="relative aspect-[3/4] border border-border/40 bg-background rounded-xs overflow-hidden shadow-card">
-                  <img 
-                    src={selectedProduct.imgFront} 
-                    alt={`${t(`product.name.${selectedProduct.key}`)} front`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-3 left-3 bg-background/90 text-[8px] tracking-widest uppercase font-mono px-2 py-0.5 border border-border/40">
-                    {isAr ? "الواجهة" : "Front View"}
-                  </div>
+            {/* Visual Column - Main active image with Hover-Zoom & Thumbnails */}
+            <div className="flex-1 bg-secondary/10 p-6 md:p-8 lg:p-12 flex flex-col justify-center items-center border-b md:border-b-0 md:border-r border-border/40 relative">
+              
+              {/* Main Image Container with zoom & lightbox */}
+              <div 
+                className="relative aspect-[3/4] w-full max-w-[400px] border border-border/40 bg-background rounded-xs overflow-hidden shadow-card cursor-zoom-in"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => setLightboxImage(activeQuickViewImage)}
+              >
+                <img 
+                  src={activeQuickViewImage} 
+                  alt={t(`product.name.${selectedProduct.key}`)}
+                  className="w-full h-full object-cover transition-transform duration-100 ease-out"
+                  style={zoomStyle}
+                />
+                
+                {/* Hover / Click Instructions */}
+                <div className="absolute bottom-3 left-3 bg-background/90 text-[8px] tracking-widest uppercase font-mono px-2 py-0.5 border border-border/40 pointer-events-none">
+                  {isAr ? "انقر للتكبير" : language === "fr" ? "Clic pour agrandir" : "Click to enlarge"}
                 </div>
-                {/* Back view card */}
-                <div className="relative aspect-[3/4] border border-border/40 bg-background rounded-xs overflow-hidden shadow-card">
-                  <img 
-                    src={selectedProduct.imgBack} 
-                    alt={`${t(`product.name.${selectedProduct.key}`)} back`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-3 left-3 bg-background/90 text-[8px] tracking-widest uppercase font-mono px-2 py-0.5 border border-border/40">
-                    {isAr ? "الخلفية" : "Back View"}
-                  </div>
-                </div>
+              </div>
+
+              {/* Thumbnails Row */}
+              <div className="flex gap-4 mt-6">
+                <button
+                  onClick={() => setActiveQuickViewImage(selectedProduct.imgFront)}
+                  className={`w-16 aspect-[3/4] border rounded-2xs overflow-hidden transition-all duration-300 ${
+                    activeQuickViewImage === selectedProduct.imgFront
+                      ? "border-foreground scale-105 shadow-sm"
+                      : "border-border/40 opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img src={selectedProduct.imgFront} alt="Front thumbnail" className="w-full h-full object-cover" />
+                </button>
+                <button
+                  onClick={() => setActiveQuickViewImage(selectedProduct.imgBack)}
+                  className={`w-16 aspect-[3/4] border rounded-2xs overflow-hidden transition-all duration-300 ${
+                    activeQuickViewImage === selectedProduct.imgBack
+                      ? "border-foreground scale-105 shadow-sm"
+                      : "border-border/40 opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img src={selectedProduct.imgBack} alt="Back thumbnail" className="w-full h-full object-cover" />
+                </button>
               </div>
             </div>
 
@@ -1094,17 +1386,43 @@ function Index() {
                   </div>
                 </div>
 
-                {/* Price Label */}
+                {/* Colors Selector */}
+                <div className="space-y-3">
+                  <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">
+                    // {isAr ? "اللون" : language === "fr" ? "Couleur" : "Color"}: {selectedColor}
+                  </span>
+                  <div className="flex gap-3">
+                    {selectedProduct.colors.map((color) => (
+                      <button
+                        key={color.name}
+                        onClick={() => setSelectedColor(color.name)}
+                        className={`group relative flex items-center justify-center p-0.5 rounded-full border transition-all duration-300 ${
+                          selectedColor === color.name
+                            ? "border-foreground scale-110"
+                            : "border-border/40 hover:border-foreground/50"
+                        }`}
+                        title={color.name}
+                      >
+                        <span 
+                          className="w-5 h-5 rounded-full block border border-black/10 shadow-xs" 
+                          style={{ backgroundColor: color.hex }}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price Label - Large and Bold */}
                 <div className="space-y-1">
                   <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// Price</span>
-                  <span className="font-mono text-xl font-semibold text-foreground/90">{selectedProduct.price}</span>
+                  <span className="font-mono text-xl font-bold text-foreground">{selectedProduct.price}</span>
                 </div>
 
                 {/* Add To Cart Trigger */}
                 <button
                   onClick={handleAddToCart}
                   disabled={isAdding}
-                  className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer"
+                  className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono"
                 >
                   {isAdding ? (
                     <span className="h-4 w-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
@@ -1213,7 +1531,7 @@ function Index() {
                             <div className="text-start">
                               <h4 className="font-display text-xl leading-tight text-foreground/95">{item.quote}</h4>
                               <p className="font-mono text-[9px] text-muted-foreground uppercase mt-0.5">
-                                {item.name.split(" ")[item.name.split(" ").length - 1]} // Size: {item.size}
+                                {item.name.split(" ")[item.name.split(" ").length - 1]} // {isAr ? "المقاس" : language === "fr" ? "Taille" : "Size"}: {item.size} // {isAr ? "اللون" : language === "fr" ? "Couleur" : "Color"}: {item.color}
                               </p>
                               
                               {/* Quantity adjustments */}
@@ -1358,6 +1676,24 @@ function Index() {
               </>
             )}
 
+          </div>
+        </div>
+      )}
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300">
+          <button 
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-6 right-6 z-50 p-2 hover:opacity-60 transition-opacity bg-foreground/10 text-foreground rounded-full border border-border/20 cursor-pointer"
+          >
+            <X size={24} />
+          </button>
+          <div className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center">
+            <img 
+              src={lightboxImage} 
+              alt="Enlarged view" 
+              className="max-w-full max-h-[90vh] object-contain rounded-xs border border-border/20 shadow-2xl animate-fade" 
+            />
           </div>
         </div>
       )}

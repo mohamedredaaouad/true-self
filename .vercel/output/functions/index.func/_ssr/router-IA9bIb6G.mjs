@@ -1,6 +1,22 @@
-export type Language = "fr" | "en" | "ar";
-
-export const translations: Record<Language, Record<string, string>> = {
+import { Q as QueryClient } from "../_libs/tanstack__query-core.mjs";
+import { Q as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
+import { b as createRouter, a as createRootRouteWithContext, u as useRouter, L as Link, O as Outlet, H as HeadContent, S as Scripts, c as createFileRoute, l as lazyRouteComponent } from "../_libs/tanstack__react-router.mjs";
+import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
+import "../_libs/tanstack__router-core.mjs";
+import "../_libs/tanstack__history.mjs";
+import "../_libs/cookie-es.mjs";
+import "../_libs/seroval.mjs";
+import "../_libs/seroval-plugins.mjs";
+import "node:stream/web";
+import "node:stream";
+import "../_libs/react-dom.mjs";
+import "util";
+import "crypto";
+import "async_hooks";
+import "stream";
+import "../_libs/isbot.mjs";
+const appCss = "/assets/styles-Cara7dfA.css";
+const translations = {
   fr: {
     // Nav
     "nav.shop": "Collection",
@@ -10,7 +26,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.bereal": "Soyez Vrai",
     "nav.search": "Rechercher",
     "nav.bag": "Panier",
-
     // index.tsx Hero
     "hero.vol": "Vol. 01 — L'authenticité d'abord",
     "hero.title1": "TRUE SELF",
@@ -19,19 +34,16 @@ export const translations: Record<Language, Record<string, string>> = {
     "hero.desc": "Nous passons notre vie à devenir ce que les autres attendent de nous. TRUE SELF est un rappel silencieux de vivre pour soi-même.",
     "hero.shop": "Découvrir la collection",
     "hero.explore": "Explorer la philosophie",
-
     // The Problem Section
     "problem.title": "La plupart des gens passent leur vie à devenir ce que les autres attendent d'eux.",
     "problem.desc1": "Nous recherchons la validation sociale. Nous suivons les tendances imposées. Nous nous comparons sans cesse sur les réseaux sociaux.",
     "problem.desc2": "Dans cette course aux apparences, nous portons des masques pour plaire, finissant par oublier la voix silencieuse à l'intérieur de nous qui sait qui nous sommes vraiment.",
     "problem.tag": "Le Conflit",
-
     // The Solution Section
     "solution.title": "TRUE SELF n'est pas une marque de vêtements. C'est une rébellion silencieuse.",
     "solution.desc1": "Nos créations ne sont pas faites pour vous définir. Elles sont conçues pour vous rappeler votre propre liberté.",
     "solution.desc2": "Chaque pièce est une ancre physique, un manifeste sur votre poitrine pour cesser de jouer un rôle, laisser tomber les masques et choisir la paix face au bruit.",
     "solution.tag": "La Réponse",
-
     // Featured / Collection
     "featured.title": "Des pièces silencieuses pour porter vos vérités.",
     "featured.viewAll": "Tout afficher →",
@@ -41,7 +53,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "collection.featured": "Sélection",
     "collection.new_arrivals": "Nouveautés",
     "collection.best_sellers": "Meilleures Ventes",
-
     // Product Specifications
     "specs.tag": "L'Intention",
     "specs.title": "Philosophie de la Pièce.",
@@ -53,7 +64,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "specs.detailVal": "Broderie ton sur ton subtile",
     "specs.origin": "Identité",
     "specs.originVal": "Conçu au Maroc",
-
     // Product 1
     "product.name.1": "Sweat Capuche Real > Perfect",
     "product.quote.1": "REAL > PERFECT.",
@@ -86,7 +96,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "product.name.8": "T-shirt Enough As You Are",
     "product.quote.8": "ENOUGH AS YOU ARE.",
     "product.story.8": "Vous n'avez pas besoin de devenir quelqu'un d'autre pour avoir de la valeur.",
-
     // Philosophy
     "philosophy.title": "Nous ne sommes pas là pour impressionner. Nous sommes là pour être nous-mêmes.",
     "philosophy.desc1": "TRUE SELF représente l'authenticité, la paix intérieure, l'expression de soi, la liberté face à la validation sociale, et le fait de vivre pour soi-même plutôt que pour l'approbation des autres.",
@@ -97,17 +106,14 @@ export const translations: Record<Language, Record<string, string>> = {
     "philosophy.sub2": "la paix sur le bruit",
     "philosophy.val3": "Vrai.",
     "philosophy.sub3": "soi authentique",
-
     // Story
     "story.title": "Notre Histoire",
     "story.quote": "« TRUE SELF n'est pas un magasin de vêtements. C'est un mouvement et un état d'esprit qui vous encourage à cesser de vivre pour l'approbation des autres et à vous reconnecter avec qui vous êtes vraiment. »",
     "story.desc": "Né sur les côtes de la Méditerranée et au cœur de l'Afrique du Nord, notre voyage a commencé comme une rébellion silencieuse. Dans un monde obsédé par les apparences et le bruit constant de la validation sociale, nous avons choisi de concevoir des rappels physiques simples. Nos vêtements sont des ancres de calme, faites pour être portées lentement et ressenties sincèrement.",
-
     // Concept
     "concept.title": "Vous n'avez pas besoin d'être bruyant pour être entendu.",
     "concept.subtitle": "Vous n'avez pas besoin d'approbation pour exister.",
     "concept.footer": "true self, depuis 2024",
-
     // Manifesto Section
     "manifesto.title": "Notre manifeste pour le vrai soi",
     "manifesto.desc": "Nous croyons que la liberté commence là où s'arrête le besoin de plaire. Nos pièces sont des rappels physiques pour vous reconnecter avec votre essence.",
@@ -119,7 +125,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "manifesto.p3.desc": "La certitude tranquille que vous êtes assez, exactement tel que vous êtes aujourd'hui, sans artifices.",
     "manifesto.p4.title": "Paix Intérieure",
     "manifesto.p4.desc": "Choisir la tranquillité de l'esprit face au chaos et au bruit extérieur constant.",
-
     // Peace & Love
     "peace.tag": "Paix & Amour",
     "peace.title": "Choisissez le calme. Choisissez l'amour. Choisissez-vous, avec douceur.",
@@ -129,45 +134,37 @@ export const translations: Record<Language, Record<string, string>> = {
     "peace.d2": "Nous ne retouchons pas nos modèles. Les rites, le calme, les moments de transition — tout reste brut.",
     "peace.h3": "Le doux est fort",
     "peace.d3": "Choisir la paix dans un monde bruyant est la déclaration la plus forte que vous puissiez porter.",
-
     // Lookbook
     "lookbook.title": "Lookbook",
     "lookbook.desc": "Campagne visuelle — Casablanca & Tanger. Des moments bruts capturés sous la lumière naturelle de l'Afrique du Nord.",
-
     // Drops
     "drops.title": "Éditions Limitées",
     "drops.desc": "Séries numérotées, conçues lentement. Chaque drop est une série exclusive limitée à 100 exemplaires.",
-
     // Journal
     "journal.title": "Journal de l'Authenticité",
     "journal.entry1.title": "Le courage d'être silencieux",
     "journal.entry1.desc": "Trouver la paix dans un monde qui ne s'arrête jamais de parler. L'art de la confiance tranquille.",
     "journal.entry2.title": "Retour à l'Océan",
     "journal.entry2.desc": "Moments de méditation solitaire le long de la côte méditerranéenne, face à l'horizon.",
-
     // Community
     "community.title": "Communauté",
     "community.desc": "Un silence partagé. Rencontres et connexions réelles de ceux qui vivent selon leur propre vérité.",
-
     // Packaging
     "packaging.title": "Détails de Signature",
     "packaging.desc": "Nos vêtements comportent des étiquettes minimalistes en coton bio non blanchi. Chaque colis est emballé dans du papier kraft texturé imprimé avec nos coordonnées d'origine, symbolisant notre retour aux sources.",
-
     // Gallery
     "gallery.title": "Des moments, pas du contenu.",
     "gallery.insta": "Nous suivre sur Instagram →",
-
     // Newsletter
     "news.tag": "Des lettres, jamais du bruit",
     "news.title": "Notes douces d'un soi véritable.",
     "news.desc": "Un e-mail calme par mois. Réflexions, et ce pour quoi nous choisissons la paix.",
     "news.placeholder": "votre e-mail, tout en douceur",
     "news.btn": "S'inscrire discrètement",
-
     // Footer
     "footer.rights": "conçu lentement · porté sincèrement",
     "share.name": "TRUE SELF",
-    "share.desc": "Explorez la philosophie de TRUE SELF.",
+    "share.desc": "Explorez la philosophie de TRUE SELF."
   },
   en: {
     // Nav
@@ -178,7 +175,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.bereal": "Be Real",
     "nav.search": "Search",
     "nav.bag": "Bag",
-
     // index.tsx Hero
     "hero.vol": "Vol. 01 — Authenticity First",
     "hero.title1": "TRUE SELF",
@@ -187,19 +183,16 @@ export const translations: Record<Language, Record<string, string>> = {
     "hero.desc": "Most people spend their lives becoming who others expect them to be. TRUE SELF is a silent reminder to live for yourself.",
     "hero.shop": "Shop Collection",
     "hero.explore": "Explore Philosophy",
-
     // The Problem Section
     "problem.title": "Most people spend their lives becoming who others expect them to be.",
     "problem.desc1": "We chase external approval. We follow artificial trends. We compare our lives to filters on social networks.",
     "problem.desc2": "In this constant loop of validation, we hide behind roles to fit in, slowly forgetting the quiet voice inside that knows who we truly are.",
     "problem.tag": "The Conflict",
-
     // The Solution Section
     "solution.title": "TRUE SELF is not a clothing company. It is a quiet rebellion.",
     "solution.desc1": "Our pieces are not designed to define you. They are built to remind you of your own freedom.",
     "solution.desc2": "Each garment is a physical anchor—a daily reminder on your chest to stop performing, take off the masks, and choose authenticity over noise.",
     "solution.tag": "The Answer",
-
     // Featured / Collection
     "featured.title": "Quiet pieces to wear your truths.",
     "featured.viewAll": "View all →",
@@ -209,7 +202,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "collection.featured": "Featured",
     "collection.new_arrivals": "New Arrivals",
     "collection.best_sellers": "Best Sellers",
-
     // Product Specifications
     "specs.tag": "The Intent",
     "specs.title": "Garment Philosophy.",
@@ -221,7 +213,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "specs.detailVal": "Subtle tonal embroidery",
     "specs.origin": "Identity",
     "specs.originVal": "Designed in Morocco",
-
     // Product 1
     "product.name.1": "Real > Perfect Hoodie",
     "product.quote.1": "REAL > PERFECT.",
@@ -254,7 +245,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "product.name.8": "Enough As You Are Tee",
     "product.quote.8": "ENOUGH AS YOU ARE.",
     "product.story.8": "You do not need to become someone else to be worthy.",
-
     // Philosophy
     "philosophy.title": "We're not here to impress. We're here to be our true selves.",
     "philosophy.desc1": "TRUE SELF represents authenticity, inner peace, self-expression, freedom from social validation, and living for yourself rather than for the approval of others.",
@@ -265,17 +255,14 @@ export const translations: Record<Language, Record<string, string>> = {
     "philosophy.sub2": "peace over noise",
     "philosophy.val3": "True.",
     "philosophy.sub3": "authentic self",
-
     // Story
     "story.title": "Our Story",
-    "story.quote": "\"TRUE SELF is not a clothing store. It is a movement and a mindset that encourages people to stop living for the approval of others and reconnect with who they truly are.\"",
+    "story.quote": '"TRUE SELF is not a clothing store. It is a movement and a mindset that encourages people to stop living for the approval of others and reconnect with who they truly are."',
     "story.desc": "Born on the shores of the Mediterranean and in the heart of North Africa, our journey started as a silent rebellion. In a world obsessed with appearances and the constant noise of validation, we chose to design simple physical anchors. Our garments are anchors of calm, made to be worn slowly and felt honestly.",
-
     // Concept
     "concept.title": "You don't need to be loud to be heard.",
     "concept.subtitle": "You don't need approval to exist.",
     "concept.footer": "true self, since 2024",
-
     // Manifesto Section
     "manifesto.title": "Our Manifesto for the True Self",
     "manifesto.desc": "We believe freedom begins when the need for approval ends. Our garments serve as physical anchors to reconnect with your essence.",
@@ -287,7 +274,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "manifesto.p3.desc": "The quiet assurance that you are enough, exactly as you are, without performing.",
     "manifesto.p4.title": "Inner Peace",
     "manifesto.p4.desc": "Choosing tranquility of the mind over chaotic external expectations.",
-
     // Peace & Love
     "peace.tag": "Peace & Love",
     "peace.title": "Choose calm. Choose love. Choose yourself, softly.",
@@ -297,45 +283,37 @@ export const translations: Record<Language, Record<string, string>> = {
     "peace.d2": "We don't retouch our people. The wrinkles, the quiet, the in-between — it stays.",
     "peace.h3": "Soft is strong",
     "peace.d3": "Choosing peace in a loud world is the boldest thing you can wear.",
-
     // Lookbook
     "lookbook.title": "Lookbook",
     "lookbook.desc": "Visual campaign — Casablanca & Tangier. Raw moments captured under natural North African light.",
-
     // Drops
     "drops.title": "Limited Drops",
     "drops.desc": "Numbered series, crafted slowly. Each drop is a unique design limited to 100 pieces.",
-
     // Journal
     "journal.title": "Authenticity Journal",
     "journal.entry1.title": "The Courage to Be Quiet",
     "journal.entry1.desc": "Finding peace in a world that cannot stop talking. The art of quiet confidence.",
     "journal.entry2.title": "Return to the Ocean",
     "journal.entry2.desc": "Solitary meditation along the Mediterranean coast, facing the deep horizon.",
-
     // Community
     "community.title": "Community",
     "community.desc": "Shared silence. Real moments and stories from those who walk in their own light.",
-
     // Packaging
     "packaging.title": "Signature Details",
     "packaging.desc": "Our garments feature raw unbleached organic cotton labels. Each package is enclosed in custom coordinates-textured kraft paper, representing our physical return to the roots.",
-
     // Gallery
     "gallery.title": "Moments, not content.",
     "gallery.insta": "Follow on Instagram →",
-
     // Newsletter
     "news.tag": "Letters, never noise",
     "news.title": "Slow notes from a true self.",
     "news.desc": "One quiet email a month. New drops, reflections, and the things we're choosing peace over.",
     "news.placeholder": "your email, gently",
     "news.btn": "Join quietly",
-
     // Footer
     "footer.rights": "made slowly · worn honestly",
     "share.name": "TRUE SELF",
-    "share.desc": "Explore the philosophy of TRUE SELF.",
+    "share.desc": "Explore the philosophy of TRUE SELF."
   },
   ar: {
     // Nav
@@ -346,7 +324,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.bereal": "كن حقيقياً",
     "nav.search": "بحث",
     "nav.bag": "السلة",
-
     // index.tsx Hero
     "hero.vol": "الإصدار 01 — الأصالة أولاً",
     "hero.title1": "ذاتك الحقيقية",
@@ -355,19 +332,16 @@ export const translations: Record<Language, Record<string, string>> = {
     "hero.desc": "يقضي معظم الناس حياتهم في أن يصبحوا ما يتوقعه الآخرون منهم. ذاتك الحقيقية هي تذكير صامت لتعيش لنفسك.",
     "hero.shop": "اكتشف المجموعة",
     "hero.explore": "اكتشف الفلسفة",
-
     // The Problem Section
     "problem.title": "يقضي معظم الناس حياتهم في أن يصبحوا ما يتوقعه الآخرون منهم.",
     "problem.desc1": "نحن نلهث وراء موافقة الآخرين. نتبع صيحات مصطنعة. نقارن أنفسنا باستمرار بشاشات شبكات التواصل الاجتماعي.",
     "problem.desc2": "في هذه الحلقة المستمرة من البحث عن القبول، نرتدي أقنعة لنلائم مجتمعنا، وننسى ببطء ذلك الصوت الهادئ بداخلنا الذي يعرف من نكون حقاً.",
     "problem.tag": "الصراع",
-
     // The Solution Section
     "solution.title": "ذاتك الحقيقية ليست مجرد علامة ملابس. إنها تمرد صامت.",
     "solution.desc1": "قطعنا لم تُصمم لتحدد هويتك. بل صُنعت لتذكرك بحريتك الخاصة.",
     "solution.desc2": "كل قطعة هي مرساة مادية — تذكير يومي على صدرك للتوقف عن التمثيل، وتجريد الأقنعة، واختيار الأصالة على الضجيج.",
     "solution.tag": "الإجابة",
-
     // Featured / Collection
     "featured.title": "قطع هادئة لتحمل حقائقك.",
     "featured.viewAll": "عرض الكل ←",
@@ -377,7 +351,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "collection.featured": "المميزة",
     "collection.new_arrivals": "أحدث المنتجات",
     "collection.best_sellers": "الأكثر مبيعاً",
-
     // Product Specifications
     "specs.tag": "الغاية",
     "specs.title": "فلسفة القطعة.",
@@ -389,7 +362,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "specs.detailVal": "تطريز متناسق وهادئ",
     "specs.origin": "الهوية",
     "specs.originVal": "صمم في المغرب",
-
     // Product 1
     "product.name.1": "سترة ذو غطاء للرأس Real > Perfect",
     "product.quote.1": "REAL > PERFECT.",
@@ -422,7 +394,6 @@ export const translations: Record<Language, Record<string, string>> = {
     "product.name.8": "قميص Enough As You Are",
     "product.quote.8": "ENOUGH AS YOU ARE.",
     "product.story.8": "لا تحتاج أن تصبح شخصاً آخر لتكون جديراً وقيم المظهر.",
-
     // Philosophy
     "philosophy.title": "لسنا هنا لإبهار الآخرين. نحن هنا لنكون أنفسنا الحقيقية.",
     "philosophy.desc1": "تمثل TRUE SELF الأصالة، والسلام الداخلي، والتعبير عن الذات، والتحرر من التقييم الاجتماعي، والعيش لنفسك بدلاً من نيل موافقة الآخرين.",
@@ -433,54 +404,325 @@ export const translations: Record<Language, Record<string, string>> = {
     "philosophy.sub2": "السلام فوق الضجيج",
     "philosophy.val3": "صادق.",
     "philosophy.sub3": "الذات الحقيقية",
-
     // Story
     "story.title": "قصتنا",
     "story.quote": "« ذاتك الحقيقية ليست مجرد متجر ملابس. إنها حركة وعقلية تشجع الناس على التوقف عن العيش لنيل موافقة الآخرين وإعادة الاتصال بمن هم عليه حقاً. »",
     "story.desc": "ولدت على شواطئ البحر الأبيض المتوسط وفي قلب شمال إفريقيا، بدأت رحلتنا كتمرد صامت. في عالم مهووس بالمظاهر والضجيج المستمر للتقييم الاجتماعي، اخترنا تصميم تذكيرات مادية بسيطة. ملابسنا هي مراسي من الهدوء، صُنعت لترتدى ببطء وتُشعر بصدق.",
-
     // Concept
     "concept.title": "لا تحتاج أن تكون صاخباً ليُسمع صوتك.",
     "concept.subtitle": "لا تحتاج إلى موافقة الآخرين كي تكون موجوداً.",
     "concept.footer": "true self، منذ 2024",
-
     // Campaign
     "lookbook.title": "كتيب التصاميم",
     "lookbook.desc": "الحملة البصرية — الدار البيضاء وطنجة. لحظات خام التقطت تحت الضوء الطبيعي لشمال إفريقيا.",
-
     // Drops
     "drops.title": "إصدارات محدودة",
     "drops.desc": "سلاسل مرقمة، صُنعت ببطء. كل إصدار عبارة عن تصميم فريد يقتصر على 100 قطعة فقط.",
-
     // Journal
     "journal.title": "مجلة الأصالة",
     "journal.entry1.title": "شجاعة الصمت",
     "journal.entry1.desc": "إيجاد السلام في عالم لا يتوقف عن الكلام. فن الثقة الهادئة.",
     "journal.entry2.title": "العودة إلى المحيط",
     "journal.entry2.desc": "تأمل انفرادي على طول ساحل البحر الأبيض المتوسط، مواجهاً الأفق العميق.",
-
     // Community
     "community.title": "المجتمع",
     "community.desc": "صمت مشترك. لحظات وقصص حقيقية من أولئك الذين يسيرون في نورهم الخاص.",
-
     // Packaging
     "packaging.title": "تفاصيل مميزة",
     "packaging.desc": "تتميز ملابسنا بملصقات من القطن العضوي غير المبيض. يتم لف كل شحنة بورق كرافت مخصص ومطبوع عليه إحداثياتنا، مما يرمز إلى عودتنا المادية للجذور.",
-
     // Gallery
     "gallery.title": "لحظات، وليس محتوى.",
     "gallery.insta": "تابعنا على إنستغرام ←",
-
     // Newsletter
     "news.tag": "رسائل، ليس ضجيجاً",
     "news.title": "رسائل هادئة من ذات حقيقية.",
     "news.desc": "بريد إلكتروني هادئ واحد في الشهر. تأملات، والأشياء التي نختار السلام لأجلها.",
     "news.placeholder": "بريدك الإلكتروني، بلطف",
     "news.btn": "اشترك بهدوء",
-
     // Footer
     "footer.rights": "صنع ببطء · يرتدى بصدق",
     "share.name": "TRUE SELF",
-    "share.desc": "اكتشف فلسفة ذاتك الحقيقية.",
-  },
+    "share.desc": "اكتشف فلسفة ذاتك الحقيقية."
+  }
+};
+const LanguageContext = reactExports.createContext(void 0);
+function LanguageProvider({ children }) {
+  const [language, setLanguageState] = reactExports.useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("ts_language");
+      if (saved === "fr" || saved === "en" || saved === "ar") {
+        return saved;
+      }
+    }
+    return "fr";
+  });
+  const setLanguage = (lang) => {
+    setLanguageState(lang);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("ts_language", lang);
+    }
+  };
+  reactExports.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const dir2 = language === "ar" ? "rtl" : "ltr";
+      document.documentElement.dir = dir2;
+      document.documentElement.lang = language;
+    }
+  }, [language]);
+  const t = (key, replacements) => {
+    const langDict = translations[language] || translations["fr"];
+    let translation = langDict[key] || translations["fr"][key] || translations["en"][key] || key;
+    if (replacements) {
+      Object.entries(replacements).forEach(([k, v]) => {
+        translation = translation.replace(`{${k}}`, v);
+      });
+    }
+    return translation;
+  };
+  const dir = language === "ar" ? "rtl" : "ltr";
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageContext.Provider, { value: { language, setLanguage, t, dir }, children });
+}
+function useLanguage() {
+  const context = reactExports.useContext(LanguageContext);
+  if (!context) {
+    throw new Error("useLanguage must be used within a LanguageProvider");
+  }
+  return context;
+}
+const CartContext = reactExports.createContext(void 0);
+function CartProvider({ children }) {
+  const [cartItems, setCartItems] = reactExports.useState([]);
+  const [isLoaded, setIsLoaded] = reactExports.useState(false);
+  const [cartOpen, setCartOpen] = reactExports.useState(false);
+  reactExports.useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("ts_cart");
+        if (saved) {
+          setCartItems(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error("Error loading cart from localStorage:", err);
+      }
+      setIsLoaded(true);
+    }
+  }, []);
+  reactExports.useEffect(() => {
+    if (isLoaded && typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ts_cart", JSON.stringify(cartItems));
+      } catch (err) {
+        console.error("Error saving cart to localStorage:", err);
+      }
+    }
+  }, [cartItems, isLoaded]);
+  const addToCart = (newItem) => {
+    const itemId = `${newItem.productId}-${newItem.size}-${newItem.color}`;
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === itemId);
+      if (existingItem) {
+        return prevItems.map(
+          (item) => item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevItems, { ...newItem, id: itemId, quantity: 1 }];
+    });
+    setCartOpen(true);
+  };
+  const updateQuantity = (id, delta) => {
+    setCartItems(
+      (prevItems) => prevItems.map((item) => {
+        if (item.id === id) {
+          const newQty = item.quantity + delta;
+          return newQty > 0 ? { ...item, quantity: newQty } : null;
+        }
+        return item;
+      }).filter((item) => item !== null)
+    );
+  };
+  const removeFromCart = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+  const clearCart = () => {
+    setCartItems([]);
+  };
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const cartSubtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    CartContext.Provider,
+    {
+      value: {
+        cartItems,
+        addToCart,
+        updateQuantity,
+        removeFromCart,
+        clearCart,
+        cartCount,
+        cartSubtotal,
+        cartOpen,
+        setCartOpen
+      },
+      children
+    }
+  );
+}
+function useCart() {
+  const context = reactExports.useContext(CartContext);
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
+}
+function NotFoundComponent() {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-md text-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-display text-7xl text-foreground", children: "404" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-sm tracking-brand uppercase text-muted-foreground", children: "Page not found" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Link,
+      {
+        to: "/",
+        className: "inline-flex items-center justify-center border border-foreground px-6 py-3 text-xs tracking-brand uppercase hover:bg-foreground hover:text-background transition-colors",
+        children: "Return home"
+      }
+    ) })
+  ] }) });
+}
+function ErrorComponent({ error, reset }) {
+  console.error(error);
+  const router2 = useRouter();
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-md text-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-display text-3xl", children: "Something stirred the calm." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 text-sm text-muted-foreground", children: "Try again — peacefully." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 flex justify-center gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => {
+            router2.invalidate();
+            reset();
+          },
+          className: "border border-foreground px-6 py-3 text-xs tracking-brand uppercase hover:bg-foreground hover:text-background transition-colors",
+          children: "Try again"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "a",
+        {
+          href: "/",
+          className: "border border-border px-6 py-3 text-xs tracking-brand uppercase hover:bg-muted transition-colors",
+          children: "Home"
+        }
+      )
+    ] })
+  ] }) });
+}
+const Route$2 = createRootRouteWithContext()({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "TRUE SELF — Streetwear for the authentic" },
+      {
+        name: "description",
+        content: "Minimalist premium streetwear for those who choose authenticity over noise. Embroidered phrases. Soft fabrics. True energy."
+      },
+      { property: "og:title", content: "TRUE SELF — Streetwear for the authentic" },
+      {
+        property: "og:description",
+        content: "Minimalist premium streetwear for those who choose authenticity over noise."
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" }
+    ],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Caveat:wght@400;600&family=Space+Grotesk:wght@400;500;600&family=Cairo:wght@300;400;500;600;700&family=Amiri:ital@0;1&display=swap"
+      }
+    ]
+  }),
+  shellComponent: RootShell,
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent
+});
+function RootShell({ children }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("html", { lang: "en", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("head", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(HeadContent, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("body", { children: [
+      children,
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Scripts, {})
+    ] })
+  ] });
+}
+function RootComponent() {
+  const { queryClient } = Route$2.useRouteContext();
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }) });
+}
+const $$splitComponentImporter$1 = () => import("./admin-BwS9wI3d.mjs");
+const Route$1 = createFileRoute("/admin")({
+  head: () => ({
+    meta: [{
+      title: "TRUE SELF® — Admin Dashboard"
+    }, {
+      name: "description",
+      content: "TRUE SELF internal order management system."
+    }]
+  }),
+  component: lazyRouteComponent($$splitComponentImporter$1, "component")
+});
+const $$splitComponentImporter = () => import("./index-Df1ShqOA.mjs");
+const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [{
+      title: "TRUE SELF® — Live For Yourself"
+    }, {
+      name: "description",
+      content: "A Moroccan cultural movement and lifestyle brand reminding you to live for yourself, not for the approval of others. Authenticity, freedom, and inner peace."
+    }, {
+      property: "og:title",
+      content: "TRUE SELF® — Live For Yourself"
+    }, {
+      property: "og:description",
+      content: "Live for yourself, not for the approval of others."
+    }]
+  }),
+  component: lazyRouteComponent($$splitComponentImporter, "component")
+});
+const AdminRoute = Route$1.update({
+  id: "/admin",
+  path: "/admin",
+  getParentRoute: () => Route$2
+});
+const IndexRoute = Route.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => Route$2
+});
+const rootRouteChildren = {
+  IndexRoute,
+  AdminRoute
+};
+const routeTree = Route$2._addFileChildren(rootRouteChildren)._addFileTypes();
+const getRouter = () => {
+  const queryClient = new QueryClient();
+  const router2 = createRouter({
+    routeTree,
+    context: { queryClient },
+    scrollRestoration: true,
+    defaultPreloadStaleTime: 0
+  });
+  return router2;
+};
+const router = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  getRouter
+}, Symbol.toStringTag, { value: "Module" }));
+export {
+  useLanguage as a,
+  router as r,
+  useCart as u
 };

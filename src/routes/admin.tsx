@@ -289,7 +289,7 @@ function Admin() {
                             <div>
                               <p className="font-display text-lg leading-tight text-foreground/95">{item.quote}</p>
                               <span className="font-mono text-[9px] text-muted-foreground uppercase">
-                                {item.name.split(" ")[item.name.split(" ").length - 1]} // SIZE: {item.size}
+                                {item.name.split(" ")[item.name.split(" ").length - 1]} // SIZE: {item.size} · COLOR: {item.color}
                               </span>
                             </div>
                           </div>

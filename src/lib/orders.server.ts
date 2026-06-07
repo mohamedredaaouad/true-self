@@ -5,6 +5,7 @@ export interface OrderItem {
   name: string;
   quote: string;
   size: string;
+  color: string;
   quantity: number;
   price: number;
 }

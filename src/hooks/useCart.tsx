@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 export interface CartItem {
-  id: string; // unique key: productId + "-" + size
+  id: string; // unique key: productId + "-" + size + "-" + color
   productId: number;
   name: string;
   quote: string;
   image: string;
   size: string;
+  color: string;
   price: number; // numeric value (e.g. 350)
   quantity: number;
 }
@@ -57,7 +58,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cartItems, isLoaded]);
 
   const addToCart = (newItem: Omit<CartItem, "id" | "quantity">) => {
-    const itemId = `${newItem.productId}-${newItem.size}`;
+    const itemId = `${newItem.productId}-${newItem.size}-${newItem.color}`;
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === itemId);
       if (existingItem) {
