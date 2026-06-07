@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-vvdYsJP4.css";
+const appCss = "/assets/styles-D4Tz0RmR.css";
 const translations = {
   fr: {
     // Nav
@@ -739,7 +739,7 @@ function RootComponent() {
   const { queryClient } = Route$2.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }) });
 }
-const $$splitComponentImporter$1 = () => import("./admin-DTQiyea9.mjs");
+const $$splitComponentImporter$1 = () => import("./admin-Dw1YdQRm.mjs");
 const Route$1 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -751,7 +751,7 @@ const Route$1 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./index-BbatYfLu.mjs");
+const $$splitComponentImporter = () => import("./index-BYrAOaNw.mjs");
 const Route = createFileRoute("/")({
   head: () => ({
     meta: [{

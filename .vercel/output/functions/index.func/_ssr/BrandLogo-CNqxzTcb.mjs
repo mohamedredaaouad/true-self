@@ -1,4 +1,4 @@
-import { a as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-CkO9YZ4x.mjs";
+import { a as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-4Z6Mawu2.mjs";
 import { j as jsxRuntimeExports } from "../_libs/react.mjs";
 var createSsrRpc = (functionId) => {
   const url = "/_serverFn/" + functionId;

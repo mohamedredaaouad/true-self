@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { L as Logo, g as getOrdersFn, u as updateOrderStatusFn } from "./BrandLogo-CZ_6mfDp.mjs";
+import { L as Logo, g as getOrdersFn, u as updateOrderStatusFn } from "./BrandLogo-CNqxzTcb.mjs";
 import "../_libs/seroval.mjs";
 import { R as RefreshCw, L as LogOut, b as Clock, a as CircleCheckBig, P as Package, d as Truck } from "../_libs/lucide-react.mjs";
-import "./server-CkO9YZ4x.mjs";
+import "./server-4Z6Mawu2.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";

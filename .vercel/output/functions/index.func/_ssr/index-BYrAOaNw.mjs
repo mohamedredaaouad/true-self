@@ -1,7 +1,7 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { a as useLanguage, u as useCart } from "./router-DJUFX1-3.mjs";
-import { S as Symbol$1, L as Logo, c as createOrderFn } from "./BrandLogo-CZ_6mfDp.mjs";
+import { a as useLanguage, u as useCart } from "./router-DPXuks-J.mjs";
+import { S as Symbol$1, L as Logo, c as createOrderFn } from "./BrandLogo-CNqxzTcb.mjs";
 import "../_libs/seroval.mjs";
 import { X, C as Check, S as ShoppingBag, T as Trash2, M as Minus, c as Plus } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -18,7 +18,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-CkO9YZ4x.mjs";
+import "./server-4Z6Mawu2.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -38,7 +38,7 @@ function Nav({ wishlistCount = 0, onOpenWishlist }) {
     {
       className: `fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/60" : "bg-transparent"}`,
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "hover:opacity-85 transition-opacity py-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Logo, { layout: "horizontal", symbolSize: 22, textSize: "text-base sm:text-lg font-semibold tracking-brand" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "hover:opacity-85 transition-opacity py-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Logo, { layout: "horizontal", symbolSize: 28, textSize: "text-lg sm:text-xl font-semibold tracking-brand" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden md:flex items-center gap-10 text-xs tracking-brand uppercase", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:opacity-60 transition-opacity", children: t("nav.shop") }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "philosophy", className: "hover:opacity-60 transition-opacity", children: t("nav.philosophy") }),
