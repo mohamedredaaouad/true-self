@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { getOrdersFn, updateOrderStatusFn, type Order } from "../lib/orders.server";
 import { ChevronDown, RefreshCw, LogOut, CheckCircle, Package, Truck, Clock } from "lucide-react";
+import { Logo } from "../components/BrandLogo";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -103,9 +104,9 @@ function Admin() {
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm border border-border/60 bg-secondary/10 p-8 rounded-xs shadow-soft text-center space-y-6">
-          <div>
-            <h1 className="font-display text-4xl">TRUE SELF<span className="text-muted-foreground/60">®</span></h1>
-            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono mt-2">
+          <div className="flex flex-col items-center">
+            <Logo layout="stacked" symbolSize={44} textSize="text-2xl" taglineSize="text-[8px]" showTagline={false} />
+            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono mt-3">
               Order Gateway Access
             </p>
           </div>

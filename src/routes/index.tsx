@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/hooks/useLanguage";
+import { Symbol as BrandSymbol, Logo as BrandLogo } from "@/components/BrandLogo";
 import { X, ShoppingBag, Check, Plus, Minus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { createOrderFn } from "@/lib/orders.server";
@@ -709,6 +710,65 @@ function Index() {
         </section>
       </div>
 
+      {/* Decorative divider */}
+      <div className="w-full flex items-center justify-center my-8 opacity-45">
+        <span className="h-px w-16 bg-border/60" />
+        <BrandSymbol size={14} className="mx-4 text-muted-foreground animate-pulse" />
+        <span className="h-px w-16 bg-border/60" />
+      </div>
+
+      {/* THE SYMBOL SECTION */}
+      <section id="brand-symbol" className="bg-background text-foreground py-24 lg:py-36 border-b border-border/40 relative overflow-hidden">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Left Column: Asymmetric Large Symbol representation with blueprints details */}
+            <Reveal className="lg:col-span-5 flex justify-center lg:justify-start lg:ps-12">
+              <div className="relative p-12 bg-secondary/15 rounded-xs border border-border/30 w-full max-w-[360px] aspect-square flex items-center justify-center shadow-soft">
+                <div className="absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45">// ARCHIVE 001 // IDENTITY</div>
+                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45">33.5731° N · 7.5898° W</div>
+                
+                <BrandSymbol size={160} className="text-foreground hover:scale-110 duration-700 ease-soft" />
+              </div>
+            </Reveal>
+
+            {/* Right Column: Editorial Philosophy text */}
+            <Reveal delay={150} className="lg:col-span-7 text-start space-y-8">
+              <div className="space-y-3">
+                <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                  // {t("symbol.title")}
+                </span>
+                <h2 className="font-display text-4xl md:text-6xl text-balance italic font-light">
+                  {t("symbol.title")}
+                </h2>
+              </div>
+
+              <div className="space-y-6 max-w-xl text-foreground/80 leading-relaxed font-light text-base border-l-2 border-border/40 ps-6">
+                <p className="text-balance">{t("symbol.desc1")}</p>
+                <p className="text-balance">{t("symbol.desc2")}</p>
+              </div>
+
+              <div className="pt-4 max-w-xl">
+                <p className="font-display text-2xl md:text-3xl italic text-foreground tracking-wide text-balance leading-normal">
+                  {t("symbol.desc3")}
+                </p>
+                <p className="mt-4 font-mono text-[9px] tracking-[0.2em] uppercase text-muted-foreground/60">
+                  LIVE FOR YOURSELF.
+                </p>
+              </div>
+            </Reveal>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Decorative divider */}
+      <div className="w-full flex items-center justify-center my-8 opacity-45">
+        <span className="h-px w-16 bg-border/60" />
+        <BrandSymbol size={14} className="mx-4 text-muted-foreground" />
+        <span className="h-px w-16 bg-border/60" />
+      </div>
+
       {/* 4. FULL COLLECTION SECTION (with interactive tabs & clean cards) */}
       <section id="collection" className="mx-auto max-w-[1400px] px-6 lg:px-10 py-24 lg:py-36 border-b border-border/40">
         <Reveal>
@@ -1311,17 +1371,24 @@ function Index() {
           
           {/* Brand Info & Newsletter */}
           <div className="lg:col-span-4 space-y-8">
-            <div>
-              <p className="font-display text-4xl">
-                TRUE SELF<span className="text-muted-foreground font-sans text-lg">®</span>
-              </p>
+            <div className="space-y-4">
+              <BrandLogo 
+                layout="stacked" 
+                symbolSize={44} 
+                textSize="text-xl font-medium tracking-[0.2em]" 
+                taglineSize="text-[8px] tracking-[0.25em]"
+                className={`${isAr ? "items-end text-end" : "items-start text-start"}`}
+              />
               <p className="mt-4 max-w-sm text-xs text-muted-foreground italic leading-relaxed">
                 "{t("philosophy.desc1").split(". ")[1] || "Live for yourself."}"
               </p>
             </div>
             
             <div className="space-y-4 pt-4 border-t border-border/40">
-              <span className="font-mono text-[9px] tracking-brand uppercase text-muted-foreground block">// {t("footer.newsletter.title")}</span>
+              <div className="flex items-center gap-2">
+                <BrandSymbol size={10} className="text-muted-foreground/60 animate-pulse" />
+                <span className="font-mono text-[9px] tracking-brand uppercase text-muted-foreground block">// {t("footer.newsletter.title")}</span>
+              </div>
               <p className="text-xs text-muted-foreground font-light leading-relaxed">{t("footer.newsletter.desc")}</p>
               <form
                 onSubmit={(e) => e.preventDefault()}
@@ -1590,7 +1657,7 @@ function Index() {
                   className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono"
                 >
                   {isAdding ? (
-                    <span className="h-4 w-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
+                    <BrandSymbol size={16} className="animate-spin text-background" />
                   ) : isAddedSuccess ? (
                     <>
                       <Check size={14} className="animate-bounce" />
@@ -1657,8 +1724,11 @@ function Index() {
               </div>
 
               {/* Geographical and coordinates footnote */}
-              <div className="mt-8 pt-6 border-t border-border/40 font-mono text-[8px] text-muted-foreground tracking-widest flex justify-between">
-                <span>TRUE SELF STUDIO®</span>
+              <div className="mt-8 pt-6 border-t border-border/40 font-mono text-[8px] text-muted-foreground tracking-widest flex justify-between items-center">
+                <div className="flex items-center gap-1.5">
+                  <BrandSymbol size={10} className="text-muted-foreground" />
+                  <span>TRUE SELF STUDIO®</span>
+                </div>
                 <span>33.5731° N, 7.5898° W</span>
               </div>
 
@@ -1679,7 +1749,8 @@ function Index() {
             
             {/* Drawer Header */}
             <div className="p-6 border-b border-border/40 flex items-center justify-between">
-              <div className="flex items-center gap-2 font-mono">
+              <div className="flex items-center gap-2.5 font-mono">
+                <BrandSymbol size={16} className="text-foreground" />
                 <span className="text-xs font-semibold tracking-brand uppercase">{t("wishlist.title")} ({wishlist.length})</span>
               </div>
               <button 
@@ -1767,8 +1838,8 @@ function Index() {
             
             {/* Drawer Header */}
             <div className="p-6 border-b border-border/40 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <ShoppingBag size={16} />
+              <div className="flex items-center gap-2.5">
+                <BrandSymbol size={16} className="text-foreground animate-pulse" />
                 <span className="font-mono text-xs font-semibold tracking-brand uppercase">{isAr ? "حقيبتك" : "Your Bag"} ({cartCount})</span>
               </div>
               {checkoutStep !== "success" && (
@@ -1794,8 +1865,8 @@ function Index() {
             {/* Success screen */}
             {checkoutStep === "success" ? (
               <div className="flex-1 p-8 flex flex-col items-center justify-center text-center space-y-6">
-                <div className="h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce">
-                  <Check size={32} />
+                <div className="h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce shadow-soft">
+                  <BrandSymbol size={32} className="text-background animate-pulse" />
                 </div>
                 <h3 className="font-display text-4xl lg:text-5xl leading-tight">
                   {isAr ? "شكراً لانضمامك إلى ذاتك الحقيقية" : language === "fr" ? "Merci de rejoindre TRUE SELF." : "Thank you for joining TRUE SELF."}
@@ -1971,7 +2042,7 @@ function Index() {
                           className="flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer"
                         >
                           {isSubmittingOrder ? (
-                            <span className="h-4 w-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
+                            <BrandSymbol size={16} className="animate-spin text-background" />
                           ) : (
                             <span>{isAr ? "تأكيد الطلب" : "Place Order"}</span>
                           )}

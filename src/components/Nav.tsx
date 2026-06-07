@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLanguage } from "../hooks/useLanguage";
 import { useCart } from "../hooks/useCart";
+import { Logo } from "./BrandLogo";
 
 interface NavProps {
   wishlistCount?: number;
@@ -27,8 +28,8 @@ export function Nav({ wishlistCount = 0, onOpenWishlist }: NavProps) {
       }`}
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between">
-        <Link to="/" className="text-xs tracking-brand uppercase font-semibold">
-          TRUE SELF<span className="text-muted-foreground">®</span>
+        <Link to="/" className="hover:opacity-85 transition-opacity py-1">
+          <Logo layout="horizontal" symbolSize={16} textSize="text-sm font-semibold tracking-brand" />
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-xs tracking-brand uppercase">
           <Link to="/" hash="collection" className="hover:opacity-60 transition-opacity">

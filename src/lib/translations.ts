@@ -189,6 +189,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.support.shipping": "Livraison",
     "footer.support.returns": "Retours",
     "footer.support.contact": "Contact",
+    "symbol.title": "Le Symbole",
+    "symbol.desc1": "Le cercle représente la société, les attentes et le besoin d'approbation.",
+    "symbol.desc2": "Le symbole à l'extérieur du cercle représente l'individu qui choisit l'authenticité, la liberté et la confiance en soi.",
+    "symbol.desc3": "TRUE SELF est un rappel que votre vie vous appartient. Vivez pour vous-même.",
   },
   en: {
     // Nav
@@ -378,6 +382,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.support.shipping": "Shipping",
     "footer.support.returns": "Returns",
     "footer.support.contact": "Contact",
+    "symbol.title": "The Symbol",
+    "symbol.desc1": "The circle represents society, expectations and the need for approval.",
+    "symbol.desc2": "The symbol outside the circle represents the individual who chooses authenticity, freedom and self-trust.",
+    "symbol.desc3": "TRUE SELF is a reminder that your life belongs to you. Live For Yourself.",
   },
   ar: {
     // Nav
@@ -545,5 +553,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.support.shipping": "الشحن والتوصيل",
     "footer.support.returns": "الاستبدال والاسترجاع",
     "footer.support.contact": "اتصل بنا",
+    "symbol.title": "الرمز",
+    "symbol.desc1": "تمثل الدائرة المجتمع، والتوقعات، والحاجة إلى القبول.",
+    "symbol.desc2": "يمثل الرمز الموجود خارج الدائرة الفرد الذي يختار الأصالة، والحرية، والثقة بالنفس.",
+    "symbol.desc3": "ذاتك الحقيقية تذكير بأن حياتك ملك لك. عِش لنفسك.",
   },
 };
