@@ -1,4 +1,4 @@
-import { a as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-4Z6Mawu2.mjs";
+import { a as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-L8vWnZui.mjs";
 import { j as jsxRuntimeExports } from "../_libs/react.mjs";
 var createSsrRpc = (functionId) => {
   const url = "/_serverFn/" + functionId;
@@ -59,6 +59,7 @@ function Symbol$1({ size = 24, className = "", ...props }) {
 function Logo({
   layout = "horizontal",
   symbolSize,
+  symbolClassName,
   textSize,
   taglineSize,
   className = "",
@@ -69,8 +70,8 @@ function Logo({
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         Symbol$1,
         {
-          size: symbolSize || 18,
-          className: "text-foreground transition-transform duration-500 hover:scale-110"
+          size: symbolSize,
+          className: `text-foreground transition-transform duration-500 hover:scale-110 ${symbolClassName || ""}`
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.15em] text-foreground uppercase ${textSize || "text-sm sm:text-base"}`, children: "TRUE SELF" })
@@ -81,7 +82,7 @@ function Logo({
       Symbol$1,
       {
         size: symbolSize || 64,
-        className: "text-foreground transition-transform duration-700 hover:scale-105"
+        className: `text-foreground transition-transform duration-700 hover:scale-105 ${symbolClassName || ""}`
       }
     ),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [

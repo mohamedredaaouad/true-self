@@ -42,6 +42,7 @@ export function Symbol({ size = 24, className = "", ...props }: SymbolProps) {
 interface LogoProps {
   layout?: "horizontal" | "stacked";
   symbolSize?: number | string;
+  symbolClassName?: string;
   textSize?: string;
   taglineSize?: string;
   className?: string;
@@ -55,6 +56,7 @@ interface LogoProps {
 export function Logo({
   layout = "horizontal",
   symbolSize,
+  symbolClassName,
   textSize,
   taglineSize,
   className = "",
@@ -64,8 +66,8 @@ export function Logo({
     return (
       <div className={`inline-flex items-center gap-3 select-none ${className}`}>
         <Symbol 
-          size={symbolSize || 18} 
-          className="text-foreground transition-transform duration-500 hover:scale-110" 
+          size={symbolSize} 
+          className={`text-foreground transition-transform duration-500 hover:scale-110 ${symbolClassName || ""}`} 
         />
         <span className={`font-display tracking-[0.15em] text-foreground uppercase ${textSize || "text-sm sm:text-base"}`}>
           TRUE SELF
@@ -78,7 +80,7 @@ export function Logo({
     <div className={`flex flex-col items-center text-center gap-4 select-none ${className}`}>
       <Symbol 
         size={symbolSize || 64} 
-        className="text-foreground transition-transform duration-700 hover:scale-105" 
+        className={`text-foreground transition-transform duration-700 hover:scale-105 ${symbolClassName || ""}`} 
       />
       <div className="space-y-1.5">
         <span className={`font-display tracking-[0.25em] text-foreground uppercase block font-medium ${textSize || "text-2xl md:text-3xl"}`}>

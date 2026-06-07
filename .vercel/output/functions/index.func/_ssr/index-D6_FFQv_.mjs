@@ -1,7 +1,7 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { a as useLanguage, u as useCart } from "./router-DPXuks-J.mjs";
-import { S as Symbol$1, L as Logo, c as createOrderFn } from "./BrandLogo-CNqxzTcb.mjs";
+import { a as useLanguage, u as useCart } from "./router-0kjUV8bX.mjs";
+import { S as Symbol$1, L as Logo, c as createOrderFn } from "./BrandLogo-cxx46FrL.mjs";
 import "../_libs/seroval.mjs";
 import { X, C as Check, S as ShoppingBag, T as Trash2, M as Minus, c as Plus } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -18,7 +18,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-4Z6Mawu2.mjs";
+import "./server-L8vWnZui.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -38,7 +38,14 @@ function Nav({ wishlistCount = 0, onOpenWishlist }) {
     {
       className: `fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/60" : "bg-transparent"}`,
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "hover:opacity-85 transition-opacity py-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Logo, { layout: "horizontal", symbolSize: 28, textSize: "text-lg sm:text-xl font-semibold tracking-brand" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "hover:opacity-85 transition-opacity py-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Logo,
+          {
+            layout: "horizontal",
+            symbolClassName: "w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] md:w-[28px] md:h-[28px]",
+            textSize: "text-xs sm:text-sm md:text-base lg:text-xl font-semibold tracking-brand"
+          }
+        ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden md:flex items-center gap-10 text-xs tracking-brand uppercase", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:opacity-60 transition-opacity", children: t("nav.shop") }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "philosophy", className: "hover:opacity-60 transition-opacity", children: t("nav.philosophy") }),
@@ -618,11 +625,11 @@ function Index() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 14, className: "mx-4 text-muted-foreground animate-pulse" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "h-px w-16 bg-border/60" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "brand-symbol", className: "bg-background text-foreground py-24 lg:py-36 border-b border-border/40 relative overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-16 items-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { className: "lg:col-span-5 flex justify-center lg:justify-start lg:ps-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-12 bg-secondary/15 rounded-xs border border-border/30 w-full max-w-[360px] aspect-square flex items-center justify-center shadow-soft", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45", children: "// ARCHIVE 001 // IDENTITY" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45", children: "33.5731° N · 7.5898° W" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 160, className: "text-foreground hover:scale-110 duration-700 ease-soft" })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "brand-symbol", className: "bg-background text-foreground py-16 lg:py-36 border-b border-border/40 relative overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { className: "lg:col-span-5 flex justify-center lg:justify-start lg:ps-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full max-w-[360px] lg:p-12 lg:bg-secondary/15 lg:rounded-xs lg:border lg:border-border/30 lg:aspect-square flex items-center justify-center lg:shadow-soft", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block", children: "// ARCHIVE 001 // IDENTITY" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block", children: "33.5731° N · 7.5898° W" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { className: "text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Reveal, { delay: 150, className: "lg:col-span-7 text-start space-y-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [

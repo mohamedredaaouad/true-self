@@ -718,17 +718,17 @@ function Index() {
       </div>
 
       {/* THE SYMBOL SECTION */}
-      <section id="brand-symbol" className="bg-background text-foreground py-24 lg:py-36 border-b border-border/40 relative overflow-hidden">
+      <section id="brand-symbol" className="bg-background text-foreground py-16 lg:py-36 border-b border-border/40 relative overflow-hidden">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
             
             {/* Left Column: Asymmetric Large Symbol representation with blueprints details */}
             <Reveal className="lg:col-span-5 flex justify-center lg:justify-start lg:ps-12">
-              <div className="relative p-12 bg-secondary/15 rounded-xs border border-border/30 w-full max-w-[360px] aspect-square flex items-center justify-center shadow-soft">
-                <div className="absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45">// ARCHIVE 001 // IDENTITY</div>
-                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45">33.5731° N · 7.5898° W</div>
+              <div className="relative w-full max-w-[360px] lg:p-12 lg:bg-secondary/15 lg:rounded-xs lg:border lg:border-border/30 lg:aspect-square flex items-center justify-center lg:shadow-soft">
+                <div className="absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">// ARCHIVE 001 // IDENTITY</div>
+                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">33.5731° N · 7.5898° W</div>
                 
-                <BrandSymbol size={160} className="text-foreground hover:scale-110 duration-700 ease-soft" />
+                <BrandSymbol className="text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" />
               </div>
             </Reveal>
 
