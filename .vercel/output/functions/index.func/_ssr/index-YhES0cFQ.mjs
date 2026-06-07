@@ -1,9 +1,9 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { a as useLanguage, u as useCart } from "./router-IA9bIb6G.mjs";
-import { c as createOrderFn } from "./orders.server-BoszF-7U.mjs";
+import { a as useLanguage, u as useCart } from "./router-7-7HcYcg.mjs";
+import { c as createOrderFn } from "./orders.server-BSICCrI3.mjs";
 import "../_libs/seroval.mjs";
-import { X, C as Check, S as ShoppingBag, M as Minus, c as Plus, T as Trash2 } from "../_libs/lucide-react.mjs";
+import { X, C as Check, S as ShoppingBag, T as Trash2, M as Minus, c as Plus } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -18,12 +18,12 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-Dk0pOHtQ.mjs";
+import "./server-BWodeRAh.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
 import "../_libs/srvx.mjs";
-function Nav() {
+function Nav({ wishlistCount = 0, onOpenWishlist }) {
   const [scrolled, setScrolled] = reactExports.useState(false);
   const { t, language, setLanguage } = useLanguage();
   const { cartCount, setCartOpen } = useCart();
@@ -59,6 +59,22 @@ function Nav() {
             lang
           )) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "hidden sm:block hover:opacity-60 transition-opacity", children: t("nav.search") }),
+          onOpenWishlist && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: onOpenWishlist,
+              className: "hover:opacity-60 transition-opacity font-mono font-medium",
+              children: [
+                t("wishlist.title"),
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
+                  "(",
+                  wishlistCount,
+                  ")"
+                ] })
+              ]
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
@@ -167,6 +183,10 @@ function Index() {
   const [lightboxImage, setLightboxImage] = reactExports.useState(null);
   const [zoomStyle, setZoomStyle] = reactExports.useState({});
   const [activeTab, setActiveTab] = reactExports.useState("all");
+  const [wishlist, setWishlist] = reactExports.useState([]);
+  const [recentlyViewed, setRecentlyViewed] = reactExports.useState([]);
+  const [wishlistOpen, setWishlistOpen] = reactExports.useState(false);
+  const [showScrollTop, setShowScrollTop] = reactExports.useState(false);
   const [checkoutStep, setCheckoutStep] = reactExports.useState("cart");
   const [fullName, setFullName] = reactExports.useState("");
   const [phone, setPhone] = reactExports.useState("");
@@ -192,7 +212,8 @@ function Index() {
     }],
     isFeatured: true,
     isBestSeller: true,
-    isNew: false
+    isNew: false,
+    philosophy: "authenticity"
   }, {
     id: 2,
     key: "2",
@@ -210,7 +231,8 @@ function Index() {
     }],
     isFeatured: false,
     isBestSeller: false,
-    isNew: true
+    isNew: true,
+    philosophy: "authenticity"
   }, {
     id: 3,
     key: "3",
@@ -228,7 +250,8 @@ function Index() {
     }],
     isFeatured: false,
     isBestSeller: false,
-    isNew: true
+    isNew: true,
+    philosophy: "confidence"
   }, {
     id: 4,
     key: "4",
@@ -246,7 +269,8 @@ function Index() {
     }],
     isFeatured: true,
     isBestSeller: true,
-    isNew: false
+    isNew: false,
+    philosophy: "freedom"
   }, {
     id: 5,
     key: "5",
@@ -264,7 +288,8 @@ function Index() {
     }],
     isFeatured: false,
     isBestSeller: false,
-    isNew: true
+    isNew: true,
+    philosophy: "freedom"
   }, {
     id: 6,
     key: "6",
@@ -282,7 +307,8 @@ function Index() {
     }],
     isFeatured: false,
     isBestSeller: true,
-    isNew: false
+    isNew: false,
+    philosophy: "peace"
   }, {
     id: 7,
     key: "7",
@@ -300,7 +326,8 @@ function Index() {
     }],
     isFeatured: true,
     isBestSeller: false,
-    isNew: true
+    isNew: true,
+    philosophy: "peace"
   }, {
     id: 8,
     key: "8",
@@ -318,7 +345,8 @@ function Index() {
     }],
     isFeatured: true,
     isBestSeller: true,
-    isNew: false
+    isNew: false,
+    philosophy: "confidence"
   }];
   const marqueePhrases = [t("nav.bereal").toLowerCase(), isAr ? "احمِ سلامك." : language === "fr" ? "protégez votre paix." : "protect your peace.", isAr ? "لسنا للإبهار." : language === "fr" ? "pas là pour impressionner." : "not here to impress.", isAr ? "السلام فوق الضجيج." : language === "fr" ? "la paix sur le bruit." : "peace over noise.", isAr ? "عِش لنفسك." : language === "fr" ? "vivez pour vous-même." : "live for yourself.", isAr ? "حقيقي جداً للتزييف." : language === "fr" ? "trop vrai pour faire semblant." : "too real to fake it.", "true self.", isAr ? "اختر الهدوء." : language === "fr" ? "choisissez le calme." : "choose calm."];
   const communityQuotes = [{
@@ -353,6 +381,47 @@ function Index() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [checkoutStep, setCartOpen]);
+  reactExports.useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedWishlist = localStorage.getItem("ts_wishlist");
+        if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+        const savedRecent = localStorage.getItem("ts_recently_viewed");
+        if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent));
+      } catch (err) {
+        console.error("Error loading localStorage items:", err);
+      }
+    }
+  }, []);
+  reactExports.useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ts_wishlist", JSON.stringify(wishlist));
+      } catch (err) {
+        console.error("Error saving wishlist:", err);
+      }
+    }
+  }, [wishlist]);
+  reactExports.useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ts_recently_viewed", JSON.stringify(recentlyViewed));
+      } catch (err) {
+        console.error("Error saving recently viewed:", err);
+      }
+    }
+  }, [recentlyViewed]);
+  reactExports.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const openProduct = (p, initialColor) => {
     setSelectedProduct(p);
     setSelectedSize(p.sizes[0] || "");
@@ -360,6 +429,13 @@ function Index() {
     setActiveQuickViewImage(p.imgFront);
     setZoomStyle({});
     setIsAddedSuccess(false);
+    setRecentlyViewed((prev) => {
+      const filtered = prev.filter((id) => id !== p.id);
+      return [p.id, ...filtered].slice(0, 3);
+    });
+  };
+  const toggleWishlist = (productId) => {
+    setWishlist((prev) => prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]);
   };
   const handleMouseMove = (e) => {
     const {
@@ -446,7 +522,7 @@ function Index() {
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "top", className: "bg-background text-foreground overflow-x-hidden", dir: isAr ? "rtl" : "ltr", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Nav, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Nav, { wishlistCount: wishlist.length, onOpenWishlist: () => setWishlistOpen(true) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "relative min-h-screen w-full overflow-hidden flex flex-col justify-end", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: hero, alt: "Authentic Moroccan face looking into the distance, representing inner peace and freedom", width: 1600, height: 1920, fetchPriority: "high", className: "absolute inset-0 h-full w-full object-cover" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-b from-background/30 via-background/15 to-background/95" }),
@@ -485,7 +561,11 @@ function Index() {
             e.stopPropagation();
             openProduct(p);
           }, className: "absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0", children: language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`, children: t(p.tag) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`, children: t(p.tag) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (e) => {
+            e.stopPropagation();
+            toggleWishlist(p.id);
+          }, className: `absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`, title: wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: wishlist.includes(p.id) ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: `w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" }) }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -541,21 +621,19 @@ function Index() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase text-muted-foreground font-mono", children: t("hero.vol").split(" — ")[0] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-3 font-display text-5xl md:text-7xl text-balance max-w-2xl", children: t("featured.title") })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap items-center justify-start gap-4 md:gap-8 border-b border-border/40 pb-6 mb-12 font-mono", children: ["all", "featured", "new", "bestsellers"].map((tab) => {
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap items-center justify-start gap-4 md:gap-8 border-b border-border/40 pb-6 mb-12 font-mono", children: ["all", "authenticity", "freedom", "peace", "confidence"].map((tab) => {
         const keyMap = {
           all: "collection.all",
-          featured: "collection.featured",
-          new: "collection.new_arrivals",
-          bestsellers: "collection.best_sellers"
+          authenticity: "philosophy.authenticity",
+          freedom: "philosophy.freedom",
+          peace: "philosophy.peace",
+          confidence: "philosophy.confidence"
         };
         return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setActiveTab(tab), className: `text-xs tracking-brand uppercase pb-2 transition-all duration-300 relative cursor-pointer ${activeTab === tab ? "text-foreground font-bold border-b-2 border-foreground" : "text-muted-foreground hover:text-foreground"}`, children: t(keyMap[tab]) }, tab);
       }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16", children: products.filter((p) => {
         if (activeTab === "all") return true;
-        if (activeTab === "featured") return p.isFeatured;
-        if (activeTab === "new") return p.isNew;
-        if (activeTab === "bestsellers") return p.isBestSeller;
-        return true;
+        return p.philosophy === activeTab;
       }).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 80, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group cursor-pointer text-start relative flex flex-col justify-between h-full", onClick: () => openProduct(p), children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgFront, alt: t(`product.name.${p.key}`), loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0" }),
@@ -564,7 +642,11 @@ function Index() {
             e.stopPropagation();
             openProduct(p);
           }, className: "absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0", children: language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`, children: t(p.tag) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`, children: t(p.tag) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (e) => {
+            e.stopPropagation();
+            toggleWishlist(p.id);
+          }, className: `absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`, title: wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: wishlist.includes(p.id) ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: `w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" }) }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -802,51 +884,81 @@ function Index() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 text-xs text-muted-foreground leading-relaxed font-light", children: c.d })
       ] }) }, c.t)) })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "theme-dark bg-background text-foreground", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto max-w-3xl px-6 py-24 lg:py-36 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Reveal, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase text-muted-foreground font-mono", children: t("news.tag") }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-6 font-display text-4xl md:text-6xl text-balance", children: t("news.title") }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-sm text-foreground/70 max-w-lg mx-auto font-light leading-relaxed", children: t("news.desc") }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: (e) => e.preventDefault(), className: "mt-10 flex flex-col sm:flex-row gap-3 max-w-md mx-auto", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "email", required: true, placeholder: t("news.placeholder"), className: "flex-1 bg-transparent border-b border-foreground/40 px-1 py-3 text-sm focus:outline-none focus:border-foreground placeholder:text-foreground/40 text-start" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "border border-foreground bg-foreground text-background px-6 py-3 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-colors font-semibold rounded-xs font-mono", children: t("news.btn") })
-      ] })
-    ] }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("footer", { className: "border-t border-border bg-background", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 py-16 grid md:grid-cols-4 gap-10 text-sm text-start", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-display text-3xl", children: [
-            "TRUE SELF",
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "®" })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("footer", { className: "border-t border-border bg-background pt-24 pb-16 text-sm text-start", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-16 pb-16", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-4 space-y-8", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-display text-4xl", children: [
+              "TRUE SELF",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground font-sans text-lg", children: "®" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-4 max-w-sm text-xs text-muted-foreground italic leading-relaxed", children: [
+              '"',
+              t("philosophy.desc1").split(". ")[1] || "Live for yourself.",
+              '"'
+            ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-4 max-w-xs text-xs text-muted-foreground italic leading-relaxed", children: [
-            '"',
-            t("philosophy.desc1").split(". ")[1] || "Live for yourself.",
-            '"'
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 pt-4 border-t border-border/40", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] tracking-brand uppercase text-muted-foreground block", children: [
+              "// ",
+              t("footer.newsletter.title")
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground font-light leading-relaxed", children: t("footer.newsletter.desc") }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: (e) => e.preventDefault(), className: "flex flex-col sm:flex-row gap-3 max-w-md", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "email", required: true, placeholder: t("news.placeholder"), className: "flex-1 bg-transparent border-b border-foreground/45 px-1 py-3 text-xs focus:outline-none focus:border-foreground placeholder:text-foreground/45 text-start font-mono" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "border border-foreground bg-foreground text-background px-6 py-3 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-colors font-semibold rounded-xs font-mono cursor-pointer", children: t("news.btn") })
+            ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: t("nav.shop") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-xs text-muted-foreground font-light", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors", children: "Tees" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors", children: "Hoodies" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors", children: "Sweatshirts" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden lg:block lg:col-span-2" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: [
+            "// ",
+            t("nav.shop")
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors block", children: t("collection.all") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors block", children: t("collection.best_sellers") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors block", children: t("collection.new_arrivals") }) })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: "Soul" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-xs text-muted-foreground font-light", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#philosophy", className: "hover:text-foreground transition-colors", children: t("nav.philosophy") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#lookbook", className: "hover:text-foreground transition-colors", children: t("nav.lookbook") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#journal", className: "hover:text-foreground transition-colors", children: t("nav.journal") }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: [
+            "// ",
+            isAr ? "ذاتنا" : "About"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#story", className: "hover:text-foreground transition-colors block", children: t("story.title") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#manifesto", className: "hover:text-foreground transition-colors block", children: t("manifesto.title") }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: [
+            "// ",
+            isAr ? "الدعم" : "Support"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.faq") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.shipping") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.returns") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.contact") }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2 lg:col-start-7 xl:col-start-11", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: "// Follow" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: "Instagram" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: "TikTok" }) })
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-border/60", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] tracking-brand uppercase text-muted-foreground font-mono", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-t border-border/40 pt-8 mt-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-brand uppercase text-muted-foreground font-mono", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
           "© ",
           (/* @__PURE__ */ new Date()).getFullYear(),
           " true self studio"
         ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "italic font-display text-sm normal-case tracking-normal text-foreground/80", children: '"Be Real, khalli nass thder."' }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: t("footer.rights") })
       ] }) })
     ] }),
@@ -901,17 +1013,111 @@ function Index() {
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddToCart, disabled: isAdding, className: "w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono", children: isAdding ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "h-4 w-4 border-2 border-background border-t-transparent rounded-full animate-spin" }) : isAddedSuccess ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14, className: "animate-bounce" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تمت الإضافة" : "Added To Bag" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("cart.added.journey") })
             ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 14 }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف إلى السلة" : "Add To Cart" })
-            ] }) })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border/40 pt-6 space-y-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                "// ",
+                isAr ? "الآراء" : language === "fr" ? "Avis Clients" : "Customer Reviews"
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex text-amber-500 mb-1 select-none", children: "★★★★★" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-foreground/80 font-light italic leading-relaxed", children: [
+                    '"',
+                    t("review.q1.text"),
+                    '"'
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[8px] font-mono text-muted-foreground block mt-1", children: [
+                    "— ",
+                    isAr ? "أنس، الدار البيضاء" : "Anas, Casablanca",
+                    " // ",
+                    isAr ? "مراجعة الجودة" : "Quality Review"
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex text-amber-500 mb-1 select-none", children: "★★★★★" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-foreground/80 font-light italic leading-relaxed", children: [
+                    '"',
+                    t(`review.e${selectedProduct.id % 2 === 0 ? "2" : "1"}.text`),
+                    '"'
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[8px] font-mono text-muted-foreground block mt-1", children: [
+                    "— ",
+                    isAr ? "سلمى، مراكش" : "Salma, Marrakech",
+                    " // ",
+                    isAr ? "مراجعة عاطفية" : "Emotional Review"
+                  ] })
+                ] })
+              ] })
+            ] }),
+            recentlyViewed.filter((id) => id !== selectedProduct.id).length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border/40 pt-6 space-y-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                "// ",
+                t("recent.title")
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-3", children: recentlyViewed.filter((id) => id !== selectedProduct.id).slice(0, 3).map((id) => {
+                const rp = products.find((p) => p.id === id);
+                if (!rp) return null;
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { onClick: () => {
+                  openProduct(rp);
+                }, className: "group cursor-pointer text-start space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative aspect-[3/4] overflow-hidden bg-secondary border border-border/40 rounded-2xs", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: rp.imgFront, alt: t(`product.name.${rp.key}`), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[8px] font-bold text-foreground block truncate", children: rp.price })
+                ] }, rp.id);
+              }) })
+            ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-border/40 font-mono text-[8px] text-muted-foreground tracking-widest flex justify-between", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "TRUE SELF STUDIO®" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "33.5731° N, 7.5898° W" })
           ] })
         ] })
+      ] })
+    ] }),
+    wishlistOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[110] flex items-center justify-end bg-background/50 backdrop-blur-md transition-all duration-500", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0", onClick: () => setWishlistOpen(false) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full sm:w-[480px] h-full bg-background border-l border-border/60 shadow-soft flex flex-col justify-between overflow-hidden z-10 animate-fade", dir: isAr ? "rtl" : "ltr", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 border-b border-border/40 flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2 font-mono", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-semibold tracking-brand uppercase", children: [
+            t("wishlist.title"),
+            " (",
+            wishlist.length,
+            ")"
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setWishlistOpen(false), className: "p-1 hover:opacity-60 transition-opacity border border-border/40 rounded-full bg-background/80 cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-6 space-y-6", children: wishlist.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center text-center space-y-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-display text-2xl italic text-muted-foreground", children: t("wishlist.empty") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground/60 font-mono", children: isAr ? "احمِ سلامك." : "Protect your peace." })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-border/30", children: wishlist.map((id) => {
+          const item = products.find((p) => p.id === id);
+          if (!item) return null;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "py-4 flex items-center justify-between gap-4 first:pt-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 cursor-pointer group", onClick: () => {
+              openProduct(item);
+              setWishlistOpen(false);
+            }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 aspect-[3/4] border border-border/40 bg-secondary/15 rounded-2xs overflow-hidden flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.imgFront, alt: t(`product.name.${item.key}`), className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-start", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-display text-xl leading-tight text-foreground/95 group-hover:text-foreground/80 transition-colors", children: t(`product.quote.${item.key}`) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-mono text-[9px] text-muted-foreground uppercase mt-0.5", children: [
+                  t(`product.name.${item.key}`).split(" ")[t(`product.name.${item.key}`).split(" ").length - 1],
+                  " // ",
+                  t(`philosophy.${item.philosophy}`)
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-end gap-3 font-mono", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold", children: item.price }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => toggleWishlist(item.id), className: "text-muted-foreground/60 hover:text-red-500 transition-colors p-1 cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 }) })
+            ] })
+          ] }, item.id);
+        }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-6 border-t border-border/40 bg-secondary/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setWishlistOpen(false), className: "w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono", children: isAr ? "العودة للتصفح" : language === "fr" ? "Retour au shopping" : "Back to shopping" }) })
       ] })
     ] }),
     cartOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[110] flex items-center justify-end bg-background/50 backdrop-blur-md transition-all duration-500", children: [
@@ -935,6 +1141,10 @@ function Index() {
             setCheckoutStep("cart");
             setCartOpen(false);
           }, className: "p-1 hover:opacity-60 transition-opacity border border-border/40 rounded-full bg-background/80", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
+        ] }),
+        cartItems.length > 0 && checkoutStep !== "success" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-secondary/40 px-6 py-3 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground animate-fade", children: [
+          "✦ ",
+          t("cart.emotion.banner")
         ] }),
         checkoutStep === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-8 flex flex-col items-center justify-center text-center space-y-6", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 32 }) }),
@@ -1039,7 +1249,11 @@ function Index() {
     lightboxImage && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[200] flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setLightboxImage(null), className: "absolute top-6 right-6 z-50 p-2 hover:opacity-60 transition-opacity bg-foreground/10 text-foreground rounded-full border border-border/20 cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 24 }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-[90vw] max-h-[90vh] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: lightboxImage, alt: "Enlarged view", className: "max-w-full max-h-[90vh] object-contain rounded-xs border border-border/20 shadow-2xl animate-fade" }) })
-    ] })
+    ] }),
+    showScrollTop && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    }), className: `fixed bottom-6 ${isAr ? "left-6" : "right-6"} z-50 p-3 rounded-full bg-background hover:bg-foreground hover:text-background text-foreground transition-all duration-300 border border-border/40 shadow-soft cursor-pointer animate-fade`, title: "Back to top", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeLinejoin: "round", className: "w-4 h-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m18 15-6-6-6 6" }) }) })
   ] });
 }
 export {

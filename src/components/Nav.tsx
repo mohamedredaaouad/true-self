@@ -3,7 +3,12 @@ import { Link } from "@tanstack/react-router";
 import { useLanguage } from "../hooks/useLanguage";
 import { useCart } from "../hooks/useCart";
 
-export function Nav() {
+interface NavProps {
+  wishlistCount?: number;
+  onOpenWishlist?: () => void;
+}
+
+export function Nav({ wishlistCount = 0, onOpenWishlist }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const { t, language, setLanguage } = useLanguage();
   const { cartCount, setCartOpen } = useCart();
@@ -60,6 +65,16 @@ export function Nav() {
           <button className="hidden sm:block hover:opacity-60 transition-opacity">
             {t("nav.search")}
           </button>
+          
+          {onOpenWishlist && (
+            <button 
+              onClick={onOpenWishlist}
+              className="hover:opacity-60 transition-opacity font-mono font-medium"
+            >
+              {t("wishlist.title")} <span className="text-muted-foreground">({wishlistCount})</span>
+            </button>
+          )}
+
           <button 
             onClick={() => setCartOpen(true)}
             className="relative hover:opacity-60 transition-opacity font-mono font-medium"

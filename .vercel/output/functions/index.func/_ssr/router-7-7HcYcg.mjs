@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-Cara7dfA.css";
+const appCss = "/assets/styles-crVCq3YZ.css";
 const translations = {
   fr: {
     // Nav
@@ -164,7 +164,27 @@ const translations = {
     // Footer
     "footer.rights": "conçu lentement · porté sincèrement",
     "share.name": "TRUE SELF",
-    "share.desc": "Explorez la philosophie de TRUE SELF."
+    "share.desc": "Explorez la philosophie de TRUE SELF.",
+    // New UX/UI elements
+    "philosophy.authenticity": "Authenticité",
+    "philosophy.freedom": "Liberté",
+    "philosophy.peace": "Paix",
+    "philosophy.confidence": "Confiance",
+    "wishlist.title": "Mes Favoris",
+    "wishlist.empty": "Votre liste est vide.",
+    "recent.title": "Récemment consultés",
+    "cart.emotion.banner": "Un pas de plus vers votre TRUE SELF.",
+    "cart.added.journey": "Ajouté à votre voyage.",
+    "review.q1.text": "Coupe et tissu d'une qualité incroyable. Très agréable.",
+    "review.q2.text": "Coton épais de qualité supérieure, finitions impeccables.",
+    "review.e1.text": "Cette citation a résonné en moi comme si elle avait été écrite pour moi.",
+    "review.e2.text": "Porter ce vêtement me rappelle chaque jour de vivre pour moi-même.",
+    "footer.newsletter.title": "Rejoindre le mouvement.",
+    "footer.newsletter.desc": "Entrez votre email pour rejoindre notre rébellion silencieuse.",
+    "footer.support.faq": "FAQ",
+    "footer.support.shipping": "Livraison",
+    "footer.support.returns": "Retours",
+    "footer.support.contact": "Contact"
   },
   en: {
     // Nav
@@ -313,7 +333,27 @@ const translations = {
     // Footer
     "footer.rights": "made slowly · worn honestly",
     "share.name": "TRUE SELF",
-    "share.desc": "Explore the philosophy of TRUE SELF."
+    "share.desc": "Explore the philosophy of TRUE SELF.",
+    // New UX/UI elements
+    "philosophy.authenticity": "Authenticity",
+    "philosophy.freedom": "Freedom",
+    "philosophy.peace": "Peace",
+    "philosophy.confidence": "Confidence",
+    "wishlist.title": "My Wishlist",
+    "wishlist.empty": "Your wishlist is empty.",
+    "recent.title": "Recently Viewed",
+    "cart.emotion.banner": "One step closer to your TRUE SELF.",
+    "cart.added.journey": "Added To Your Journey.",
+    "review.q1.text": "Excellent quality, fit and fabric weight. Very comfortable.",
+    "review.q2.text": "Premium heavy cotton, outstanding details.",
+    "review.e1.text": "This quote felt like it was written for me.",
+    "review.e2.text": "Wearing this reminds me to live for myself every day.",
+    "footer.newsletter.title": "Join The Movement.",
+    "footer.newsletter.desc": "Enter your email to join our silent rebellion.",
+    "footer.support.faq": "FAQ",
+    "footer.support.shipping": "Shipping",
+    "footer.support.returns": "Returns",
+    "footer.support.contact": "Contact"
   },
   ar: {
     // Nav
@@ -442,7 +482,27 @@ const translations = {
     // Footer
     "footer.rights": "صنع ببطء · يرتدى بصدق",
     "share.name": "TRUE SELF",
-    "share.desc": "اكتشف فلسفة ذاتك الحقيقية."
+    "share.desc": "اكتشف فلسفة ذاتك الحقيقية.",
+    // New UX/UI elements
+    "philosophy.authenticity": "الأصالة",
+    "philosophy.freedom": "الحرية",
+    "philosophy.peace": "السلام",
+    "philosophy.confidence": "الثقة",
+    "wishlist.title": "المفضلة",
+    "wishlist.empty": "قائمتك المفضلة فارغة.",
+    "recent.title": "شوهد مؤخراً",
+    "cart.emotion.banner": "خطوة أقرب إلى ذاتك الحقيقية.",
+    "cart.added.journey": "تمت إضافتها لرحلتك.",
+    "review.q1.text": "جودة ممتازة وقصة مريحة جداً.",
+    "review.q2.text": "قطن ثقيل ومميز بتفاصيل ممتازة.",
+    "review.e1.text": "شعرت أن هذه العبارة كتبت خصيصاً لي.",
+    "review.e2.text": "ارتداء هذا يذكرني بالعيش لنفسي كل يوم.",
+    "footer.newsletter.title": "انضم إلى الحركة.",
+    "footer.newsletter.desc": "أدخل بريدك الإلكتروني للانضمام لحركتنا الصامتة.",
+    "footer.support.faq": "الأسئلة الشائعة",
+    "footer.support.shipping": "الشحن والتوصيل",
+    "footer.support.returns": "الاستبدال والاسترجاع",
+    "footer.support.contact": "اتصل بنا"
   }
 };
 const LanguageContext = reactExports.createContext(void 0);
@@ -662,7 +722,7 @@ function RootComponent() {
   const { queryClient } = Route$2.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }) });
 }
-const $$splitComponentImporter$1 = () => import("./admin-BwS9wI3d.mjs");
+const $$splitComponentImporter$1 = () => import("./admin-BgQw4lKq.mjs");
 const Route$1 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -674,7 +734,7 @@ const Route$1 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./index-Df1ShqOA.mjs");
+const $$splitComponentImporter = () => import("./index-YhES0cFQ.mjs");
 const Route = createFileRoute("/")({
   head: () => ({
     meta: [{

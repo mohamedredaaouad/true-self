@@ -61,6 +61,7 @@ interface Product {
   isFeatured?: boolean;
   isNew?: boolean;
   isBestSeller?: boolean;
+  philosophy: "authenticity" | "freedom" | "peace" | "confidence";
 }
 
 function Index() {
@@ -91,7 +92,13 @@ function Index() {
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
 
   // Collection tabs state
-  const [activeTab, setActiveTab] = useState<"all" | "featured" | "new" | "bestsellers">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "authenticity" | "freedom" | "peace" | "confidence">("all");
+
+  // Wishlist and Recently Viewed states
+  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<number[]>([]);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Checkout form states
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "checkout" | "success">("cart");
@@ -115,7 +122,8 @@ function Index() {
       colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Cream", hex: "#F9F6F0" }],
       isFeatured: true,
       isBestSeller: true,
-      isNew: false
+      isNew: false,
+      philosophy: "authenticity"
     },
     { 
       id: 2, 
@@ -128,7 +136,8 @@ function Index() {
       colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Olive", hex: "#4F5243" }],
       isFeatured: false,
       isBestSeller: false,
-      isNew: true
+      isNew: true,
+      philosophy: "authenticity"
     },
     { 
       id: 3, 
@@ -141,7 +150,8 @@ function Index() {
       colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Charcoal", hex: "#2C2C2A" }],
       isFeatured: false,
       isBestSeller: false,
-      isNew: true
+      isNew: true,
+      philosophy: "confidence"
     },
     { 
       id: 4, 
@@ -154,7 +164,8 @@ function Index() {
       colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Cream", hex: "#F9F6F0" }],
       isFeatured: true,
       isBestSeller: true,
-      isNew: false
+      isNew: false,
+      philosophy: "freedom"
     },
     { 
       id: 5, 
@@ -167,7 +178,8 @@ function Index() {
       colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Beige", hex: "#D8D0C5" }],
       isFeatured: false,
       isBestSeller: false,
-      isNew: true
+      isNew: true,
+      philosophy: "freedom"
     },
     { 
       id: 6, 
@@ -180,7 +192,8 @@ function Index() {
       colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Charcoal", hex: "#2C2C2A" }],
       isFeatured: false,
       isBestSeller: true,
-      isNew: false
+      isNew: false,
+      philosophy: "peace"
     },
     { 
       id: 7, 
@@ -193,7 +206,8 @@ function Index() {
       colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Cream", hex: "#F9F6F0" }],
       isFeatured: true,
       isBestSeller: false,
-      isNew: true
+      isNew: true,
+      philosophy: "peace"
     },
     { 
       id: 8, 
@@ -206,7 +220,8 @@ function Index() {
       colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Olive", hex: "#4F5243" }],
       isFeatured: true,
       isBestSeller: true,
-      isNew: false
+      isNew: false,
+      philosophy: "confidence"
     },
   ];
 
@@ -274,6 +289,56 @@ function Index() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [checkoutStep, setCartOpen]);
 
+  // Load wishlist and recently viewed from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedWishlist = localStorage.getItem("ts_wishlist");
+        if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
+        
+        const savedRecent = localStorage.getItem("ts_recently_viewed");
+        if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent));
+      } catch (err) {
+        console.error("Error loading localStorage items:", err);
+      }
+    }
+  }, []);
+
+  // Save wishlist when it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ts_wishlist", JSON.stringify(wishlist));
+      } catch (err) {
+        console.error("Error saving wishlist:", err);
+      }
+    }
+  }, [wishlist]);
+
+  // Save recently viewed when it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("ts_recently_viewed", JSON.stringify(recentlyViewed));
+      } catch (err) {
+        console.error("Error saving recently viewed:", err);
+      }
+    }
+  }, [recentlyViewed]);
+
+  // Handle scroll for Back To Top button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const openProduct = (p: Product, initialColor?: string) => {
     setSelectedProduct(p);
     setSelectedSize(p.sizes[0] || "");
@@ -281,6 +346,20 @@ function Index() {
     setActiveQuickViewImage(p.imgFront);
     setZoomStyle({});
     setIsAddedSuccess(false);
+
+    // Track recently viewed
+    setRecentlyViewed((prev) => {
+      const filtered = prev.filter((id) => id !== p.id);
+      return [p.id, ...filtered].slice(0, 3);
+    });
+  };
+
+  const toggleWishlist = (productId: number) => {
+    setWishlist((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
+    );
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -371,7 +450,7 @@ function Index() {
 
   return (
     <div id="top" className="bg-background text-foreground overflow-x-hidden" dir={isAr ? "rtl" : "ltr"}>
-      <Nav />
+      <Nav wishlistCount={wishlist.length} onOpenWishlist={() => setWishlistOpen(true)} />
 
       {/* 1. EMOTIONAL HERO SECTION */}
       <section className="relative min-h-screen w-full overflow-hidden flex flex-col justify-end">
@@ -475,6 +554,29 @@ function Index() {
                       <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
                         {t(p.tag)}
                       </div>
+
+                      {/* Wishlist Heart Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(p.id);
+                        }}
+                        className={`absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`}
+                        title={wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill={wishlist.includes(p.id) ? "currentColor" : "none"}
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`}
+                        >
+                          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                        </svg>
+                      </button>
                     </div>
 
                     {/* Metadata & Description */}
@@ -622,12 +724,13 @@ function Index() {
 
         {/* Collection Filter Tabs */}
         <div className="flex flex-wrap items-center justify-start gap-4 md:gap-8 border-b border-border/40 pb-6 mb-12 font-mono">
-          {(["all", "featured", "new", "bestsellers"] as const).map((tab) => {
+          {(["all", "authenticity", "freedom", "peace", "confidence"] as const).map((tab) => {
             const keyMap = {
               all: "collection.all",
-              featured: "collection.featured",
-              new: "collection.new_arrivals",
-              bestsellers: "collection.best_sellers",
+              authenticity: "philosophy.authenticity",
+              freedom: "philosophy.freedom",
+              peace: "philosophy.peace",
+              confidence: "philosophy.confidence",
             };
             return (
               <button
@@ -650,10 +753,7 @@ function Index() {
           {products
             .filter((p) => {
               if (activeTab === "all") return true;
-              if (activeTab === "featured") return p.isFeatured;
-              if (activeTab === "new") return p.isNew;
-              if (activeTab === "bestsellers") return p.isBestSeller;
-              return true;
+              return p.philosophy === activeTab;
             })
             .map((p, i) => (
               <Reveal key={p.id} delay={i * 80}>
@@ -693,6 +793,29 @@ function Index() {
                     <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
                       {t(p.tag)}
                     </div>
+
+                    {/* Wishlist Heart Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(p.id);
+                      }}
+                      className={`absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`}
+                      title={wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill={wishlist.includes(p.id) ? "currentColor" : "none"}
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`}
+                      >
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Card Content - Story & Quote focused */}
@@ -1182,92 +1305,134 @@ function Index() {
         </div>
       </section>
 
-      {/* 13. NEWSLETTER */}
-      <section className="theme-dark bg-background text-foreground">
-        <div className="mx-auto max-w-3xl px-6 py-24 lg:py-36 text-center">
-          <Reveal>
-            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-              {t("news.tag")}
-            </p>
-            <h2 className="mt-6 font-display text-4xl md:text-6xl text-balance">
-              {t("news.title")}
-            </h2>
-            <p className="mt-4 text-sm text-foreground/70 max-w-lg mx-auto font-light leading-relaxed">
-              {t("news.desc")}
-            </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="mt-10 flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-            >
-              <input
-                type="email"
-                required
-                placeholder={t("news.placeholder")}
-                className="flex-1 bg-transparent border-b border-foreground/40 px-1 py-3 text-sm focus:outline-none focus:border-foreground placeholder:text-foreground/40 text-start"
-              />
-              <button className="border border-foreground bg-foreground text-background px-6 py-3 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-colors font-semibold rounded-xs font-mono">
-                {t("news.btn")}
-              </button>
-            </form>
-          </Reveal>
-        </div>
-      </section>
+      {/* 13. NEWSLETTER & lifestyle FOOTER */}
+      <footer className="border-t border-border bg-background pt-24 pb-16 text-sm text-start">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-16 pb-16">
+          
+          {/* Brand Info & Newsletter */}
+          <div className="lg:col-span-4 space-y-8">
+            <div>
+              <p className="font-display text-4xl">
+                TRUE SELF<span className="text-muted-foreground font-sans text-lg">®</span>
+              </p>
+              <p className="mt-4 max-w-sm text-xs text-muted-foreground italic leading-relaxed">
+                "{t("philosophy.desc1").split(". ")[1] || "Live for yourself."}"
+              </p>
+            </div>
+            
+            <div className="space-y-4 pt-4 border-t border-border/40">
+              <span className="font-mono text-[9px] tracking-brand uppercase text-muted-foreground block">// {t("footer.newsletter.title")}</span>
+              <p className="text-xs text-muted-foreground font-light leading-relaxed">{t("footer.newsletter.desc")}</p>
+              <form
+                onSubmit={(e) => e.preventDefault()}
+                className="flex flex-col sm:flex-row gap-3 max-w-md"
+              >
+                <input
+                  type="email"
+                  required
+                  placeholder={t("news.placeholder")}
+                  className="flex-1 bg-transparent border-b border-foreground/45 px-1 py-3 text-xs focus:outline-none focus:border-foreground placeholder:text-foreground/45 text-start font-mono"
+                />
+                <button className="border border-foreground bg-foreground text-background px-6 py-3 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-colors font-semibold rounded-xs font-mono cursor-pointer">
+                  {t("news.btn")}
+                </button>
+              </form>
+            </div>
+          </div>
 
-      {/* FOOTER */}
-      <footer className="border-t border-border bg-background">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-16 grid md:grid-cols-4 gap-10 text-sm text-start">
-          <div className="md:col-span-2">
-            <p className="font-display text-3xl">
-              TRUE SELF<span className="text-muted-foreground">®</span>
-            </p>
-            <p className="mt-4 max-w-xs text-xs text-muted-foreground italic leading-relaxed">
-              "{t("philosophy.desc1").split(". ")[1] || "Live for yourself."}"
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">{t("nav.shop")}</p>
-            <ul className="space-y-2 text-xs text-muted-foreground font-light">
+          {/* Spacer */}
+          <div className="hidden lg:block lg:col-span-2" />
+
+          {/* SHOP Column */}
+          <div className="lg:col-span-2">
+            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// {t("nav.shop")}</p>
+            <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
               <li>
-                <a href="#collection" className="hover:text-foreground transition-colors">
-                  Tees
+                <a href="#collection" className="hover:text-foreground transition-colors block">
+                  {t("collection.all")}
                 </a>
               </li>
               <li>
-                <a href="#collection" className="hover:text-foreground transition-colors">
-                  Hoodies
+                <a href="#collection" className="hover:text-foreground transition-colors block">
+                  {t("collection.best_sellers")}
                 </a>
               </li>
               <li>
-                <a href="#collection" className="hover:text-foreground transition-colors">
-                  Sweatshirts
+                <a href="#collection" className="hover:text-foreground transition-colors block">
+                  {t("collection.new_arrivals")}
                 </a>
               </li>
             </ul>
           </div>
-          <div>
-            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">Soul</p>
-            <ul className="space-y-2 text-xs text-muted-foreground font-light">
+
+          {/* ABOUT Column */}
+          <div className="lg:col-span-2">
+            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// {isAr ? "ذاتنا" : "About"}</p>
+            <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
               <li>
-                <a href="#philosophy" className="hover:text-foreground transition-colors">
-                  {t("nav.philosophy")}
+                <a href="#story" className="hover:text-foreground transition-colors block">
+                  {t("story.title")}
                 </a>
               </li>
               <li>
-                <a href="#lookbook" className="hover:text-foreground transition-colors">
-                  {t("nav.lookbook")}
-                </a>
-              </li>
-              <li>
-                <a href="#journal" className="hover:text-foreground transition-colors">
-                  {t("nav.journal")}
+                <a href="#manifesto" className="hover:text-foreground transition-colors block">
+                  {t("manifesto.title")}
                 </a>
               </li>
             </ul>
           </div>
+
+          {/* SUPPORT Column */}
+          <div className="lg:col-span-2">
+            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// {isAr ? "الدعم" : "Support"}</p>
+            <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors block">
+                  {t("footer.support.faq")}
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors block">
+                  {t("footer.support.shipping")}
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors block">
+                  {t("footer.support.returns")}
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors block">
+                  {t("footer.support.contact")}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* FOLLOW Column */}
+          <div className="lg:col-span-2 lg:col-start-7 xl:col-start-11">
+            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// Follow</p>
+            <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors block">
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors block">
+                  TikTok
+                </a>
+              </li>
+            </ul>
+          </div>
+
         </div>
-        <div className="border-t border-border/60">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+
+        {/* Bottom Bar */}
+        <div className="border-t border-border/40 pt-8 mt-8">
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
             <p>© {new Date().getFullYear()} true self studio</p>
+            <p className="italic font-display text-sm normal-case tracking-normal text-foreground/80">"Be Real, khalli nass thder."</p>
             <p>{t("footer.rights")}</p>
           </div>
         </div>
@@ -1429,7 +1594,7 @@ function Index() {
                   ) : isAddedSuccess ? (
                     <>
                       <Check size={14} className="animate-bounce" />
-                      <span>{isAr ? "تمت الإضافة" : "Added To Bag"}</span>
+                      <span>{t("cart.added.journey")}</span>
                     </>
                   ) : (
                     <>
@@ -1438,6 +1603,57 @@ function Index() {
                     </>
                   )}
                 </button>
+
+                {/* Mixed Reviews Block */}
+                <div className="border-t border-border/40 pt-6 space-y-4">
+                  <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// {isAr ? "الآراء" : language === "fr" ? "Avis Clients" : "Customer Reviews"}</span>
+                  
+                  <div className="space-y-4">
+                    {/* Quality Review */}
+                    <div className="text-xs">
+                      <div className="flex text-amber-500 mb-1 select-none">★★★★★</div>
+                      <p className="text-foreground/80 font-light italic leading-relaxed">"{t("review.q1.text")}"</p>
+                      <span className="text-[8px] font-mono text-muted-foreground block mt-1">— {isAr ? "أنس، الدار البيضاء" : "Anas, Casablanca"} // {isAr ? "مراجعة الجودة" : "Quality Review"}</span>
+                    </div>
+
+                    {/* Emotional Review */}
+                    <div className="text-xs">
+                      <div className="flex text-amber-500 mb-1 select-none">★★★★★</div>
+                      <p className="text-foreground/80 font-light italic leading-relaxed">"{t(`review.e${selectedProduct.id % 2 === 0 ? "2" : "1"}.text`)}"</p>
+                      <span className="text-[8px] font-mono text-muted-foreground block mt-1">— {isAr ? "سلمى، مراكش" : "Salma, Marrakech"} // {isAr ? "مراجعة عاطفية" : "Emotional Review"}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recently Viewed Products */}
+                {recentlyViewed.filter(id => id !== selectedProduct.id).length > 0 && (
+                  <div className="border-t border-border/40 pt-6 space-y-4">
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// {t("recent.title")}</span>
+                    <div className="grid grid-cols-3 gap-3">
+                      {recentlyViewed
+                        .filter(id => id !== selectedProduct.id)
+                        .slice(0, 3)
+                        .map(id => {
+                          const rp = products.find(p => p.id === id);
+                          if (!rp) return null;
+                          return (
+                            <div 
+                              key={rp.id}
+                              onClick={() => {
+                                openProduct(rp);
+                              }}
+                              className="group cursor-pointer text-start space-y-1.5"
+                            >
+                              <div className="relative aspect-[3/4] overflow-hidden bg-secondary border border-border/40 rounded-2xs">
+                                <img src={rp.imgFront} alt={t(`product.name.${rp.key}`)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                              </div>
+                              <span className="font-mono text-[8px] font-bold text-foreground block truncate">{rp.price}</span>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Geographical and coordinates footnote */}
@@ -1446,6 +1662,90 @@ function Index() {
                 <span>33.5731° N, 7.5898° W</span>
               </div>
 
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ----------------- WISHLIST DRAWER ----------------- */}
+      {wishlistOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-end bg-background/50 backdrop-blur-md transition-all duration-500">
+          {/* Backdrop click close */}
+          <div className="absolute inset-0" onClick={() => setWishlistOpen(false)} />
+
+          {/* Drawer container */}
+          <div className="relative w-full sm:w-[480px] h-full bg-background border-l border-border/60 shadow-soft flex flex-col justify-between overflow-hidden z-10 animate-fade" dir={isAr ? "rtl" : "ltr"}>
+            
+            {/* Drawer Header */}
+            <div className="p-6 border-b border-border/40 flex items-center justify-between">
+              <div className="flex items-center gap-2 font-mono">
+                <span className="text-xs font-semibold tracking-brand uppercase">{t("wishlist.title")} ({wishlist.length})</span>
+              </div>
+              <button 
+                onClick={() => setWishlistOpen(false)}
+                className="p-1 hover:opacity-60 transition-opacity border border-border/40 rounded-full bg-background/80 cursor-pointer"
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            {/* Wishlist Items List */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {wishlist.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-2">
+                  <span className="font-display text-2xl italic text-muted-foreground">{t("wishlist.empty")}</span>
+                  <p className="text-xs text-muted-foreground/60 font-mono">{isAr ? "احمِ سلامك." : "Protect your peace."}</p>
+                </div>
+              ) : (
+                <ul className="divide-y divide-border/30">
+                  {wishlist.map((id) => {
+                    const item = products.find(p => p.id === id);
+                    if (!item) return null;
+                    return (
+                      <li key={item.id} className="py-4 flex items-center justify-between gap-4 first:pt-0">
+                        <div 
+                          className="flex items-center gap-4 cursor-pointer group"
+                          onClick={() => {
+                            openProduct(item);
+                            setWishlistOpen(false);
+                          }}
+                        >
+                          <div className="w-16 aspect-[3/4] border border-border/40 bg-secondary/15 rounded-2xs overflow-hidden flex-shrink-0">
+                            <img src={item.imgFront} alt={t(`product.name.${item.key}`)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          </div>
+                          <div className="text-start">
+                            <h4 className="font-display text-xl leading-tight text-foreground/95 group-hover:text-foreground/80 transition-colors">{t(`product.quote.${item.key}`)}</h4>
+                            <p className="font-mono text-[9px] text-muted-foreground uppercase mt-0.5">
+                              {t(`product.name.${item.key}`).split(" ")[t(`product.name.${item.key}`).split(" ").length - 1]} // {t(`philosophy.${item.philosophy}`)}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-col items-end gap-3 font-mono">
+                          <span className="text-xs font-semibold">{item.price}</span>
+                          <button 
+                            onClick={() => toggleWishlist(item.id)}
+                            className="text-muted-foreground/60 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
+            {/* Drawer Footer */}
+            <div className="p-6 border-t border-border/40 bg-secondary/10">
+              <button
+                onClick={() => setWishlistOpen(false)}
+                className="w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono"
+              >
+                {isAr ? "العودة للتصفح" : language === "fr" ? "Retour au shopping" : "Back to shopping"}
+              </button>
             </div>
 
           </div>
@@ -1483,6 +1783,13 @@ function Index() {
                 </button>
               )}
             </div>
+
+            {/* Emotional Cart Copy Banner */}
+            {cartItems.length > 0 && checkoutStep !== "success" && (
+              <div className="bg-secondary/40 px-6 py-3 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground animate-fade">
+                ✦ {t("cart.emotion.banner")}
+              </div>
+            )}
 
             {/* Success screen */}
             {checkoutStep === "success" ? (
@@ -1696,6 +2003,27 @@ function Index() {
             />
           </div>
         </div>
+      )}
+      {/* Back To Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className={`fixed bottom-6 ${isAr ? "left-6" : "right-6"} z-50 p-3 rounded-full bg-background hover:bg-foreground hover:text-background text-foreground transition-all duration-300 border border-border/40 shadow-soft cursor-pointer animate-fade`}
+          title="Back to top"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-4 h-4"
+          >
+            <path d="m18 15-6-6-6 6" />
+          </svg>
+        </button>
       )}
     </div>
   );
