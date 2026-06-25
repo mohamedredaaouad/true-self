@@ -81,7 +81,7 @@ function getResponse() {
 }
 var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 async function getStartManifest(matchedRoutes) {
-  const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-DF91VmTy.mjs");
+  const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-2SYp6z5n.mjs");
   const startManifest = tsrStartManifest();
   let routes = startManifest.routes;
   routes[rootRouteId];
@@ -103,15 +103,15 @@ async function getStartManifest(matchedRoutes) {
 const manifest = {
   "0b1d791ec81a3d0a4252766c5f213de9e95dc8deb15e746e4a8369e5de20e062": {
     functionName: "createOrderFn_createServerFn_handler",
-    importer: () => import("./orders.server-BmzFe2q-.mjs")
+    importer: () => import("./orders.server-Bfgg9DPM.mjs")
   },
   "4da6ed92fc94ebf6c0a8932f19c99ab60a000695af9dbcc44b5ac25671f83b7a": {
     functionName: "getOrdersFn_createServerFn_handler",
-    importer: () => import("./orders.server-BmzFe2q-.mjs")
+    importer: () => import("./orders.server-Bfgg9DPM.mjs")
   },
   "ff7cbb0d15363131f77420f707143b0cf9e674ee544c429c38510ff1cf368a3f": {
     functionName: "updateOrderStatusFn_createServerFn_handler",
-    importer: () => import("./orders.server-BmzFe2q-.mjs")
+    importer: () => import("./orders.server-Bfgg9DPM.mjs")
   }
 };
 async function getServerFnById(id, access) {
@@ -1341,8 +1341,8 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
   const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-    import("./router-0kjUV8bX.mjs").then((n) => n.r),
-    import("./start-nWpECC52.mjs"),
+    import("./router-D8QfgQtv.mjs").then((n) => n.r),
+    import("./start-Bfz_21ky.mjs"),
     import("./empty-plugin-adapters-BFgPZ6_d.mjs")
   ]);
   return {

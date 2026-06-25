@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
@@ -9,12 +9,13 @@ import { useCart } from "@/hooks/useCart";
 import { createOrderFn } from "@/lib/orders.server";
 
 // Assets imports
-import hero from "@/assets/hero.jpg";
+import hero from "@/assets/hero.png";
 import philosophy from "@/assets/philosophy.jpg";
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
+import g1 from "@/assets/gallery-1.png";
+import g2 from "@/assets/gallery-2.png";
+import g3 from "@/assets/gallery-3.png";
+import g4 from "@/assets/gallery-4.png";
+import cinematic from "@/assets/cinematic_interlude.png";
 
 // Split product images
 import p1Front from "@/assets/produits_split/product-1-front.png";
@@ -144,8 +145,8 @@ function Index() {
       id: 3, 
       key: "3", 
       price: "550 MAD", 
-      imgFront: p3Front, 
-      imgBack: p3Back, 
+      imgFront: p7Front, 
+      imgBack: p7Back, 
       tag: "collection.new", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Charcoal", hex: "#2C2C2A" }],
@@ -158,8 +159,8 @@ function Index() {
       id: 4, 
       key: "4", 
       price: "350 MAD", 
-      imgFront: p4Front, 
-      imgBack: p4Back, 
+      imgFront: p8Front, 
+      imgBack: p8Back, 
       tag: "collection.bestsellers", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Cream", hex: "#F9F6F0" }],
@@ -172,8 +173,8 @@ function Index() {
       id: 5, 
       key: "5", 
       price: "650 MAD", 
-      imgFront: p5Front, 
-      imgBack: p5Back, 
+      imgFront: p3Front, 
+      imgBack: p3Back, 
       tag: "collection.new", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Beige", hex: "#D8D0C5" }],
@@ -186,8 +187,8 @@ function Index() {
       id: 6, 
       key: "6", 
       price: "650 MAD", 
-      imgFront: p6Front, 
-      imgBack: p6Back, 
+      imgFront: p4Front, 
+      imgBack: p4Back, 
       tag: "collection.bestsellers", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Charcoal", hex: "#2C2C2A" }],
@@ -200,8 +201,8 @@ function Index() {
       id: 7, 
       key: "7", 
       price: "550 MAD", 
-      imgFront: p7Front, 
-      imgBack: p7Back, 
+      imgFront: p5Front, 
+      imgBack: p5Back, 
       tag: "collection.new", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Cream", hex: "#F9F6F0" }],
@@ -214,8 +215,8 @@ function Index() {
       id: 8, 
       key: "8", 
       price: "350 MAD", 
-      imgFront: p8Front, 
-      imgBack: p8Back, 
+      imgFront: p6Front, 
+      imgBack: p6Back, 
       tag: "collection.bestsellers", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Olive", hex: "#4F5243" }],
@@ -520,9 +521,10 @@ function Index() {
               .map((p, i) => (
                 <Reveal key={p.id} delay={i * 100}>
                   <div 
-                    className="group cursor-pointer text-start relative flex flex-col justify-between h-full"
-                    onClick={() => openProduct(p)}
+                    className="group text-start relative flex flex-col justify-between h-full"
                   >
+                    {/* Wrap visual element in Link for direct product page access */}
+                    <Link to={`/product/${p.id}`} className="block relative">
                     {/* Image frame */}
                     <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
                       {/* Front Image */}
@@ -579,18 +581,22 @@ function Index() {
                         </svg>
                       </button>
                     </div>
+                    </Link>
 
-                    {/* Metadata & Description */}
+                    {/* Card Content - Story & Quote focused */}
                     <div className="mt-4 flex-1 flex flex-col justify-between">
-                      <div>
+                      <Link to={`/product/${p.id}`} className="block group-hover:opacity-85 transition-opacity">
                         {/* Quote & Name */}
-                        <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug group-hover:text-foreground/80 transition-colors">
+                        <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug">
                           {t(`product.quote.${p.key}`)}
                         </h3>
                         <p className="text-[10px] text-muted-foreground font-mono mt-1 uppercase">
                           {t(`product.name.${p.key}`)}
                         </p>
-                      </div>
+                        <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
+                          {t(`product.story.${p.key}`)}
+                        </p>
+                      </Link>
 
                       <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
                         {/* Price - Bold and Prominent */}
@@ -818,9 +824,10 @@ function Index() {
             .map((p, i) => (
               <Reveal key={p.id} delay={i * 80}>
                 <div 
-                  className="group cursor-pointer text-start relative flex flex-col justify-between h-full"
-                  onClick={() => openProduct(p)}
+                  className="group text-start relative flex flex-col justify-between h-full"
                 >
+                  {/* Wrap visual element in Link for direct product page access */}
+                  <Link to={`/product/${p.id}`} className="block relative">
                   {/* Image Frame */}
                   <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
                     {/* Front Image */}
@@ -877,12 +884,13 @@ function Index() {
                       </svg>
                     </button>
                   </div>
+                  </Link>
 
                   {/* Card Content - Story & Quote focused */}
                   <div className="mt-4 flex-1 flex flex-col justify-between">
-                    <div>
+                    <Link to={`/product/${p.id}`} className="block group-hover:opacity-85 transition-opacity">
                       {/* Quote & Name */}
-                      <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug group-hover:text-foreground/80 transition-colors">
+                      <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug">
                         {t(`product.quote.${p.key}`)}
                       </h3>
                       <p className="text-[10px] text-muted-foreground font-mono mt-1 uppercase">
@@ -891,7 +899,7 @@ function Index() {
                       <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
                         {t(`product.story.${p.key}`)}
                       </p>
-                    </div>
+                    </Link>
 
                     <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
                       {/* Price - Bold and Prominent */}
@@ -1000,6 +1008,25 @@ function Index() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CINEMATIC INTERLUDE */}
+      <section className="relative h-[65vh] w-full overflow-hidden border-b border-border/40 select-none">
+        <img
+          src={cinematic}
+          alt="Misty Atlantic ocean landscape representing movement in silence"
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover grayscale opacity-70 scale-105 animate-kenburns"
+        />
+        <div className="absolute inset-0 bg-background/10 backdrop-blur-3xs" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+          <Reveal>
+            <span className="font-mono text-[9px] tracking-brand uppercase text-background bg-foreground/50 px-2 py-0.5 mb-4 inline-block">// cinematic loop</span>
+            <h2 className="font-display text-4xl md:text-5xl text-background italic font-light drop-shadow-md">
+              {isAr ? "الحركة في السكون" : language === "fr" ? "Le mouvement dans le calme." : "Movement in silence."}
+            </h2>
+          </Reveal>
         </div>
       </section>
 
@@ -1407,27 +1434,51 @@ function Index() {
             </div>
           </div>
 
-          {/* Spacer */}
-          <div className="hidden lg:block lg:col-span-2" />
-
           {/* SHOP Column */}
           <div className="lg:col-span-2">
             <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// {t("nav.shop")}</p>
             <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
               <li>
-                <a href="#collection" className="hover:text-foreground transition-colors block">
+                <Link to="/" hash="collection" className="hover:text-foreground transition-colors block">
                   {t("collection.all")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#collection" className="hover:text-foreground transition-colors block">
+                <Link to="/" hash="collection" className="hover:text-foreground transition-colors block">
                   {t("collection.best_sellers")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#collection" className="hover:text-foreground transition-colors block">
+                <Link to="/" hash="collection" className="hover:text-foreground transition-colors block">
                   {t("collection.new_arrivals")}
-                </a>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* COLLECTIONS Column */}
+          <div className="lg:col-span-2">
+            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// Collections</p>
+            <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
+              <li>
+                <button onClick={() => { setActiveTab("authenticity"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("philosophy.authenticity")}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => { setActiveTab("freedom"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("philosophy.freedom")}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => { setActiveTab("peace"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("philosophy.peace")}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => { setActiveTab("confidence"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("philosophy.confidence")}
+                </button>
               </li>
             </ul>
           </div>
@@ -1437,14 +1488,14 @@ function Index() {
             <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// {isAr ? "ذاتنا" : "About"}</p>
             <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
               <li>
-                <a href="#story" className="hover:text-foreground transition-colors block">
+                <Link to="/about" className="hover:text-foreground transition-colors block">
                   {t("story.title")}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#manifesto" className="hover:text-foreground transition-colors block">
+                <Link to="/" hash="manifesto" className="hover:text-foreground transition-colors block">
                   {t("manifesto.title")}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -1868,15 +1919,15 @@ function Index() {
                 <div className="h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce shadow-soft">
                   <BrandSymbol size={32} className="text-background animate-pulse" />
                 </div>
-                <h3 className="font-display text-4xl lg:text-5xl leading-tight">
-                  {isAr ? "شكراً لانضمامك إلى ذاتك الحقيقية" : language === "fr" ? "Merci de rejoindre TRUE SELF." : "Thank you for joining TRUE SELF."}
+                <h3 className="font-display text-3xl lg:text-4xl leading-tight">
+                  {isAr ? "شكراً لاختيارك ذاتك" : language === "fr" ? "Merci de vous choisir." : "Thank You For Choosing Yourself."}
                 </h3>
                 <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-xs">
                   {isAr 
-                    ? "لقد تم استلام طلبك بنجاح. سنتصل بك قريباً لتأكيد تفاصيل التوصيل."
+                    ? "لقد بدأت رحلتك معنا بنجاح. سنتواصل معك لتأكيد خطوتك القادمة قريباً."
                     : language === "fr"
-                    ? "Votre commande a été reçue. Nous vous contacterons sous peu."
-                    : "Your order has been received. We will contact you shortly."}
+                    ? "Votre voyage commence. Nous vous contacterons sous peu pour confirmer votre chemin."
+                    : "Your journey has officially begun. We will contact you shortly to confirm your path."}
                 </p>
                 <button
                   onClick={() => {
@@ -1946,7 +1997,9 @@ function Index() {
                   ) : (
                     /* Checkout form */
                     <form onSubmit={handleCheckoutSubmit} className="space-y-5 text-start">
-                      <h3 className="font-display text-2xl mb-4 italic font-light">{isAr ? "معلومات الشحن" : "Shipping Details"}</h3>
+                      <h3 className="font-display text-2xl mb-4 italic font-light">
+                        {isAr ? "مرحباً بك في ذاتك الحقيقية" : language === "fr" ? "Bienvenue chez TRUE SELF" : "Welcome To TRUE SELF"}
+                      </h3>
                       
                       <div className="space-y-1.5">
                         <label className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">{isAr ? "الاسم الكامل" : "Full Name"} *</label>
@@ -2025,29 +2078,47 @@ function Index() {
                         onClick={() => setCheckoutStep("checkout")}
                         className="w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono"
                       >
-                        {isAr ? "الانتقال إلى الدفع" : "Proceed to Checkout"}
+                        {isAr ? "ابدأ رحلتك" : language === "fr" ? "Commencer votre voyage" : "Start Your Journey"}
                       </button>
                     ) : (
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setCheckoutStep("cart")}
-                          className="flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer"
-                        >
-                          {isAr ? "عودة" : "Back"}
-                        </button>
-                        <button
-                          onClick={handleCheckoutSubmit}
-                          disabled={isSubmittingOrder}
-                          className="flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer"
-                        >
-                          {isSubmittingOrder ? (
-                            <BrandSymbol size={16} className="animate-spin text-background" />
-                          ) : (
-                            <span>{isAr ? "تأكيد الطلب" : "Place Order"}</span>
-                          )}
-                        </button>
-                      </div>
+                      <>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setCheckoutStep("cart")}
+                            className="flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer"
+                          >
+                            {isAr ? "عودة" : "Back"}
+                          </button>
+                          <button
+                            onClick={handleCheckoutSubmit}
+                            disabled={isSubmittingOrder}
+                            className="flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer"
+                          >
+                            {isSubmittingOrder ? (
+                              <BrandSymbol size={16} className="animate-spin text-background" />
+                            ) : (
+                              <span>{isAr ? "تأكيد مسارك" : language === "fr" ? "Confirmer votre chemin" : "Confirm Your Path"}</span>
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Secure Checkout Trust Badges */}
+                        <div className="border-t border-border/40 pt-4 mt-6 space-y-3 font-mono text-[9px] text-muted-foreground/80 animate-fade">
+                          <div className="flex items-center gap-2">
+                            <Check size={10} className="text-green-600" />
+                            <span>{isAr ? "توصيل سريع مجاني للمشتريات فوق 500 درهم" : "Free delivery in Morocco for orders above 500 MAD"}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Check size={10} className="text-green-600" />
+                            <span>{isAr ? "الدفع عند الاستلام آمن وموثوق 100%" : "Secure cash on delivery"}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Check size={10} className="text-green-600" />
+                            <span>{isAr ? "دعم وتواصل مستمر لتأكيد طلبك" : "Dedicated order confirmation support"}</span>
+                          </div>
+                        </div>
+                      </>
                     )}
                   </div>
                 )}

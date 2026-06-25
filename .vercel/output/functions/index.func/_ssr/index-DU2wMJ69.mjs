@@ -1,9 +1,12 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { a as useLanguage, u as useCart } from "./router-0kjUV8bX.mjs";
-import { S as Symbol$1, L as Logo, c as createOrderFn } from "./BrandLogo-cxx46FrL.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-BJC1y1j8.mjs";
+import { a as useLanguage, u as useCart } from "./router-D8QfgQtv.mjs";
+import { S as Symbol$1, L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
+import { c as createOrderFn } from "./orders.server-eC9bLRzs.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front } from "./product-8-back-CL2V7HrX.mjs";
 import "../_libs/seroval.mjs";
-import { X, C as Check, S as ShoppingBag, T as Trash2, M as Minus, c as Plus } from "../_libs/lucide-react.mjs";
+import { X, a as Check, S as ShoppingBag, T as Trash2, M as Minus, d as Plus } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -18,148 +21,17 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-L8vWnZui.mjs";
+import "./server-Bspg8XK9.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
 import "../_libs/srvx.mjs";
-function Nav({ wishlistCount = 0, onOpenWishlist }) {
-  const [scrolled, setScrolled] = reactExports.useState(false);
-  const { t, language, setLanguage } = useLanguage();
-  const { cartCount, setCartOpen } = useCart();
-  reactExports.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "header",
-    {
-      className: `fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/60" : "bg-transparent"}`,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "hover:opacity-85 transition-opacity py-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Logo,
-          {
-            layout: "horizontal",
-            symbolClassName: "w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] md:w-[28px] md:h-[28px]",
-            textSize: "text-xs sm:text-sm md:text-base lg:text-xl font-semibold tracking-brand"
-          }
-        ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden md:flex items-center gap-10 text-xs tracking-brand uppercase", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:opacity-60 transition-opacity", children: t("nav.shop") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "philosophy", className: "hover:opacity-60 transition-opacity", children: t("nav.philosophy") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "lookbook", className: "hover:opacity-60 transition-opacity", children: t("nav.lookbook") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "journal", className: "hover:opacity-60 transition-opacity", children: t("nav.journal") })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-5 text-xs tracking-brand uppercase", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 border-r border-border/60 pr-5 select-none font-mono", children: ["fr", "en", "ar"].map((lang) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => setLanguage(lang),
-              className: `text-[9px] font-semibold tracking-normal transition-all duration-300 hover:text-foreground ${language === lang ? "text-foreground underline underline-offset-4 font-bold scale-105" : "text-muted-foreground opacity-70"}`,
-              children: lang.toUpperCase()
-            },
-            lang
-          )) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "hidden sm:block hover:opacity-60 transition-opacity", children: t("nav.search") }),
-          onOpenWishlist && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: onOpenWishlist,
-              className: "hover:opacity-60 transition-opacity font-mono font-medium",
-              children: [
-                t("wishlist.title"),
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
-                  "(",
-                  wishlistCount,
-                  ")"
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => setCartOpen(true),
-              className: "relative hover:opacity-60 transition-opacity font-mono font-medium",
-              children: [
-                t("nav.bag"),
-                " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
-                  "(",
-                  cartCount,
-                  ")"
-                ] })
-              ]
-            }
-          )
-        ] })
-      ] })
-    }
-  );
-}
-function Reveal({
-  children,
-  delay = 0,
-  className = ""
-}) {
-  const ref = reactExports.useRef(null);
-  const [visible, setVisible] = reactExports.useState(false);
-  reactExports.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setVisible(true);
-            io.disconnect();
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      ref,
-      className,
-      style: {
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(28px)",
-        transition: `opacity 1.1s var(--ease-soft) ${delay}ms, transform 1.1s var(--ease-soft) ${delay}ms`
-      },
-      children
-    }
-  );
-}
 const hero = "/assets/hero-B87RwUwA.jpg";
 const philosophy = "/assets/philosophy-IBsmd_ue.jpg";
 const g1 = "/assets/gallery-1-C_lzCq2K.jpg";
 const g2 = "/assets/gallery-2-BAdcgdVA.jpg";
 const g3 = "/assets/gallery-3-OIFu6pc7.jpg";
 const g4 = "/assets/gallery-4-bIHymz_g.jpg";
-const p1Front = "/assets/product-1-front-DsK_FXw0.png";
-const p1Back = "/assets/product-1-back-bpp-qDHF.png";
-const p2Front = "/assets/product-2-front-CG1KdDTI.png";
-const p2Back = "/assets/product-2-back-CubsBKtg.png";
-const p3Front = "/assets/product-3-front-BfvZP2AU.png";
-const p3Back = "/assets/product-3-back-nJVkdERi.png";
-const p4Front = "/assets/product-4-front-BbYN-clV.png";
-const p4Back = "/assets/product-4-back-B7xUtYnz.png";
-const p5Front = "/assets/product-5-front-DQ08Usol.png";
-const p5Back = "/assets/product-5-back-CqTgOs4w.png";
-const p6Front = "/assets/product-6-front-Ce8E_T8j.png";
-const p6Back = "/assets/product-6-back-CFfaBhD4.png";
-const p7Front = "/assets/product-7-front-BRxVIy_C.png";
-const p7Back = "/assets/product-7-back-BrPywBPn.png";
-const p8Front = "/assets/product-8-front-BWaUSivq.png";
-const p8Back = "/assets/product-8-back-CnR0q2Ze.png";
 function Index() {
   const {
     t,
@@ -557,8 +429,8 @@ function Index() {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-3 font-display text-4xl md:text-6xl text-balance max-w-2xl", children: language === "fr" ? "Sélection de Saison" : language === "ar" ? "المميزة هذا الموسم" : "Seasonal Featured" })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8", children: products.filter((p) => p.isFeatured).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 100, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group cursor-pointer text-start relative flex flex-col justify-between h-full", onClick: () => openProduct(p), children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8", children: products.filter((p) => p.isFeatured).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 100, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group text-start relative flex flex-col justify-between h-full", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: `/product/${p.id}`, className: "block relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgFront, alt: t(`product.name.${p.key}`), loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgBack, alt: `${t(`product.name.${p.key}`)} back view`, loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (e) => {
@@ -570,11 +442,12 @@ function Index() {
             e.stopPropagation();
             toggleWishlist(p.id);
           }, className: `absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`, title: wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: wishlist.includes(p.id) ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: `w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" }) }) })
-        ] }),
+        ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug group-hover:text-foreground/80 transition-colors", children: t(`product.quote.${p.key}`) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono mt-1 uppercase", children: t(`product.name.${p.key}`) })
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/product/${p.id}`, className: "block group-hover:opacity-85 transition-opacity", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug", children: t(`product.quote.${p.key}`) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono mt-1 uppercase", children: t(`product.name.${p.key}`) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm", children: t(`product.story.${p.key}`) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-3 border-t border-border/30 flex items-center justify-between", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-base font-bold text-foreground", children: p.price }),
@@ -672,8 +545,8 @@ function Index() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16", children: products.filter((p) => {
         if (activeTab === "all") return true;
         return p.philosophy === activeTab;
-      }).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 80, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group cursor-pointer text-start relative flex flex-col justify-between h-full", onClick: () => openProduct(p), children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
+      }).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 80, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group text-start relative flex flex-col justify-between h-full", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: `/product/${p.id}`, className: "block relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgFront, alt: t(`product.name.${p.key}`), loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgBack, alt: `${t(`product.name.${p.key}`)} back view`, loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (e) => {
@@ -685,10 +558,10 @@ function Index() {
             e.stopPropagation();
             toggleWishlist(p.id);
           }, className: `absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`, title: wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: wishlist.includes(p.id) ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: `w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" }) }) })
-        ] }),
+        ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug group-hover:text-foreground/80 transition-colors", children: t(`product.quote.${p.key}`) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/product/${p.id}`, className: "block group-hover:opacity-85 transition-opacity", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug", children: t(`product.quote.${p.key}`) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono mt-1 uppercase", children: t(`product.name.${p.key}`) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm", children: t(`product.story.${p.key}`) })
           ] }),
@@ -742,6 +615,14 @@ function Index() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground font-light leading-relaxed", children: t(`manifesto.p${num}.desc`) })
       ] }) }) }, num)) })
     ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "relative h-[65vh] w-full overflow-hidden border-b border-border/40 select-none", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("video", { autoPlay: true, loop: true, muted: true, playsInline: true, className: "absolute inset-0 h-full w-full object-cover grayscale opacity-75", children: /* @__PURE__ */ jsxRuntimeExports.jsx("source", { src: "https://player.vimeo.com/external/459389137.sd.mp4?s=8948d1d73b5bf95cf859082cedabf558a2d1d0e5&profile_id=139&oauth2_token_id=57447761", type: "video/mp4" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-background/10 backdrop-blur-3xs" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex flex-col items-center justify-center text-center p-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Reveal, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-brand uppercase text-background bg-foreground/50 px-2 py-0.5 mb-4 inline-block", children: "// cinematic loop" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display text-4xl md:text-5xl text-background italic font-light drop-shadow-md", children: isAr ? "الحركة في السكون" : language === "fr" ? "Le mouvement dans le calme." : "Movement in silence." })
+      ] }) })
+    ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "lookbook", className: "py-24 lg:py-36 border-b border-border/40", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 text-start", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-16 max-w-2xl", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase text-muted-foreground font-mono", children: t("lookbook.title") }),
@@ -948,16 +829,48 @@ function Index() {
             ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden lg:block lg:col-span-2" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: [
             "// ",
             t("nav.shop")
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors block", children: t("collection.all") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors block", children: t("collection.best_sellers") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#collection", className: "hover:text-foreground transition-colors block", children: t("collection.new_arrivals") }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:text-foreground transition-colors block", children: t("collection.all") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:text-foreground transition-colors block", children: t("collection.best_sellers") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:text-foreground transition-colors block", children: t("collection.new_arrivals") }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: "// Collections" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+              setActiveTab("authenticity");
+              window.scrollTo({
+                top: document.getElementById("collection")?.offsetTop || 0,
+                behavior: "smooth"
+              });
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.authenticity") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+              setActiveTab("freedom");
+              window.scrollTo({
+                top: document.getElementById("collection")?.offsetTop || 0,
+                behavior: "smooth"
+              });
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.freedom") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+              setActiveTab("peace");
+              window.scrollTo({
+                top: document.getElementById("collection")?.offsetTop || 0,
+                behavior: "smooth"
+              });
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.peace") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+              setActiveTab("confidence");
+              window.scrollTo({
+                top: document.getElementById("collection")?.offsetTop || 0,
+                behavior: "smooth"
+              });
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.confidence") }) })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
@@ -966,8 +879,8 @@ function Index() {
             isAr ? "ذاتنا" : "About"
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#story", className: "hover:text-foreground transition-colors block", children: t("story.title") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#manifesto", className: "hover:text-foreground transition-colors block", children: t("manifesto.title") }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/about", className: "hover:text-foreground transition-colors block", children: t("story.title") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "manifesto", className: "hover:text-foreground transition-colors block", children: t("manifesto.title") }) })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
@@ -1192,8 +1105,8 @@ function Index() {
         ] }),
         checkoutStep === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-8 flex flex-col items-center justify-center text-center space-y-6", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce shadow-soft", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 32, className: "text-background animate-pulse" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-4xl lg:text-5xl leading-tight", children: isAr ? "شكراً لانضمامك إلى ذاتك الحقيقية" : language === "fr" ? "Merci de rejoindre TRUE SELF." : "Thank you for joining TRUE SELF." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground font-light leading-relaxed max-w-xs", children: isAr ? "لقد تم استلام طلبك بنجاح. سنتصل بك قريباً لتأكيد تفاصيل التوصيل." : language === "fr" ? "Votre commande a été reçue. Nous vous contacterons sous peu." : "Your order has been received. We will contact you shortly." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-3xl lg:text-4xl leading-tight", children: isAr ? "شكراً لاختيارك ذاتك" : language === "fr" ? "Merci de vous choisir." : "Thank You For Choosing Yourself." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground font-light leading-relaxed max-w-xs", children: isAr ? "لقد بدأت رحلتك معنا بنجاح. سنتواصل معك لتأكيد خطوتك القادمة قريباً." : language === "fr" ? "Votre voyage commence. Nous vous contacterons sous peu pour confirmer votre chemin." : "Your journey has officially begun. We will contact you shortly to confirm your path." }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
             setCheckoutStep("cart");
             setCartOpen(false);
@@ -1238,7 +1151,7 @@ function Index() {
           ) : (
             /* Checkout form */
             /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleCheckoutSubmit, className: "space-y-5 text-start", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl mb-4 italic font-light", children: isAr ? "معلومات الشحن" : "Shipping Details" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl mb-4 italic font-light", children: isAr ? "مرحباً بك في ذاتك الحقيقية" : language === "fr" ? "Bienvenue chez TRUE SELF" : "Welcome To TRUE SELF" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[8px] tracking-widest text-muted-foreground uppercase", children: [
                   isAr ? "الاسم الكامل" : "Full Name",
@@ -1282,9 +1195,25 @@ function Index() {
                 " MAD"
               ] })
             ] }),
-            checkoutStep === "cart" ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCheckoutStep("checkout"), className: "w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono", children: isAr ? "الانتقال إلى الدفع" : "Proceed to Checkout" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setCheckoutStep("cart"), className: "flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer", children: isAr ? "عودة" : "Back" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleCheckoutSubmit, disabled: isSubmittingOrder, className: "flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer", children: isSubmittingOrder ? /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "animate-spin text-background" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد الطلب" : "Place Order" }) })
+            checkoutStep === "cart" ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCheckoutStep("checkout"), className: "w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono", children: isAr ? "ابدأ رحلتك" : language === "fr" ? "Commencer votre voyage" : "Start Your Journey" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setCheckoutStep("cart"), className: "flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer", children: isAr ? "عودة" : "Back" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleCheckoutSubmit, disabled: isSubmittingOrder, className: "flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer", children: isSubmittingOrder ? /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "animate-spin text-background" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد مسارك" : language === "fr" ? "Confirmer votre chemin" : "Confirm Your Path" }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border/40 pt-4 mt-6 space-y-3 font-mono text-[9px] text-muted-foreground/80 animate-fade", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 10, className: "text-green-600" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "توصيل سريع مجاني للمشتريات فوق 500 درهم" : "Free delivery in Morocco for orders above 500 MAD" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 10, className: "text-green-600" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "الدفع عند الاستلام آمن وموثوق 100%" : "Secure cash on delivery" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 10, className: "text-green-600" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "دعم وتواصل مستمر لتأكيد طلبك" : "Dedicated order confirmation support" })
+                ] })
+              ] })
             ] })
           ] })
         ] })

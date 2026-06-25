@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-Btbe7nAh.css";
+const appCss = "/assets/styles-B-pS0UAD.css";
 const translations = {
   fr: {
     // Nav
@@ -688,7 +688,7 @@ function ErrorComponent({ error, reset }) {
     ] })
   ] }) });
 }
-const Route$2 = createRootRouteWithContext()({
+const Route$4 = createRootRouteWithContext()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -736,11 +736,11 @@ function RootShell({ children }) {
   ] });
 }
 function RootComponent() {
-  const { queryClient } = Route$2.useRouteContext();
+  const { queryClient } = Route$4.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }) });
 }
-const $$splitComponentImporter$1 = () => import("./admin-DRlLrykN.mjs");
-const Route$1 = createFileRoute("/admin")({
+const $$splitComponentImporter$3 = () => import("./admin-6kjJdzE-.mjs");
+const Route$3 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
       title: "TRUE SELF® — Admin Dashboard"
@@ -749,10 +749,22 @@ const Route$1 = createFileRoute("/admin")({
       content: "TRUE SELF internal order management system."
     }]
   }),
-  component: lazyRouteComponent($$splitComponentImporter$1, "component")
+  component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter = () => import("./index-D6_FFQv_.mjs");
-const Route = createFileRoute("/")({
+const $$splitComponentImporter$2 = () => import("./about-c1LqQOHl.mjs");
+const Route$2 = createFileRoute("/about")({
+  head: () => ({
+    meta: [{
+      title: "TRUE SELF® — Our Story & Philosophy"
+    }, {
+      name: "description",
+      content: "Discover the philosophy, conflict, and symbol behind TRUE SELF. Minimalist streetwear designed in North Africa as a silent rebellion."
+    }]
+  }),
+  component: lazyRouteComponent($$splitComponentImporter$2, "component")
+});
+const $$splitComponentImporter$1 = () => import("./index-DU2wMJ69.mjs");
+const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
       title: "TRUE SELF® — Live For Yourself"
@@ -767,23 +779,63 @@ const Route = createFileRoute("/")({
       content: "Live for yourself, not for the approval of others."
     }]
   }),
+  component: lazyRouteComponent($$splitComponentImporter$1, "component")
+});
+const $$splitComponentImporter = () => import("../_productId-Vw9hsBW9.mjs");
+const Route = createFileRoute("/product/$productId")({
+  head: ({
+    params
+  }) => {
+    const id = parseInt(params.productId);
+    const names = {
+      1: "Sweat Capuche Real > Perfect",
+      2: "T-shirt Khalli Nass Thder",
+      3: "Sweat Machi Kifma Bghaw",
+      4: "T-shirt Live Free",
+      5: "Sweat Capuche Not Here To Fit In",
+      6: "Sweat Capuche Their Opinion",
+      7: "Sweat Less Drama",
+      8: "T-shirt Enough As You Are"
+    };
+    const name = names[id] || "Garment Philosophy";
+    return {
+      meta: [{
+        title: `TRUE SELF® — ${name}`
+      }, {
+        name: "description",
+        content: "Curated premium streetwear made slowly. Designed to act as a physical reminder to live for yourself."
+      }]
+    };
+  },
   component: lazyRouteComponent($$splitComponentImporter, "component")
 });
-const AdminRoute = Route$1.update({
+const AdminRoute = Route$3.update({
   id: "/admin",
   path: "/admin",
-  getParentRoute: () => Route$2
+  getParentRoute: () => Route$4
 });
-const IndexRoute = Route.update({
+const AboutRoute = Route$2.update({
+  id: "/about",
+  path: "/about",
+  getParentRoute: () => Route$4
+});
+const IndexRoute = Route$1.update({
   id: "/",
   path: "/",
-  getParentRoute: () => Route$2
+  getParentRoute: () => Route$4
+});
+const ProductProductIdRoute = Route.update({
+  id: "/product/$productId",
+  path: "/product/$productId",
+  getParentRoute: () => Route$4
 });
 const rootRouteChildren = {
   IndexRoute,
-  AdminRoute
+  AboutRoute,
+  AdminRoute,
+  ProductProductIdRoute
 };
-const routeTree = Route$2._addFileChildren(rootRouteChildren)._addFileTypes();
+const routeTree = Route$4._addFileChildren(rootRouteChildren)._addFileTypes();
 const getRouter = () => {
   const queryClient = new QueryClient();
   const router2 = createRouter({
@@ -799,6 +851,7 @@ const router = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   getRouter
 }, Symbol.toStringTag, { value: "Module" }));
 export {
+  Route as R,
   useLanguage as a,
   router as r,
   useCart as u
