@@ -1,9 +1,9 @@
 import { j as jsxRuntimeExports, r as reactExports } from "./_libs/react.mjs";
 import { u as useRouter, L as Link } from "./_libs/tanstack__react-router.mjs";
-import { R as Route, a as useLanguage, u as useCart } from "./_ssr/router-D8QfgQtv.mjs";
-import { N as Nav, R as Reveal } from "./_ssr/Reveal-BJC1y1j8.mjs";
+import { R as Route, a as useLanguage, u as useCart } from "./_ssr/router-CQpPUvkr.mjs";
+import { N as Nav, R as Reveal } from "./_ssr/Reveal-BJBdivYJ.mjs";
 import { S as Symbol$1, L as Logo } from "./_ssr/BrandLogo-Be2G5YYH.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front } from "./_ssr/product-8-back-CL2V7HrX.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./_ssr/product-8-back-CL2V7HrX.mjs";
 import { H as Heart, C as Calendar, e as Ruler, a as Check, S as ShoppingBag, X } from "./_libs/lucide-react.mjs";
 import "./_libs/tanstack__router-core.mjs";
 import "./_libs/tanstack__history.mjs";
@@ -60,8 +60,8 @@ const products = [{
   id: 3,
   key: "3",
   price: "550 MAD",
-  imgFront: p3Front,
-  imgBack: p3Back,
+  imgFront: p7Front,
+  imgBack: p7Back,
   tag: "collection.new",
   sizes: ["S", "M", "L", "XL"],
   colors: [{
@@ -77,8 +77,8 @@ const products = [{
   id: 4,
   key: "4",
   price: "350 MAD",
-  imgFront: p4Front,
-  imgBack: p4Back,
+  imgFront: p8Front,
+  imgBack: p8Back,
   tag: "collection.bestsellers",
   sizes: ["S", "M", "L", "XL"],
   colors: [{
@@ -95,8 +95,8 @@ const products = [{
   id: 5,
   key: "5",
   price: "650 MAD",
-  imgFront: p5Front,
-  imgBack: p5Back,
+  imgFront: p3Front,
+  imgBack: p3Back,
   tag: "collection.new",
   sizes: ["S", "M", "L", "XL"],
   colors: [{
@@ -112,8 +112,8 @@ const products = [{
   id: 6,
   key: "6",
   price: "650 MAD",
-  imgFront: p6Front,
-  imgBack: p6Back,
+  imgFront: p4Front,
+  imgBack: p4Back,
   tag: "collection.bestsellers",
   sizes: ["S", "M", "L", "XL"],
   colors: [{
@@ -129,8 +129,8 @@ const products = [{
   id: 7,
   key: "7",
   price: "550 MAD",
-  imgFront: p7Front,
-  imgBack: p7Back,
+  imgFront: p5Front,
+  imgBack: p5Back,
   tag: "collection.new",
   sizes: ["S", "M", "L", "XL"],
   colors: [{
@@ -147,8 +147,8 @@ const products = [{
   id: 8,
   key: "8",
   price: "350 MAD",
-  imgFront: p8Front,
-  imgBack: p8Back,
+  imgFront: p6Front,
+  imgBack: p6Back,
   tag: "collection.bestsellers",
   sizes: ["S", "M", "L", "XL"],
   colors: [{

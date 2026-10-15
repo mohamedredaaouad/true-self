@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { getOrdersFn, updateOrderStatusFn, type Order } from "../lib/orders.server";
-import { ChevronDown, RefreshCw, LogOut, CheckCircle, Package, Truck, Clock } from "lucide-react";
+import {
+  adminLoginFn,
+  adminLogoutFn,
+  checkAdminAuthFn,
+  getOrdersFn,
+  updateOrderStatusFn,
+  type Order,
+} from "../lib/orders.server";
+import { RefreshCw, LogOut, CheckCircle, Package, Truck, Clock } from "lucide-react";
 import { Logo } from "../components/BrandLogo";
 
 export const Route = createFileRoute("/admin")({
@@ -13,16 +20,41 @@ export const Route = createFileRoute("/admin")({
   }),
   component: Admin,
 });
+
 function Admin() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("All");
 
-  const correctPassword = "trueself2026";
+  // Check server session on mount
+  useEffect(() => {
+    let active = true;
+    checkAdminAuthFn()
+      .then((res) => {
+        if (active) {
+          if (res?.authenticated) {
+            setIsAuthenticated(true);
+          }
+          setCheckingAuth(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Session verification failed:", err);
+        if (active) {
+          setCheckingAuth(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Load orders when authenticated
   const fetchOrders = async () => {
@@ -30,12 +62,17 @@ function Admin() {
     try {
       const data = await getOrdersFn();
       // Sort orders by date descending
-      const sorted = (data as Order[]).sort((a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      const sorted = (data as Order[]).sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       setOrders(sorted);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error loading orders:", err);
+      // If server returned 401 Unauthorized, revoke local access state
+      if (err?.message?.includes("Unauthorized") || err?.status === 401) {
+        setIsAuthenticated(false);
+        setError("Session expirée. Veuillez vous reconnecter.");
+      }
     } finally {
       setLoading(false);
     }
@@ -47,29 +84,38 @@ function Admin() {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === correctPassword) {
-      setIsAuthenticated(true);
-      setError("");
-      // Save auth status for session
-      sessionStorage.setItem("ts_admin_auth", "true");
-    } else {
-      setError("Incorrect password. Please protect your peace.");
+    if (!password.trim()) return;
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const res = await adminLoginFn({ data: { password } });
+      if (res?.success) {
+        setIsAuthenticated(true);
+        setPassword("");
+        setError("");
+      } else {
+        setError(res?.error || "Mot de passe incorrect.");
+      }
+    } catch (err: any) {
+      setError(err?.message || "Erreur de communication avec le serveur.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // Restore auth from sessionStorage on mount
-  useEffect(() => {
-    if (sessionStorage.getItem("ts_admin_auth") === "true") {
-      setIsAuthenticated(true);
+  const handleLogout = async () => {
+    try {
+      await adminLogoutFn();
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      setIsAuthenticated(false);
+      setPassword("");
+      setOrders([]);
     }
-  }, []);
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem("ts_admin_auth");
-    setPassword("");
   };
 
   const handleStatusChange = async (id: string, newStatus: Order["status"]) => {
@@ -77,8 +123,12 @@ function Admin() {
     try {
       await updateOrderStatusFn({ data: { id, status: newStatus } });
       await fetchOrders();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error updating order status:", err);
+      if (err?.message?.includes("Unauthorized") || err?.status === 401) {
+        setIsAuthenticated(false);
+        setError("Session expirée. Veuillez vous reconnecter.");
+      }
     } finally {
       setUpdatingId(null);
     }
@@ -86,18 +136,29 @@ function Admin() {
 
   // Computed metrics
   const totalRevenue = orders.reduce((acc, order) => {
-    // Only calculate revenue for non-cancelled/confirmed orders if we wanted, but let's sum all orders for simplicity
     return acc + order.totalPrice;
   }, 0);
 
-  const pendingCount = orders.filter(o => o.status === "New").length;
-  const confirmedCount = orders.filter(o => o.status === "Confirmed").length;
-  const shippedCount = orders.filter(o => o.status === "Shipped").length;
-  const deliveredCount = orders.filter(o => o.status === "Delivered").length;
+  const pendingCount = orders.filter((o) => o.status === "New").length;
+  const confirmedCount = orders.filter((o) => o.status === "Confirmed").length;
+  const shippedCount = orders.filter((o) => o.status === "Shipped").length;
+  const deliveredCount = orders.filter((o) => o.status === "Delivered").length;
 
-  const filteredOrders = filterStatus === "All"
-    ? orders
-    : orders.filter(o => o.status === filterStatus);
+  const filteredOrders =
+    filterStatus === "All" ? orders : orders.filter((o) => o.status === filterStatus);
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6 py-12">
+        <div className="flex flex-col items-center gap-4">
+          <Logo layout="stacked" symbolSize={44} textSize="text-2xl" taglineSize="text-[8px]" showTagline={false} />
+          <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono animate-pulse">
+            Vérification de la session...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -113,14 +174,19 @@ function Admin() {
             <input
               type="password"
               required
+              disabled={submitting}
               placeholder="Enter Access Passcode"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-background border-b border-border/80 px-2 py-3 text-center text-sm focus:outline-none focus:border-foreground placeholder:text-foreground/30 font-mono"
+              className="w-full bg-background border-b border-border/80 px-2 py-3 text-center text-sm focus:outline-none focus:border-foreground placeholder:text-foreground/30 font-mono disabled:opacity-50"
             />
             {error && <p className="text-[10px] text-red-500 font-mono">{error}</p>}
-            <button className="w-full border border-foreground bg-foreground text-background py-3 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs cursor-pointer font-mono">
-              Authenticate
+            <button
+              disabled={submitting}
+              className="w-full border border-foreground bg-foreground text-background py-3 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs cursor-pointer font-mono disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {submitting && <RefreshCw size={12} className="animate-spin" />}
+              {submitting ? "Authenticating..." : "Authenticate"}
             </button>
           </form>
           <div className="text-[9px] text-muted-foreground font-mono">

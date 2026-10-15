@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import { H as H3Event, t as toResponse } from "../_libs/h3-v2.mjs";
+import { H3Event, toResponse } from "../_libs/h3-v2.mjs";
 import { k as defineHandlerCallback, L as resolveManifestAssetLink, M as resolveManifestCssLink, N as rootRouteId, q as getNormalizedURL, r as getOrigin, H as normalizeSsrResponse, c as attachRouterServerSsrUtils, g as createSerializationAdapter, f as createRawStreamRPCPlugin, w as invariant, z as isNotFound, A as isRedirect, C as isResolvedRedirect, K as replaceSsrResponse, G as mergeHeaders, n as executeRewriteInput, O as stripSsrResponseBody, j as defaultSerovalPlugins, F as makeSerovalPlugin, s as getScriptPreloadAttrs, u as getStylesheetHref, E as isSsrResponse, I as parseRedirect } from "../_libs/tanstack__router-core.mjs";
 import { i as iu, P as Pu, s as su } from "../_libs/seroval.mjs";
 import { c as createMemoryHistory } from "../_libs/tanstack__history.mjs";
@@ -7,7 +7,11 @@ import { j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { r as renderRouterToStream, R as RouterProvider } from "../_libs/tanstack__react-router.mjs";
 import "../_libs/rou3.mjs";
 import "../_libs/srvx.mjs";
+import "node:http";
 import "node:stream";
+import "node:stream/promises";
+import "node:https";
+import "node:http2";
 import "../_libs/cookie-es.mjs";
 import "../_libs/seroval-plugins.mjs";
 import "node:stream/web";
@@ -81,7 +85,7 @@ function getResponse() {
 }
 var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 async function getStartManifest(matchedRoutes) {
-  const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-2SYp6z5n.mjs");
+  const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-MLYgc42G.mjs");
   const startManifest = tsrStartManifest();
   let routes = startManifest.routes;
   routes[rootRouteId];
@@ -101,17 +105,29 @@ async function getStartManifest(matchedRoutes) {
   };
 }
 const manifest = {
+  "04ab80446e4cad863179eef6336b29a74d685340ba866db7e3333a7019b456bc": {
+    functionName: "checkAdminAuthFn_createServerFn_handler",
+    importer: () => import("./orders.server-CFSAIsoq.mjs")
+  },
   "0b1d791ec81a3d0a4252766c5f213de9e95dc8deb15e746e4a8369e5de20e062": {
     functionName: "createOrderFn_createServerFn_handler",
-    importer: () => import("./orders.server-Bfgg9DPM.mjs")
+    importer: () => import("./orders.server-CFSAIsoq.mjs")
+  },
+  "0b5d8222b5c5a5ff0f3803ede304ca52c9c10930a4565e2a4f72a783bdc1e4b6": {
+    functionName: "adminLoginFn_createServerFn_handler",
+    importer: () => import("./orders.server-CFSAIsoq.mjs")
   },
   "4da6ed92fc94ebf6c0a8932f19c99ab60a000695af9dbcc44b5ac25671f83b7a": {
     functionName: "getOrdersFn_createServerFn_handler",
-    importer: () => import("./orders.server-Bfgg9DPM.mjs")
+    importer: () => import("./orders.server-CFSAIsoq.mjs")
+  },
+  "ad2d1adea7cacd7aadc7949f303d1d45d753a0b6af4dfbc011b658dbfec24060": {
+    functionName: "adminLogoutFn_createServerFn_handler",
+    importer: () => import("./orders.server-CFSAIsoq.mjs")
   },
   "ff7cbb0d15363131f77420f707143b0cf9e674ee544c429c38510ff1cf368a3f": {
     functionName: "updateOrderStatusFn_createServerFn_handler",
-    importer: () => import("./orders.server-Bfgg9DPM.mjs")
+    importer: () => import("./orders.server-CFSAIsoq.mjs")
   }
 };
 async function getServerFnById(id, access) {
@@ -1341,8 +1357,8 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
   const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-    import("./router-D8QfgQtv.mjs").then((n) => n.r),
-    import("./start-Bfz_21ky.mjs"),
+    import("./router-CQpPUvkr.mjs").then((n) => n.r),
+    import("./start-B9tdKhQ8.mjs"),
     import("./empty-plugin-adapters-BFgPZ6_d.mjs")
   ]);
   return {

@@ -1,6 +1,6 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { a as useLanguage, u as useCart } from "./router-D8QfgQtv.mjs";
+import { a as useLanguage, u as useCart } from "./router-CQpPUvkr.mjs";
 import { L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
 function Nav({ wishlistCount = 0, onOpenWishlist }) {
   const [scrolled, setScrolled] = reactExports.useState(false);
@@ -15,7 +15,7 @@ function Nav({ wishlistCount = 0, onOpenWishlist }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "header",
     {
-      className: `fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/80 backdrop-blur-md border-b border-border/60" : "bg-transparent"}`,
+      className: `fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-xs" : "bg-gradient-to-b from-background/95 via-background/60 to-transparent pb-6"}`,
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10 h-16 flex items-center justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", className: "hover:opacity-85 transition-opacity py-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           Logo,
@@ -25,33 +25,33 @@ function Nav({ wishlistCount = 0, onOpenWishlist }) {
             textSize: "text-xs sm:text-sm md:text-base lg:text-xl font-semibold tracking-brand"
           }
         ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden md:flex items-center gap-10 text-xs tracking-brand uppercase", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:opacity-60 transition-opacity", children: t("nav.shop") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/about", activeProps: { className: "underline underline-offset-4 font-semibold text-foreground" }, className: "hover:opacity-60 transition-opacity", children: t("story.title") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "philosophy", className: "hover:opacity-60 transition-opacity", children: t("nav.philosophy") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "lookbook", className: "hover:opacity-60 transition-opacity", children: t("nav.lookbook") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "journal", className: "hover:opacity-60 transition-opacity", children: t("nav.journal") })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("nav", { className: "hidden md:flex items-center gap-10 text-[10px] sm:text-xs tracking-brand uppercase text-foreground/90 font-medium", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "collection", className: "hover:text-foreground/60 transition-colors", children: t("nav.shop") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/about", activeProps: { className: "underline underline-offset-4 font-semibold text-foreground" }, className: "hover:text-foreground/60 transition-colors", children: t("story.title") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "philosophy", className: "hover:text-foreground/60 transition-colors", children: t("nav.philosophy") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "lookbook", className: "hover:text-foreground/60 transition-colors", children: t("nav.lookbook") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/", hash: "journal", className: "hover:text-foreground/60 transition-colors", children: t("nav.journal") })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-5 text-xs tracking-brand uppercase", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-5 text-[10px] sm:text-xs tracking-brand uppercase text-foreground/90 font-medium", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 border-r border-border/60 pr-5 select-none font-mono", children: ["fr", "en", "ar"].map((lang) => /* @__PURE__ */ jsxRuntimeExports.jsx(
             "button",
             {
               onClick: () => setLanguage(lang),
-              className: `text-[9px] font-semibold tracking-normal transition-all duration-300 hover:text-foreground ${language === lang ? "text-foreground underline underline-offset-4 font-bold scale-105" : "text-muted-foreground opacity-70"}`,
+              className: `text-[9px] font-semibold tracking-normal transition-all duration-300 hover:text-foreground ${language === lang ? "text-foreground underline underline-offset-4 font-bold scale-105" : "text-muted-foreground hover:text-foreground/80"}`,
               children: lang.toUpperCase()
             },
             lang
           )) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "hidden sm:block hover:opacity-60 transition-opacity", children: t("nav.search") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "hidden sm:block hover:text-foreground/60 transition-colors", children: t("nav.search") }),
           onOpenWishlist && /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               onClick: onOpenWishlist,
-              className: "hover:opacity-60 transition-opacity font-mono font-medium",
+              className: "hover:text-foreground/60 transition-colors font-mono font-medium",
               children: [
                 t("wishlist.title"),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground font-normal", children: [
                   "(",
                   wishlistCount,
                   ")"
@@ -63,11 +63,11 @@ function Nav({ wishlistCount = 0, onOpenWishlist }) {
             "button",
             {
               onClick: () => setCartOpen(true),
-              className: "relative hover:opacity-60 transition-opacity font-mono font-medium",
+              className: "relative hover:text-foreground/60 transition-colors font-mono font-medium",
               children: [
                 t("nav.bag"),
                 " ",
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-muted-foreground font-normal", children: [
                   "(",
                   cartCount,
                   ")"

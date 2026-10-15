@@ -2,7 +2,11 @@ globalThis.__nitro_main__ = import.meta.url;
 import { a as HTTPError, d as defineLazyEventHandler, H as H3Core } from "./_libs/h3.mjs";
 import { N as NodeResponse } from "./_libs/srvx.mjs";
 import "./_libs/rou3.mjs";
+import "node:http";
 import "node:stream";
+import "node:stream/promises";
+import "node:https";
+import "node:http2";
 function lazyService(loader) {
   let promise, mod;
   return {

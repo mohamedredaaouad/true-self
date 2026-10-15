@@ -1,10 +1,10 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-BJC1y1j8.mjs";
-import { a as useLanguage, u as useCart } from "./router-D8QfgQtv.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-BJBdivYJ.mjs";
+import { a as useLanguage, u as useCart } from "./router-CQpPUvkr.mjs";
 import { S as Symbol$1, L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
-import { c as createOrderFn } from "./orders.server-eC9bLRzs.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front } from "./product-8-back-CL2V7HrX.mjs";
+import { d as createOrderFn } from "./orders.server-CfJyxWJX.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./product-8-back-CL2V7HrX.mjs";
 import "../_libs/seroval.mjs";
 import { X, a as Check, S as ShoppingBag, T as Trash2, M as Minus, d as Plus } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -21,17 +21,22 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-Bspg8XK9.mjs";
+import "./server-BesNjB06.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
 import "../_libs/srvx.mjs";
-const hero = "/assets/hero-B87RwUwA.jpg";
+import "node:http";
+import "node:stream/promises";
+import "node:https";
+import "node:http2";
+const hero = "/assets/hero-CnYigoN8.png";
 const philosophy = "/assets/philosophy-IBsmd_ue.jpg";
-const g1 = "/assets/gallery-1-C_lzCq2K.jpg";
-const g2 = "/assets/gallery-2-BAdcgdVA.jpg";
-const g3 = "/assets/gallery-3-OIFu6pc7.jpg";
-const g4 = "/assets/gallery-4-bIHymz_g.jpg";
+const g1 = "/assets/gallery-1-BmHPx37f.png";
+const g2 = "/assets/gallery-2-CuvGBdm0.png";
+const g3 = "/assets/gallery-3-CBFiNZkc.png";
+const g4 = "/assets/gallery-4-Cri2Y3kI.png";
+const cinematic = "/assets/cinematic_interlude-BCwM1kPs.png";
 function Index() {
   const {
     t,
@@ -113,8 +118,8 @@ function Index() {
     id: 3,
     key: "3",
     price: "550 MAD",
-    imgFront: p3Front,
-    imgBack: p3Back,
+    imgFront: p7Front,
+    imgBack: p7Back,
     tag: "collection.new",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -132,8 +137,8 @@ function Index() {
     id: 4,
     key: "4",
     price: "350 MAD",
-    imgFront: p4Front,
-    imgBack: p4Back,
+    imgFront: p8Front,
+    imgBack: p8Back,
     tag: "collection.bestsellers",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -151,8 +156,8 @@ function Index() {
     id: 5,
     key: "5",
     price: "650 MAD",
-    imgFront: p5Front,
-    imgBack: p5Back,
+    imgFront: p3Front,
+    imgBack: p3Back,
     tag: "collection.new",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -170,8 +175,8 @@ function Index() {
     id: 6,
     key: "6",
     price: "650 MAD",
-    imgFront: p6Front,
-    imgBack: p6Back,
+    imgFront: p4Front,
+    imgBack: p4Back,
     tag: "collection.bestsellers",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -189,8 +194,8 @@ function Index() {
     id: 7,
     key: "7",
     price: "550 MAD",
-    imgFront: p7Front,
-    imgBack: p7Back,
+    imgFront: p5Front,
+    imgBack: p5Back,
     tag: "collection.new",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -208,8 +213,8 @@ function Index() {
     id: 8,
     key: "8",
     price: "350 MAD",
-    imgFront: p8Front,
-    imgBack: p8Back,
+    imgFront: p6Front,
+    imgBack: p6Back,
     tag: "collection.bestsellers",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -616,7 +621,7 @@ function Index() {
       ] }) }) }, num)) })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "relative h-[65vh] w-full overflow-hidden border-b border-border/40 select-none", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("video", { autoPlay: true, loop: true, muted: true, playsInline: true, className: "absolute inset-0 h-full w-full object-cover grayscale opacity-75", children: /* @__PURE__ */ jsxRuntimeExports.jsx("source", { src: "https://player.vimeo.com/external/459389137.sd.mp4?s=8948d1d73b5bf95cf859082cedabf558a2d1d0e5&profile_id=139&oauth2_token_id=57447761", type: "video/mp4" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: cinematic, alt: "Misty Atlantic ocean landscape representing movement in silence", loading: "lazy", className: "absolute inset-0 h-full w-full object-cover grayscale opacity-70 scale-105 animate-kenburns" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-background/10 backdrop-blur-3xs" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex flex-col items-center justify-center text-center p-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Reveal, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-brand uppercase text-background bg-foreground/50 px-2 py-0.5 mb-4 inline-block", children: "// cinematic loop" }),

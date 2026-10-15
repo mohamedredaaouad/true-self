@@ -1,14 +1,18 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { g as getOrdersFn, u as updateOrderStatusFn } from "./orders.server-eC9bLRzs.mjs";
+import { c as checkAdminAuthFn, g as getOrdersFn, a as adminLoginFn, b as adminLogoutFn, u as updateOrderStatusFn } from "./orders.server-CfJyxWJX.mjs";
 import { L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
 import "../_libs/seroval.mjs";
 import { R as RefreshCw, L as LogOut, c as Clock, b as CircleCheckBig, P as Package, f as Truck } from "../_libs/lucide-react.mjs";
-import "./server-Bspg8XK9.mjs";
+import "./server-BesNjB06.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
 import "../_libs/srvx.mjs";
+import "node:http";
 import "node:stream";
+import "node:stream/promises";
+import "node:https";
+import "node:http2";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -24,12 +28,32 @@ import "../_libs/isbot.mjs";
 function Admin() {
   const [password, setPassword] = reactExports.useState("");
   const [isAuthenticated, setIsAuthenticated] = reactExports.useState(false);
+  const [checkingAuth, setCheckingAuth] = reactExports.useState(true);
+  const [submitting, setSubmitting] = reactExports.useState(false);
   const [error, setError] = reactExports.useState("");
   const [orders, setOrders] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
   const [updatingId, setUpdatingId] = reactExports.useState(null);
   const [filterStatus, setFilterStatus] = reactExports.useState("All");
-  const correctPassword = "trueself2026";
+  reactExports.useEffect(() => {
+    let active = true;
+    checkAdminAuthFn().then((res) => {
+      if (active) {
+        if (res?.authenticated) {
+          setIsAuthenticated(true);
+        }
+        setCheckingAuth(false);
+      }
+    }).catch((err) => {
+      console.error("Session verification failed:", err);
+      if (active) {
+        setCheckingAuth(false);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
   const fetchOrders = async () => {
     setLoading(true);
     try {
@@ -38,6 +62,10 @@ function Admin() {
       setOrders(sorted);
     } catch (err) {
       console.error("Error loading orders:", err);
+      if (err?.message?.includes("Unauthorized") || err?.status === 401) {
+        setIsAuthenticated(false);
+        setError("Session expirée. Veuillez vous reconnecter.");
+      }
     } finally {
       setLoading(false);
     }
@@ -47,25 +75,40 @@ function Admin() {
       fetchOrders();
     }
   }, [isAuthenticated]);
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (password === correctPassword) {
-      setIsAuthenticated(true);
-      setError("");
-      sessionStorage.setItem("ts_admin_auth", "true");
-    } else {
-      setError("Incorrect password. Please protect your peace.");
+    if (!password.trim()) return;
+    setError("");
+    setSubmitting(true);
+    try {
+      const res = await adminLoginFn({
+        data: {
+          password
+        }
+      });
+      if (res?.success) {
+        setIsAuthenticated(true);
+        setPassword("");
+        setError("");
+      } else {
+        setError(res?.error || "Mot de passe incorrect.");
+      }
+    } catch (err) {
+      setError(err?.message || "Erreur de communication avec le serveur.");
+    } finally {
+      setSubmitting(false);
     }
   };
-  reactExports.useEffect(() => {
-    if (sessionStorage.getItem("ts_admin_auth") === "true") {
-      setIsAuthenticated(true);
+  const handleLogout = async () => {
+    try {
+      await adminLogoutFn();
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      setIsAuthenticated(false);
+      setPassword("");
+      setOrders([]);
     }
-  }, []);
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem("ts_admin_auth");
-    setPassword("");
   };
   const handleStatusChange = async (id, newStatus) => {
     setUpdatingId(id);
@@ -79,6 +122,10 @@ function Admin() {
       await fetchOrders();
     } catch (err) {
       console.error("Error updating order status:", err);
+      if (err?.message?.includes("Unauthorized") || err?.status === 401) {
+        setIsAuthenticated(false);
+        setError("Session expirée. Veuillez vous reconnecter.");
+      }
     } finally {
       setUpdatingId(null);
     }
@@ -91,6 +138,12 @@ function Admin() {
   const shippedCount = orders.filter((o) => o.status === "Shipped").length;
   const deliveredCount = orders.filter((o) => o.status === "Delivered").length;
   const filteredOrders = filterStatus === "All" ? orders : orders.filter((o) => o.status === filterStatus);
+  if (checkingAuth) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen bg-background text-foreground flex items-center justify-center px-6 py-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Logo, { layout: "stacked", symbolSize: 44, textSize: "text-2xl", taglineSize: "text-[8px]", showTagline: false }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase text-muted-foreground font-mono animate-pulse", children: "Vérification de la session..." })
+    ] }) });
+  }
   if (!isAuthenticated) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen bg-background text-foreground flex items-center justify-center px-6 py-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-sm border border-border/60 bg-secondary/10 p-8 rounded-xs shadow-soft text-center space-y-6", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
@@ -98,9 +151,12 @@ function Admin() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase text-muted-foreground font-mono mt-3", children: "Order Gateway Access" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleLogin, className: "space-y-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "password", required: true, placeholder: "Enter Access Passcode", value: password, onChange: (e) => setPassword(e.target.value), className: "w-full bg-background border-b border-border/80 px-2 py-3 text-center text-sm focus:outline-none focus:border-foreground placeholder:text-foreground/30 font-mono" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "password", required: true, disabled: submitting, placeholder: "Enter Access Passcode", value: password, onChange: (e) => setPassword(e.target.value), className: "w-full bg-background border-b border-border/80 px-2 py-3 text-center text-sm focus:outline-none focus:border-foreground placeholder:text-foreground/30 font-mono disabled:opacity-50" }),
         error && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-red-500 font-mono", children: error }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full border border-foreground bg-foreground text-background py-3 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs cursor-pointer font-mono", children: "Authenticate" })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { disabled: submitting, className: "w-full border border-foreground bg-foreground text-background py-3 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs cursor-pointer font-mono disabled:opacity-50 flex items-center justify-center gap-2", children: [
+          submitting && /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 12, className: "animate-spin" }),
+          submitting ? "Authenticating..." : "Authenticate"
+        ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-[9px] text-muted-foreground font-mono", children: "33.5731° N, 7.5898° W" })
     ] }) });
