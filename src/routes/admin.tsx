@@ -13,7 +13,6 @@ export const Route = createFileRoute("/admin")({
   }),
   component: Admin,
 });
-
 function Admin() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -31,7 +30,7 @@ function Admin() {
     try {
       const data = await getOrdersFn();
       // Sort orders by date descending
-      const sorted = (data as Order[]).sort((a, b) => 
+      const sorted = (data as Order[]).sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       setOrders(sorted);
@@ -96,8 +95,8 @@ function Admin() {
   const shippedCount = orders.filter(o => o.status === "Shipped").length;
   const deliveredCount = orders.filter(o => o.status === "Delivered").length;
 
-  const filteredOrders = filterStatus === "All" 
-    ? orders 
+  const filteredOrders = filterStatus === "All"
+    ? orders
     : orders.filter(o => o.status === filterStatus);
 
   if (!isAuthenticated) {
@@ -141,7 +140,7 @@ function Admin() {
           <h1 className="font-display text-4xl lg:text-5xl mt-2 leading-none">Order Management</h1>
         </div>
         <div className="flex gap-3 font-mono text-xs">
-          <button 
+          <button
             onClick={fetchOrders}
             disabled={loading}
             className="border border-border/60 bg-secondary/15 px-4 py-2 hover:bg-foreground hover:text-background transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer"
@@ -149,7 +148,7 @@ function Admin() {
             <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
             Refresh
           </button>
-          <button 
+          <button
             onClick={handleLogout}
             className="border border-border/60 bg-secondary/15 px-4 py-2 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer"
           >
@@ -191,11 +190,10 @@ function Admin() {
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`px-4 py-2 border transition-all rounded-xs cursor-pointer whitespace-nowrap ${
-                filterStatus === status
+              className={`px-4 py-2 border transition-all rounded-xs cursor-pointer whitespace-nowrap ${filterStatus === status
                   ? "bg-foreground text-background border-foreground font-semibold"
                   : "border-border/60 text-muted-foreground hover:border-foreground/60"
-              }`}
+                }`}
             >
               {status === "All" ? "All Orders" : status} ({
                 status === "All" ? orders.length : orders.filter(o => o.status === status).length
@@ -213,11 +211,11 @@ function Admin() {
         ) : (
           <div className="space-y-6">
             {filteredOrders.map((order) => (
-              <div 
+              <div
                 key={order.id}
                 className="border border-border/60 bg-background rounded-xs shadow-card text-start overflow-hidden flex flex-col xl:flex-row divide-y xl:divide-y-0 xl:divide-x divide-border/40"
               >
-                
+
                 {/* Meta details (Customer info) */}
                 <div className="p-6 md:p-8 xl:w-[320px] space-y-6 flex flex-col justify-between bg-secondary/10">
                   <div className="space-y-4">
@@ -226,7 +224,7 @@ function Admin() {
                         #{order.id}
                       </span>
                       <span className="font-mono text-[10px] text-muted-foreground">
-                        {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
 
@@ -249,7 +247,7 @@ function Admin() {
                   {/* Status update controls */}
                   <div className="space-y-2 pt-4 border-t border-border/30">
                     <span className="font-mono text-[8px] text-muted-foreground uppercase block">// ORDER STATUS</span>
-                    
+
                     {updatingId === order.id ? (
                       <div className="flex items-center justify-center p-2 font-mono text-xs text-muted-foreground gap-2">
                         <RefreshCw size={12} className="animate-spin" /> Updating...
@@ -261,11 +259,10 @@ function Admin() {
                             key={st}
                             disabled={order.status === st}
                             onClick={() => handleStatusChange(order.id, st)}
-                            className={`px-2.5 py-1.5 border rounded-2xs text-center cursor-pointer transition-colors ${
-                              order.status === st
+                            className={`px-2.5 py-1.5 border rounded-2xs text-center cursor-pointer transition-colors ${order.status === st
                                 ? "bg-foreground text-background border-foreground font-bold"
                                 : "border-border/60 text-foreground hover:bg-secondary/20"
-                            }`}
+                              }`}
                           >
                             {st}
                           </button>
