@@ -15,7 +15,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-BrdKFmrn.css";
+const appCss = "/assets/styles-BKoIN4Hn.css";
 const translations = {
   fr: {
     // Nav
@@ -739,7 +739,7 @@ function RootComponent() {
   const { queryClient } = Route$4.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }) });
 }
-const $$splitComponentImporter$3 = () => import("./admin-Flk7_ZgG.mjs");
+const $$splitComponentImporter$3 = () => import("./admin-DMHKRb2A.mjs");
 const Route$3 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -751,7 +751,7 @@ const Route$3 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter$2 = () => import("./about-CERDKduJ.mjs");
+const $$splitComponentImporter$2 = () => import("./about-QBc8mCyf.mjs");
 const Route$2 = createFileRoute("/about")({
   head: () => ({
     meta: [{
@@ -763,7 +763,7 @@ const Route$2 = createFileRoute("/about")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-BPvi8HxD.mjs");
+const $$splitComponentImporter$1 = () => import("./index-IXObrizR.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
@@ -781,7 +781,7 @@ const Route$1 = createFileRoute("/")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("../_productId-D7f7pJCJ.mjs");
+const $$splitComponentImporter = () => import("../_productId-B3vwo-L3.mjs");
 const Route = createFileRoute("/product/$productId")({
   head: ({
     params
