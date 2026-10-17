@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-BbGQ4Ukh.mjs";
-import { e as useLanguage, d as useCart, S as Symbol$1, L as Logo } from "./router-B0sL9v5M.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./product-8-back-CIAd_RVy.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-CjHk4DAj.mjs";
+import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-B_RDsTuw.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./product-8-back-Cq2tRKbl.mjs";
 import "../_libs/seroval.mjs";
 import { X, g as Ruler, Z as Zap, h as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-BAdvd5HP.mjs";
+import "./server-sYLonYO3.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -41,6 +41,7 @@ function Index() {
     language
   } = useLanguage();
   const isAr = language === "ar";
+  const searchParams = Route$1.useSearch();
   const {
     cartItems,
     addToCart,
@@ -62,6 +63,11 @@ function Index() {
   const [lightboxImage, setLightboxImage] = reactExports.useState(null);
   const [zoomStyle, setZoomStyle] = reactExports.useState({});
   const [activeTab, setActiveTab] = reactExports.useState("all");
+  reactExports.useEffect(() => {
+    if (searchParams?.category && ["all", "tshirt", "sweatshirt", "hoodie"].includes(searchParams.category)) {
+      setActiveTab(searchParams.category);
+    }
+  }, [searchParams?.category]);
   const [wishlist, setWishlist] = reactExports.useState([]);
   const [recentlyViewed, setRecentlyViewed] = reactExports.useState([]);
   const [wishlistOpen, setWishlistOpen] = reactExports.useState(false);
@@ -69,6 +75,7 @@ function Index() {
   const products = [{
     id: 1,
     key: "1",
+    category: "hoodie",
     price: "650 MAD",
     imgFront: p1Front,
     imgBack: p1Back,
@@ -88,6 +95,7 @@ function Index() {
   }, {
     id: 2,
     key: "2",
+    category: "tshirt",
     price: "350 MAD",
     imgFront: p2Front,
     imgBack: p2Back,
@@ -107,6 +115,7 @@ function Index() {
   }, {
     id: 3,
     key: "3",
+    category: "sweatshirt",
     price: "550 MAD",
     imgFront: p7Front,
     imgBack: p7Back,
@@ -126,6 +135,7 @@ function Index() {
   }, {
     id: 4,
     key: "4",
+    category: "tshirt",
     price: "350 MAD",
     imgFront: p8Front,
     imgBack: p8Back,
@@ -145,6 +155,7 @@ function Index() {
   }, {
     id: 5,
     key: "5",
+    category: "hoodie",
     price: "650 MAD",
     imgFront: p3Front,
     imgBack: p3Back,
@@ -164,6 +175,7 @@ function Index() {
   }, {
     id: 6,
     key: "6",
+    category: "hoodie",
     price: "650 MAD",
     imgFront: p4Front,
     imgBack: p4Back,
@@ -183,6 +195,7 @@ function Index() {
   }, {
     id: 7,
     key: "7",
+    category: "sweatshirt",
     price: "550 MAD",
     imgFront: p5Front,
     imgBack: p5Back,
@@ -202,6 +215,7 @@ function Index() {
   }, {
     id: 8,
     key: "8",
+    category: "tshirt",
     price: "350 MAD",
     imgFront: p6Front,
     imgBack: p6Back,
@@ -486,19 +500,22 @@ function Index() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase text-muted-foreground font-mono", children: t("hero.vol").split(" — ")[0] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-3 font-display text-5xl md:text-7xl text-balance max-w-2xl", children: t("featured.title") })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap items-center justify-start gap-4 md:gap-8 border-b border-border/40 pb-6 mb-12 font-mono", children: ["all", "authenticity", "freedom", "peace", "confidence"].map((tab) => {
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap items-center justify-start gap-3 sm:gap-6 border-b border-border/40 pb-6 mb-12 font-mono", children: ["all", "tshirt", "sweatshirt", "hoodie"].map((tab) => {
         const keyMap = {
-          all: "collection.all",
-          authenticity: "philosophy.authenticity",
-          freedom: "philosophy.freedom",
-          peace: "philosophy.peace",
-          confidence: "philosophy.confidence"
+          all: "category.all",
+          tshirt: "category.tshirt",
+          sweatshirt: "category.sweatshirt",
+          hoodie: "category.hoodie"
         };
-        return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setActiveTab(tab), className: `text-xs tracking-brand uppercase pb-2 transition-all duration-300 relative cursor-pointer ${activeTab === tab ? "text-foreground font-bold border-b-2 border-foreground" : "text-muted-foreground hover:text-foreground"}`, children: t(keyMap[tab]) }, tab);
+        const count = tab === "all" ? products.length : products.filter((p) => p.category === tab).length;
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: () => setActiveTab(tab), className: `text-xs tracking-brand uppercase pb-2 transition-all duration-300 relative cursor-pointer inline-flex items-center gap-2 ${activeTab === tab ? "text-foreground font-bold border-b-2 border-foreground" : "text-muted-foreground hover:text-foreground"}`, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t(keyMap[tab]) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[9px] px-1.5 py-0.5 rounded-2xs font-mono ${activeTab === tab ? "bg-foreground text-background font-bold" : "bg-secondary/60 text-muted-foreground"}`, children: count })
+        ] }, tab);
       }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16", children: products.filter((p) => {
         if (activeTab === "all") return true;
-        return p.philosophy === activeTab;
+        return p.category === activeTab;
       }).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 80, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group text-start relative flex flex-col justify-between h-full", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: `/product/${p.id}`, className: "block relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgFront, alt: t(`product.name.${p.key}`), loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0" }),
@@ -516,7 +533,10 @@ function Index() {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/product/${p.id}`, className: "block group-hover:opacity-85 transition-opacity", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug", children: t(`product.quote.${p.key}`) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono mt-1 uppercase", children: t(`product.name.${p.key}`) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-1.5 flex-wrap", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground", children: t(`category.${p.category}`) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono uppercase", children: t(`product.name.${p.key}`) })
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm", children: t(`product.story.${p.key}`) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-3 border-t border-border/30 flex items-center justify-between", children: [
@@ -795,36 +815,32 @@ function Index() {
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: "// Collections" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground", children: [
+            "// ",
+            isAr ? "الفئات" : "Catégories"
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-3 text-xs text-muted-foreground font-light font-mono", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-              setActiveTab("authenticity");
+              setActiveTab("tshirt");
               window.scrollTo({
                 top: document.getElementById("collection")?.offsetTop || 0,
                 behavior: "smooth"
               });
-            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.authenticity") }) }),
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("category.tshirt") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-              setActiveTab("freedom");
+              setActiveTab("sweatshirt");
               window.scrollTo({
                 top: document.getElementById("collection")?.offsetTop || 0,
                 behavior: "smooth"
               });
-            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.freedom") }) }),
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("category.sweatshirt") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-              setActiveTab("peace");
+              setActiveTab("hoodie");
               window.scrollTo({
                 top: document.getElementById("collection")?.offsetTop || 0,
                 behavior: "smooth"
               });
-            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.peace") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-              setActiveTab("confidence");
-              window.scrollTo({
-                top: document.getElementById("collection")?.offsetTop || 0,
-                behavior: "smooth"
-              });
-            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("philosophy.confidence") }) })
+            }, className: "hover:text-foreground transition-colors text-start cursor-pointer block", children: t("category.hoodie") }) })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2", children: [
@@ -883,7 +899,8 @@ function Index() {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full md:w-[400px] lg:w-[460px] p-8 md:p-12 lg:p-16 flex flex-col justify-between text-start bg-background", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "my-auto space-y-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 font-mono text-[9px] tracking-brand uppercase text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 font-mono text-[9px] tracking-brand uppercase text-muted-foreground", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-2 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground font-semibold", children: t(`category.${selectedProduct.category}`) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t(selectedProduct.tag) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "·" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "SER.100" })

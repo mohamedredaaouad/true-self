@@ -37,21 +37,24 @@ export function Nav({ wishlistCount = 0, onOpenWishlist }: NavProps) {
             textSize="text-xs sm:text-sm md:text-base lg:text-xl font-semibold tracking-brand" 
           />
         </Link>
-        <nav className="hidden md:flex items-center gap-10 text-[10px] sm:text-xs tracking-brand uppercase text-foreground/90 font-medium">
-          <Link to="/" hash="collection" className="hover:text-foreground/60 transition-colors">
-            {t("nav.shop")}
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-[10px] sm:text-xs tracking-brand uppercase text-foreground/90 font-medium">
+          <Link to="/" hash="collection" search={{ category: "all" }} className="hover:text-foreground/60 transition-colors">
+            {t("category.all")}
+          </Link>
+          <Link to="/" hash="collection" search={{ category: "tshirt" }} className="hover:text-foreground/60 transition-colors">
+            {t("category.tshirt")}
+          </Link>
+          <Link to="/" hash="collection" search={{ category: "sweatshirt" }} className="hover:text-foreground/60 transition-colors">
+            {t("category.sweatshirt")}
+          </Link>
+          <Link to="/" hash="collection" search={{ category: "hoodie" }} className="hover:text-foreground/60 transition-colors">
+            {t("category.hoodie")}
           </Link>
           <Link to="/about" activeProps={{ className: "underline underline-offset-4 font-semibold text-foreground" }} className="hover:text-foreground/60 transition-colors">
             {t("story.title")}
           </Link>
           <Link to="/" hash="philosophy" className="hover:text-foreground/60 transition-colors">
             {t("nav.philosophy")}
-          </Link>
-          <Link to="/" hash="lookbook" className="hover:text-foreground/60 transition-colors">
-            {t("nav.lookbook")}
-          </Link>
-          <Link to="/" hash="journal" className="hover:text-foreground/60 transition-colors">
-            {t("nav.journal")}
           </Link>
         </nav>
         <div className="flex items-center gap-5 text-[10px] sm:text-xs tracking-brand uppercase text-foreground/90 font-medium">

@@ -56,6 +56,7 @@ export const Route = createFileRoute("/product/$productId")({
 interface Product {
   id: number;
   key: string;
+  category: "tshirt" | "sweatshirt" | "hoodie";
   price: string;
   imgFront: string;
   imgBack: string;
@@ -69,14 +70,14 @@ interface Product {
 }
 
 const products: Product[] = [
-  { id: 1, key: "1", price: "650 MAD", imgFront: p1Front, imgBack: p1Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Cream", hex: "#F9F6F0" }], philosophy: "authenticity", isFeatured: true, isBestSeller: true },
-  { id: 2, key: "2", price: "350 MAD", imgFront: p2Front, imgBack: p2Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Olive", hex: "#4F5243" }], philosophy: "authenticity", isNew: true },
-  { id: 3, key: "3", price: "550 MAD", imgFront: p7Front, imgBack: p7Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Charcoal", hex: "#2C2C2A" }], philosophy: "confidence", isNew: true },
-  { id: 4, key: "4", price: "350 MAD", imgFront: p8Front, imgBack: p8Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Cream", hex: "#F9F6F0" }], philosophy: "freedom", isFeatured: true, isBestSeller: true },
-  { id: 5, key: "5", price: "650 MAD", imgFront: p3Front, imgBack: p3Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Beige", hex: "#D8D0C5" }], philosophy: "freedom", isNew: true },
-  { id: 6, key: "6", price: "650 MAD", imgFront: p4Front, imgBack: p4Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Charcoal", hex: "#2C2C2A" }], philosophy: "peace", isBestSeller: true },
-  { id: 7, key: "7", price: "550 MAD", imgFront: p5Front, imgBack: p5Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Cream", hex: "#F9F6F0" }], philosophy: "peace", isFeatured: true, isNew: true },
-  { id: 8, key: "8", price: "350 MAD", imgFront: p6Front, imgBack: p6Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Olive", hex: "#4F5243" }], philosophy: "confidence", isFeatured: true, isBestSeller: true },
+  { id: 1, key: "1", category: "hoodie", price: "650 MAD", imgFront: p1Front, imgBack: p1Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Cream", hex: "#F9F6F0" }], philosophy: "authenticity", isFeatured: true, isBestSeller: true },
+  { id: 2, key: "2", category: "tshirt", price: "350 MAD", imgFront: p2Front, imgBack: p2Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Olive", hex: "#4F5243" }], philosophy: "authenticity", isNew: true },
+  { id: 3, key: "3", category: "sweatshirt", price: "550 MAD", imgFront: p7Front, imgBack: p7Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Charcoal", hex: "#2C2C2A" }], philosophy: "confidence", isNew: true },
+  { id: 4, key: "4", category: "tshirt", price: "350 MAD", imgFront: p8Front, imgBack: p8Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Cream", hex: "#F9F6F0" }], philosophy: "freedom", isFeatured: true, isBestSeller: true },
+  { id: 5, key: "5", category: "hoodie", price: "650 MAD", imgFront: p3Front, imgBack: p3Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Beige", hex: "#D8D0C5" }], philosophy: "freedom", isNew: true },
+  { id: 6, key: "6", category: "hoodie", price: "650 MAD", imgFront: p4Front, imgBack: p4Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Charcoal", hex: "#2C2C2A" }], philosophy: "peace", isBestSeller: true },
+  { id: 7, key: "7", category: "sweatshirt", price: "550 MAD", imgFront: p5Front, imgBack: p5Back, tag: "collection.new", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Cream", hex: "#F9F6F0" }], philosophy: "peace", isFeatured: true, isNew: true },
+  { id: 8, key: "8", category: "tshirt", price: "350 MAD", imgFront: p6Front, imgBack: p6Back, tag: "collection.bestsellers", sizes: ["S", "M", "L", "XL"], colors: [{ name: "Beige", hex: "#D8D0C5" }, { name: "Olive", hex: "#4F5243" }], philosophy: "confidence", isFeatured: true, isBestSeller: true },
 ];
 
 const storyTranslations = {
@@ -388,7 +389,12 @@ function ProductDetailRoute() {
             {/* Identity segment */}
             <div className="space-y-4">
               <div className="flex items-center justify-between font-mono text-[9px] tracking-brand text-muted-foreground uppercase">
-                <span>{t(`philosophy.${product.philosophy}`)} // SER.100</span>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-secondary/80 border border-border/50 text-foreground font-semibold rounded-2xs">
+                    {t(`category.${product.category}`)}
+                  </span>
+                  <span>{t(`philosophy.${product.philosophy}`)} // SER.100</span>
+                </div>
                 
                 {/* Heart wishlist button */}
                 <button 

@@ -2,7 +2,7 @@ import { Q as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { Q as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { b as createRouter, a as createRootRouteWithContext, u as useRouter, L as Link, O as Outlet, H as HeadContent, S as Scripts, c as createFileRoute, l as lazyRouteComponent } from "../_libs/tanstack__react-router.mjs";
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
-import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-BAdvd5HP.mjs";
+import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-sYLonYO3.mjs";
 import { X, i as Sparkles, a as Check, h as ShoppingBag, d as Minus, e as Plus, T as Trash2, c as Clock, M as MessageSquare } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
@@ -25,7 +25,7 @@ import "node:http";
 import "node:stream/promises";
 import "node:https";
 import "node:http2";
-const appCss = "/assets/styles-BbDBvOEx.css";
+const appCss = "/assets/styles-Cup0IboW.css";
 const translations = {
   fr: {
     // Nav
@@ -63,6 +63,10 @@ const translations = {
     "collection.featured": "Sélection",
     "collection.new_arrivals": "Nouveautés",
     "collection.best_sellers": "Meilleures Ventes",
+    "category.all": "Tous",
+    "category.tshirt": "T-shirts",
+    "category.sweatshirt": "Sweatshirts",
+    "category.hoodie": "Hoodies",
     // Product Specifications
     "specs.tag": "L'Intention",
     "specs.title": "Philosophie de la Pièce.",
@@ -236,6 +240,10 @@ const translations = {
     "collection.featured": "Featured",
     "collection.new_arrivals": "New Arrivals",
     "collection.best_sellers": "Best Sellers",
+    "category.all": "All",
+    "category.tshirt": "T-shirts",
+    "category.sweatshirt": "Sweatshirts",
+    "category.hoodie": "Hoodies",
     // Product Specifications
     "specs.tag": "The Intent",
     "specs.title": "Garment Philosophy.",
@@ -409,6 +417,10 @@ const translations = {
     "collection.featured": "المميزة",
     "collection.new_arrivals": "أحدث المنتجات",
     "collection.best_sellers": "الأكثر مبيعاً",
+    "category.all": "الكل",
+    "category.tshirt": "تيشرتات",
+    "category.sweatshirt": "سويت شيرت",
+    "category.hoodie": "هوديز (كابوش)",
     // Product Specifications
     "specs.tag": "الغاية",
     "specs.title": "فلسفة القطعة.",
@@ -1403,7 +1415,7 @@ function RootComponent() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(FloatingWhatsApp, {})
   ] }) }) });
 }
-const $$splitComponentImporter$3 = () => import("./admin-D9FMOEjb.mjs");
+const $$splitComponentImporter$3 = () => import("./admin-DuiX2_QG.mjs");
 const Route$3 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -1415,7 +1427,7 @@ const Route$3 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter$2 = () => import("./about-BLQYdgWf.mjs");
+const $$splitComponentImporter$2 = () => import("./about-ChA_5u7o.mjs");
 const Route$2 = createFileRoute("/about")({
   head: () => ({
     meta: [{
@@ -1427,8 +1439,11 @@ const Route$2 = createFileRoute("/about")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-CzEN5LFE.mjs");
+const $$splitComponentImporter$1 = () => import("./index-YPxYHD5L.mjs");
 const Route$1 = createFileRoute("/")({
+  validateSearch: (search) => ({
+    category: search.category || "all"
+  }),
   head: () => ({
     meta: [{
       title: "TRUE SELF® — Live For Yourself"
@@ -1445,7 +1460,7 @@ const Route$1 = createFileRoute("/")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("../_productId-BSrNI4af.mjs");
+const $$splitComponentImporter = () => import("../_productId-CBvNXJmz.mjs");
 const Route = createFileRoute("/product/$productId")({
   head: ({
     params
@@ -1516,13 +1531,14 @@ const router = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
 }, Symbol.toStringTag, { value: "Module" }));
 export {
   Logo as L,
-  Route as R,
+  Route$1 as R,
   Symbol$1 as S,
-  adminLoginFn as a,
-  adminLogoutFn as b,
-  checkAdminAuthFn as c,
-  useCart as d,
-  useLanguage as e,
+  Route as a,
+  adminLoginFn as b,
+  adminLogoutFn as c,
+  checkAdminAuthFn as d,
+  useCart as e,
+  useLanguage as f,
   getOrdersFn as g,
   router as r,
   updateOrderStatusFn as u

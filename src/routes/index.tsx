@@ -36,6 +36,9 @@ import p8Front from "@/assets/produits_split/product-8-front.png";
 import p8Back from "@/assets/produits_split/product-8-back.png";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    category: (search.category as "all" | "tshirt" | "sweatshirt" | "hoodie") || "all",
+  }),
   head: () => ({
     meta: [
       { title: "TRUE SELF® — Live For Yourself" },
@@ -54,6 +57,7 @@ export const Route = createFileRoute("/")({
 interface Product {
   id: number;
   key: string;
+  category: "tshirt" | "sweatshirt" | "hoodie";
   price: string;
   imgFront: string;
   imgBack: string;
@@ -69,6 +73,7 @@ interface Product {
 function Index() {
   const { t, language } = useLanguage();
   const isAr = language === "ar";
+  const searchParams = Route.useSearch();
   const { 
     cartItems, 
     addToCart, 
@@ -93,8 +98,14 @@ function Index() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [zoomStyle, setZoomStyle] = useState<React.CSSProperties>({});
 
-  // Collection tabs state
-  const [activeTab, setActiveTab] = useState<"all" | "authenticity" | "freedom" | "peace" | "confidence">("all");
+  // Collection tabs state (3 categories: T-shirts • Sweatshirts • Hoodies + All)
+  const [activeTab, setActiveTab] = useState<"all" | "tshirt" | "sweatshirt" | "hoodie">("all");
+
+  useEffect(() => {
+    if (searchParams?.category && ["all", "tshirt", "sweatshirt", "hoodie"].includes(searchParams.category)) {
+      setActiveTab(searchParams.category);
+    }
+  }, [searchParams?.category]);
 
   // Wishlist and Recently Viewed states
   const [wishlist, setWishlist] = useState<number[]>([]);
@@ -108,6 +119,7 @@ function Index() {
     { 
       id: 1, 
       key: "1", 
+      category: "hoodie",
       price: "650 MAD", 
       imgFront: p1Front, 
       imgBack: p1Back, 
@@ -122,6 +134,7 @@ function Index() {
     { 
       id: 2, 
       key: "2", 
+      category: "tshirt",
       price: "350 MAD", 
       imgFront: p2Front, 
       imgBack: p2Back, 
@@ -136,6 +149,7 @@ function Index() {
     { 
       id: 3, 
       key: "3", 
+      category: "sweatshirt",
       price: "550 MAD", 
       imgFront: p7Front, 
       imgBack: p7Back, 
@@ -150,6 +164,7 @@ function Index() {
     { 
       id: 4, 
       key: "4", 
+      category: "tshirt",
       price: "350 MAD", 
       imgFront: p8Front, 
       imgBack: p8Back, 
@@ -164,6 +179,7 @@ function Index() {
     { 
       id: 5, 
       key: "5", 
+      category: "hoodie",
       price: "650 MAD", 
       imgFront: p3Front, 
       imgBack: p3Back, 
@@ -178,6 +194,7 @@ function Index() {
     { 
       id: 6, 
       key: "6", 
+      category: "hoodie",
       price: "650 MAD", 
       imgFront: p4Front, 
       imgBack: p4Back, 
@@ -192,6 +209,7 @@ function Index() {
     { 
       id: 7, 
       key: "7", 
+      category: "sweatshirt",
       price: "550 MAD", 
       imgFront: p5Front, 
       imgBack: p5Back, 
@@ -206,6 +224,7 @@ function Index() {
     { 
       id: 8, 
       key: "8", 
+      category: "tshirt",
       price: "350 MAD", 
       imgFront: p6Front, 
       imgBack: p6Back, 
@@ -736,27 +755,34 @@ function Index() {
           </div>
         </Reveal>
 
-        {/* Collection Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-start gap-4 md:gap-8 border-b border-border/40 pb-6 mb-12 font-mono">
-          {(["all", "authenticity", "freedom", "peace", "confidence"] as const).map((tab) => {
+        {/* Collection Filter Tabs (3 Categories: T-shirts • Sweatshirts • Hoodies + All) */}
+        <div className="flex flex-wrap items-center justify-start gap-3 sm:gap-6 border-b border-border/40 pb-6 mb-12 font-mono">
+          {(["all", "tshirt", "sweatshirt", "hoodie"] as const).map((tab) => {
             const keyMap = {
-              all: "collection.all",
-              authenticity: "philosophy.authenticity",
-              freedom: "philosophy.freedom",
-              peace: "philosophy.peace",
-              confidence: "philosophy.confidence",
+              all: "category.all",
+              tshirt: "category.tshirt",
+              sweatshirt: "category.sweatshirt",
+              hoodie: "category.hoodie",
             };
+            const count = tab === "all" ? products.length : products.filter((p) => p.category === tab).length;
             return (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`text-xs tracking-brand uppercase pb-2 transition-all duration-300 relative cursor-pointer ${
+                className={`text-xs tracking-brand uppercase pb-2 transition-all duration-300 relative cursor-pointer inline-flex items-center gap-2 ${
                   activeTab === tab
                     ? "text-foreground font-bold border-b-2 border-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {t(keyMap[tab])}
+                <span>{t(keyMap[tab])}</span>
+                <span className={`text-[9px] px-1.5 py-0.5 rounded-2xs font-mono ${
+                  activeTab === tab 
+                    ? "bg-foreground text-background font-bold" 
+                    : "bg-secondary/60 text-muted-foreground"
+                }`}>
+                  {count}
+                </span>
               </button>
             );
           })}
@@ -767,7 +793,7 @@ function Index() {
           {products
             .filter((p) => {
               if (activeTab === "all") return true;
-              return p.philosophy === activeTab;
+              return p.category === activeTab;
             })
             .map((p, i) => (
               <Reveal key={p.id} delay={i * 80}>
@@ -841,9 +867,14 @@ function Index() {
                       <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug">
                         {t(`product.quote.${p.key}`)}
                       </h3>
-                      <p className="text-[10px] text-muted-foreground font-mono mt-1 uppercase">
-                        {t(`product.name.${p.key}`)}
-                      </p>
+                      <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                        <span className="font-mono text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground">
+                          {t(`category.${p.category}`)}
+                        </span>
+                        <p className="text-[10px] text-muted-foreground font-mono uppercase">
+                          {t(`product.name.${p.key}`)}
+                        </p>
+                      </div>
                       <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
                         {t(`product.story.${p.key}`)}
                       </p>
@@ -1406,26 +1437,21 @@ function Index() {
 
           {/* COLLECTIONS Column */}
           <div className="lg:col-span-2">
-            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// Collections</p>
+            <p className="text-[10px] tracking-brand uppercase mb-4 font-mono text-muted-foreground">// {isAr ? "الفئات" : "Catégories"}</p>
             <ul className="space-y-3 text-xs text-muted-foreground font-light font-mono">
               <li>
-                <button onClick={() => { setActiveTab("authenticity"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
-                  {t("philosophy.authenticity")}
+                <button onClick={() => { setActiveTab("tshirt"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("category.tshirt")}
                 </button>
               </li>
               <li>
-                <button onClick={() => { setActiveTab("freedom"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
-                  {t("philosophy.freedom")}
+                <button onClick={() => { setActiveTab("sweatshirt"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("category.sweatshirt")}
                 </button>
               </li>
               <li>
-                <button onClick={() => { setActiveTab("peace"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
-                  {t("philosophy.peace")}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => { setActiveTab("confidence"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
-                  {t("philosophy.confidence")}
+                <button onClick={() => { setActiveTab("hoodie"); window.scrollTo({ top: document.getElementById("collection")?.offsetTop || 0, behavior: "smooth" }); }} className="hover:text-foreground transition-colors text-start cursor-pointer block">
+                  {t("category.hoodie")}
                 </button>
               </li>
             </ul>
@@ -1580,7 +1606,10 @@ function Index() {
               {/* Product Info Segment */}
               <div className="my-auto space-y-8">
                 {/* Category & Exclusivity Tag */}
-                <div className="flex items-center gap-3 font-mono text-[9px] tracking-brand uppercase text-muted-foreground">
+                <div className="flex items-center gap-2 font-mono text-[9px] tracking-brand uppercase text-muted-foreground">
+                  <span className="px-2 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground font-semibold">
+                    {t(`category.${selectedProduct.category}`)}
+                  </span>
                   <span>{t(selectedProduct.tag)}</span>
                   <span>·</span>
                   <span>SER.100</span>

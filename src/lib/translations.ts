@@ -41,6 +41,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "collection.featured": "Sélection",
     "collection.new_arrivals": "Nouveautés",
     "collection.best_sellers": "Meilleures Ventes",
+    "category.all": "Tous",
+    "category.tshirt": "T-shirts",
+    "category.sweatshirt": "Sweatshirts",
+    "category.hoodie": "Hoodies",
 
     // Product Specifications
     "specs.tag": "L'Intention",
@@ -234,6 +238,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "collection.featured": "Featured",
     "collection.new_arrivals": "New Arrivals",
     "collection.best_sellers": "Best Sellers",
+    "category.all": "All",
+    "category.tshirt": "T-shirts",
+    "category.sweatshirt": "Sweatshirts",
+    "category.hoodie": "Hoodies",
 
     // Product Specifications
     "specs.tag": "The Intent",
@@ -427,6 +435,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "collection.featured": "المميزة",
     "collection.new_arrivals": "أحدث المنتجات",
     "collection.best_sellers": "الأكثر مبيعاً",
+    "category.all": "الكل",
+    "category.tshirt": "تيشرتات",
+    "category.sweatshirt": "سويت شيرت",
+    "category.hoodie": "هوديز (كابوش)",
 
     // Product Specifications
     "specs.tag": "الغاية",

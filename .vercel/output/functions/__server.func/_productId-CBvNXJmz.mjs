@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "./_libs/react.mjs";
 import { u as useRouter, L as Link } from "./_libs/tanstack__react-router.mjs";
-import { R as Route, e as useLanguage, d as useCart, L as Logo } from "./_ssr/router-B0sL9v5M.mjs";
-import { N as Nav, R as Reveal } from "./_ssr/Reveal-BbGQ4Ukh.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./_ssr/product-8-back-CIAd_RVy.mjs";
+import { a as Route, f as useLanguage, e as useCart, L as Logo } from "./_ssr/router-B_RDsTuw.mjs";
+import { N as Nav, R as Reveal } from "./_ssr/Reveal-CjHk4DAj.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./_ssr/product-8-back-Cq2tRKbl.mjs";
 import "./_libs/seroval.mjs";
 import { H as Heart, g as Ruler, C as Calendar, Z as Zap, a as Check, h as ShoppingBag, X } from "./_libs/lucide-react.mjs";
 import "./_libs/tanstack__router-core.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "./_libs/isbot.mjs";
 import "./_libs/tanstack__query-core.mjs";
 import "./_libs/tanstack__react-query.mjs";
-import "./_ssr/server-BAdvd5HP.mjs";
+import "./_ssr/server-sYLonYO3.mjs";
 import "node:async_hooks";
 import "./_libs/h3-v2.mjs";
 import "./_libs/rou3.mjs";
@@ -32,6 +32,7 @@ const cottonTexture = "/assets/cream_cotton_texture_closeup-c6XCiD8F.png";
 const products = [{
   id: 1,
   key: "1",
+  category: "hoodie",
   price: "650 MAD",
   imgFront: p1Front,
   imgBack: p1Back,
@@ -50,6 +51,7 @@ const products = [{
 }, {
   id: 2,
   key: "2",
+  category: "tshirt",
   price: "350 MAD",
   imgFront: p2Front,
   imgBack: p2Back,
@@ -67,6 +69,7 @@ const products = [{
 }, {
   id: 3,
   key: "3",
+  category: "sweatshirt",
   price: "550 MAD",
   imgFront: p7Front,
   imgBack: p7Back,
@@ -84,6 +87,7 @@ const products = [{
 }, {
   id: 4,
   key: "4",
+  category: "tshirt",
   price: "350 MAD",
   imgFront: p8Front,
   imgBack: p8Back,
@@ -102,6 +106,7 @@ const products = [{
 }, {
   id: 5,
   key: "5",
+  category: "hoodie",
   price: "650 MAD",
   imgFront: p3Front,
   imgBack: p3Back,
@@ -119,6 +124,7 @@ const products = [{
 }, {
   id: 6,
   key: "6",
+  category: "hoodie",
   price: "650 MAD",
   imgFront: p4Front,
   imgBack: p4Back,
@@ -136,6 +142,7 @@ const products = [{
 }, {
   id: 7,
   key: "7",
+  category: "sweatshirt",
   price: "550 MAD",
   imgFront: p5Front,
   imgBack: p5Back,
@@ -154,6 +161,7 @@ const products = [{
 }, {
   id: 8,
   key: "8",
+  category: "tshirt",
   price: "350 MAD",
   imgFront: p6Front,
   imgBack: p6Back,
@@ -399,9 +407,12 @@ function ProductDetailRoute() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-5 text-start space-y-8 lg:sticky lg:top-24", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between font-mono text-[9px] tracking-brand text-muted-foreground uppercase", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-              t(`philosophy.${product.philosophy}`),
-              " // SER.100"
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-2 py-0.5 bg-secondary/80 border border-border/50 text-foreground font-semibold rounded-2xs", children: t(`category.${product.category}`) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                t(`philosophy.${product.philosophy}`),
+                " // SER.100"
+              ] })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: toggleWishlist, className: "hover:text-red-500 transition-colors p-1 cursor-pointer", title: "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { size: 14, className: wishlist.includes(product.id) ? "fill-red-500 text-red-500" : "text-foreground" }) })
           ] }),
