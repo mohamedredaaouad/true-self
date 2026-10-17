@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-Bhc-DgUQ.mjs";
-import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-CjADwpdV.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p6Back, i as p6Front, j as p7Back, k as p7Front, S as SizeGuideModal } from "./product-7-back-Jqe-uQLJ.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-Ccfl1aPf.mjs";
+import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-BZnIH0Ji.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p6Back, i as p6Front, j as p7Back, k as p7Front, S as SizeGuideModal } from "./product-7-back-BdJWBFEI.mjs";
 import "../_libs/seroval.mjs";
 import { X, g as Ruler, Z as Zap, h as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-DdsG5avk.mjs";
+import "./server-BtjoV9_h.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -398,7 +398,7 @@ function Index() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "mt-3 font-display text-4xl md:text-6xl text-balance max-w-2xl", children: language === "fr" ? "Sélection de Saison" : language === "ar" ? "المميزة هذا الموسم" : "Seasonal Featured" })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8", children: products.filter((p) => p.isFeatured).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 100, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group text-start relative flex flex-col justify-between h-full", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: `/product/${p.id}`, className: "block relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { onClick: () => openProduct(p), className: "block relative cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgFront, alt: t(`product.name.${p.key}`), loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgBack, alt: `${t(`product.name.${p.key}`)} back view`, loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (e) => {
@@ -412,9 +412,12 @@ function Index() {
           }, className: `absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`, title: wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: wishlist.includes(p.id) ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: `w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" }) }) })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/product/${p.id}`, className: "block group-hover:opacity-85 transition-opacity", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { onClick: () => openProduct(p), className: "block group-hover:opacity-85 transition-opacity cursor-pointer", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug", children: t(`product.quote.${p.key}`) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono mt-1 uppercase", children: t(`product.name.${p.key}`) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-1.5 flex-wrap", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground", children: t(`category.${p.category}`) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-muted-foreground font-mono uppercase", children: t(`product.name.${p.key}`) })
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm", children: t(`product.story.${p.key}`) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-3 border-t border-border/30 flex items-center justify-between", children: [
@@ -517,7 +520,7 @@ function Index() {
         if (activeTab === "all") return true;
         return p.category === activeTab;
       }).map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: i * 80, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "group text-start relative flex flex-col justify-between h-full", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: `/product/${p.id}`, className: "block relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { onClick: () => openProduct(p), className: "block relative cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgFront, alt: t(`product.name.${p.key}`), loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: p.imgBack, alt: `${t(`product.name.${p.key}`)} back view`, loading: "lazy", className: "h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (e) => {
@@ -531,7 +534,7 @@ function Index() {
           }, className: `absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`, title: wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: wishlist.includes(p.id) ? "currentColor" : "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: `w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" }) }) })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex-1 flex flex-col justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: `/product/${p.id}`, className: "block group-hover:opacity-85 transition-opacity", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { onClick: () => openProduct(p), className: "block group-hover:opacity-85 transition-opacity cursor-pointer", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl tracking-tight text-foreground/95 italic leading-snug", children: t(`product.quote.${p.key}`) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-1.5 flex-wrap", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground", children: t(`category.${p.category}`) }),
@@ -947,7 +950,8 @@ function Index() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: handleAddToCart, className: "w-full border border-border/80 bg-background text-foreground py-3 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs flex items-center justify-center gap-2 group cursor-pointer font-mono", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 14 }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف إلى السلة" : "Ajouter au Panier" })
-              ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: `/product/${selectedProduct.id}`, className: "block text-center font-mono text-[9px] text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4 pt-1", children: isAr ? "عرض التفاصيل في صفحة مستقلة ←" : language === "fr" ? "Ouvrir la page complète du produit ↗" : "Open standalone product page ↗" })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border/40 pt-6 space-y-4", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [

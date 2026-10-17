@@ -490,8 +490,8 @@ function Index() {
                   <div 
                     className="group text-start relative flex flex-col justify-between h-full"
                   >
-                    {/* Wrap visual element in Link for direct product page access */}
-                    <Link to={`/product/${p.id}`} className="block relative">
+                    {/* Wrap visual element to open modal pop-up */}
+                    <div onClick={() => openProduct(p)} className="block relative cursor-pointer">
                     {/* Image frame */}
                     <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
                       {/* Front Image */}
@@ -548,22 +548,27 @@ function Index() {
                         </svg>
                       </button>
                     </div>
-                    </Link>
+                    </div>
 
                     {/* Card Content - Story & Quote focused */}
                     <div className="mt-4 flex-1 flex flex-col justify-between">
-                      <Link to={`/product/${p.id}`} className="block group-hover:opacity-85 transition-opacity">
+                      <div onClick={() => openProduct(p)} className="block group-hover:opacity-85 transition-opacity cursor-pointer">
                         {/* Quote & Name */}
                         <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug">
                           {t(`product.quote.${p.key}`)}
                         </h3>
-                        <p className="text-[10px] text-muted-foreground font-mono mt-1 uppercase">
-                          {t(`product.name.${p.key}`)}
-                        </p>
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                          <span className="font-mono text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground">
+                            {t(`category.${p.category}`)}
+                          </span>
+                          <p className="text-[10px] text-muted-foreground font-mono uppercase">
+                            {t(`product.name.${p.key}`)}
+                          </p>
+                        </div>
                         <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
                           {t(`product.story.${p.key}`)}
                         </p>
-                      </Link>
+                      </div>
 
                       <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
                         {/* Price - Bold and Prominent */}
@@ -800,8 +805,8 @@ function Index() {
                 <div 
                   className="group text-start relative flex flex-col justify-between h-full"
                 >
-                  {/* Wrap visual element in Link for direct product page access */}
-                  <Link to={`/product/${p.id}`} className="block relative">
+                  {/* Wrap visual element to open modal pop-up */}
+                  <div onClick={() => openProduct(p)} className="block relative cursor-pointer">
                   {/* Image Frame */}
                   <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
                     {/* Front Image */}
@@ -858,11 +863,11 @@ function Index() {
                       </svg>
                     </button>
                   </div>
-                  </Link>
+                  </div>
 
                   {/* Card Content - Story & Quote focused */}
                   <div className="mt-4 flex-1 flex flex-col justify-between">
-                    <Link to={`/product/${p.id}`} className="block group-hover:opacity-85 transition-opacity">
+                    <div onClick={() => openProduct(p)} className="block group-hover:opacity-85 transition-opacity cursor-pointer">
                       {/* Quote & Name */}
                       <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug">
                         {t(`product.quote.${p.key}`)}
@@ -878,7 +883,7 @@ function Index() {
                       <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
                         {t(`product.story.${p.key}`)}
                       </p>
-                    </Link>
+                    </div>
 
                     <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
                       {/* Price - Bold and Prominent */}
@@ -1710,6 +1715,12 @@ function Index() {
                     <ShoppingBag size={14} />
                     <span>{isAr ? "أضف إلى السلة" : "Ajouter au Panier"}</span>
                   </button>
+                  <Link
+                    to={`/product/${selectedProduct.id}`}
+                    className="block text-center font-mono text-[9px] text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4 pt-1"
+                  >
+                    {isAr ? "عرض التفاصيل في صفحة مستقلة ←" : language === "fr" ? "Ouvrir la page complète du produit ↗" : "Open standalone product page ↗"}
+                  </Link>
                 </div>
 
                 {/* Mixed Reviews Block */}
