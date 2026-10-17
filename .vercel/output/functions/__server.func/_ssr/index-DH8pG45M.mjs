@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-CjHk4DAj.mjs";
-import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-B_RDsTuw.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./product-8-back-Cq2tRKbl.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-Bhc-DgUQ.mjs";
+import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-CjADwpdV.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p6Back, i as p6Front, j as p7Back, k as p7Front, S as SizeGuideModal } from "./product-7-back-Jqe-uQLJ.mjs";
 import "../_libs/seroval.mjs";
 import { X, g as Ruler, Z as Zap, h as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-sYLonYO3.mjs";
+import "./server-DdsG5avk.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -117,8 +117,8 @@ function Index() {
     key: "3",
     category: "sweatshirt",
     price: "550 MAD",
-    imgFront: p7Front,
-    imgBack: p7Back,
+    imgFront: p3Front,
+    imgBack: p3Back,
     tag: "collection.new",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -137,13 +137,13 @@ function Index() {
     key: "4",
     category: "tshirt",
     price: "350 MAD",
-    imgFront: p8Front,
-    imgBack: p8Back,
+    imgFront: p4Front,
+    imgBack: p4Back,
     tag: "collection.bestsellers",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
-      name: "Beige",
-      hex: "#D8D0C5"
+      name: "Charcoal",
+      hex: "#2C2C2A"
     }, {
       name: "Cream",
       hex: "#F9F6F0"
@@ -157,8 +157,8 @@ function Index() {
     key: "5",
     category: "hoodie",
     price: "650 MAD",
-    imgFront: p3Front,
-    imgBack: p3Back,
+    imgFront: p1Front,
+    imgBack: p1Back,
     tag: "collection.new",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -177,8 +177,8 @@ function Index() {
     key: "6",
     category: "hoodie",
     price: "650 MAD",
-    imgFront: p4Front,
-    imgBack: p4Back,
+    imgFront: p6Front,
+    imgBack: p6Back,
     tag: "collection.bestsellers",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -197,8 +197,8 @@ function Index() {
     key: "7",
     category: "sweatshirt",
     price: "550 MAD",
-    imgFront: p5Front,
-    imgBack: p5Back,
+    imgFront: p7Front,
+    imgBack: p7Back,
     tag: "collection.new",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
@@ -217,13 +217,13 @@ function Index() {
     key: "8",
     category: "tshirt",
     price: "350 MAD",
-    imgFront: p6Front,
-    imgBack: p6Back,
+    imgFront: p2Front,
+    imgBack: p2Back,
     tag: "collection.bestsellers",
     sizes: ["S", "M", "L", "XL"],
     colors: [{
-      name: "Beige",
-      hex: "#D8D0C5"
+      name: "Cream",
+      hex: "#F9F6F0"
     }, {
       name: "Olive",
       hex: "#4F5243"
