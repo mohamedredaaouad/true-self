@@ -1,7 +1,7 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { c as checkAdminAuthFn, L as Logo, g as getOrdersFn, a as adminLoginFn, b as adminLogoutFn, u as updateOrderStatusFn } from "./router-Dtmg5ANs.mjs";
+import { c as checkAdminAuthFn, L as Logo, g as getOrdersFn, a as adminLoginFn, b as adminLogoutFn, u as updateOrderStatusFn } from "./router-B0sL9v5M.mjs";
 import "../_libs/seroval.mjs";
-import { R as RefreshCw, D as Download, L as LogOut, c as Clock, b as CircleCheckBig, P as Package, h as Truck, S as Search, M as MessageSquare } from "../_libs/lucide-react.mjs";
+import { R as RefreshCw, D as Download, L as LogOut, j as TrendingUp, P as Package, c as Clock, b as CircleCheckBig, k as Truck, S as Search, M as MessageSquare, f as Printer, X } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
 import "../_libs/tanstack__react-router.mjs";
@@ -17,7 +17,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-import "./server-D5s2sBIq.mjs";
+import "./server-BAdvd5HP.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -37,6 +37,7 @@ function Admin() {
   const [updatingId, setUpdatingId] = reactExports.useState(null);
   const [filterStatus, setFilterStatus] = reactExports.useState("All");
   const [searchQuery, setSearchQuery] = reactExports.useState("");
+  const [printingOrder, setPrintingOrder] = reactExports.useState(null);
   reactExports.useEffect(() => {
     let active = true;
     checkAdminAuthFn().then((res) => {
@@ -135,9 +136,11 @@ function Admin() {
   const totalRevenue = orders.reduce((acc, order) => {
     return acc + order.totalPrice;
   }, 0);
+  const totalItemsSold = orders.reduce((acc, order) => acc + order.items.reduce((sum, item) => sum + item.quantity, 0), 0);
+  const avgOrderValue = orders.length > 0 ? Math.round(totalRevenue / orders.length) : 0;
   const pendingCount = orders.filter((o) => o.status === "New").length;
   const confirmedCount = orders.filter((o) => o.status === "Confirmed").length;
-  const shippedCount = orders.filter((o) => o.status === "Shipped").length;
+  orders.filter((o) => o.status === "Shipped").length;
   const deliveredCount = orders.filter((o) => o.status === "Delivered").length;
   function formatWhatsAppLink(phone, orderId, customerName, city) {
     let clean = (phone || "").replace(/[^0-9]/g, "");
@@ -216,41 +219,51 @@ function Admin() {
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] grid grid-cols-2 lg:grid-cols-5 gap-4 mb-12", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-6 rounded-xs text-start", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[8px] text-muted-foreground block mb-2 uppercase", children: "TOTAL SALES" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-xl md:text-2xl font-bold", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-12", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-5 rounded-xs text-start", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider", children: "TOTAL SALES" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-lg md:text-xl font-bold", children: [
           totalRevenue,
           " MAD"
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-6 rounded-xs text-start", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 10 }),
-          " NEW"
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-5 rounded-xs text-start", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { size: 10 }),
+          " PANIER MOYEN"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xl md:text-2xl font-bold", children: pendingCount })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-lg md:text-xl font-bold", children: [
+          avgOrderValue,
+          " MAD"
+        ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-6 rounded-xs text-start", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheckBig, { size: 10 }),
-          " CONFIRMED"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xl md:text-2xl font-bold", children: confirmedCount })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-6 rounded-xs text-start", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-5 rounded-xs text-start", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Package, { size: 10 }),
-          " SHIPPED"
+          " ARTICLES VENDUS"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xl md:text-2xl font-bold", children: shippedCount })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-lg md:text-xl font-bold", children: totalItemsSold })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-6 rounded-xs text-start col-span-2 lg:col-span-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Truck, { size: 10 }),
-          " DELIVERED"
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-5 rounded-xs text-start", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 10 }),
+          " NOUVELLES"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xl md:text-2xl font-bold", children: deliveredCount })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-lg md:text-xl font-bold", children: pendingCount })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-5 rounded-xs text-start", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheckBig, { size: 10 }),
+          " CONFIRMÉES"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-lg md:text-xl font-bold", children: confirmedCount })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-border/60 bg-secondary/10 p-5 rounded-xs text-start", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Truck, { size: 10 }),
+          " LIVRÉES"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-lg md:text-xl font-bold", children: deliveredCount })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "mx-auto max-w-[1400px]", children: [
@@ -293,6 +306,10 @@ function Admin() {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: formatWhatsAppLink(order.customerPhone, order.id, order.customerName, order.customerCity), target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 px-2 py-0.5 rounded-2xs bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white text-[10px] font-mono transition-all border border-[#25D366]/40 hover:border-[#25D366]", title: "Discuter directement sur WhatsApp avec le client", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { size: 10 }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "WhatsApp" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: () => setPrintingOrder(order), className: "inline-flex items-center gap-1 px-2 py-0.5 rounded-2xs bg-secondary/30 hover:bg-foreground hover:text-background text-foreground text-[10px] font-mono transition-all border border-border/60 cursor-pointer", title: "Imprimer le bon de livraison pour le transporteur / livreur", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Printer, { size: 10 }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Bon Livraison" })
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted-foreground leading-relaxed pt-1", children: [
@@ -349,7 +366,126 @@ function Admin() {
           ] })
         ] })
       ] }, order.id)) })
-    ] })
+    ] }),
+    printingOrder && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative bg-white text-zinc-950 w-full max-w-2xl rounded-lg shadow-2xl p-6 sm:p-8 my-8 print:p-0 print:m-0 print:shadow-none print:w-full print:max-w-none", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between pb-4 mb-4 border-b border-zinc-200 print:hidden", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Printer, { className: "w-5 h-5 text-zinc-700" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs uppercase tracking-wider font-semibold text-zinc-800", children: "Bordereau d'Expédition / Bon de Livraison" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: () => window.print(), className: "px-4 py-1.5 bg-black text-white hover:bg-zinc-800 font-mono text-xs uppercase tracking-widest rounded transition-colors inline-flex items-center gap-2 cursor-pointer", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Printer, { className: "w-4 h-4" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Imprimer" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setPrintingOrder(null), className: "p-1.5 hover:bg-zinc-100 rounded text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer", title: "Fermer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" }) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6 text-zinc-900 font-sans print:text-black", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-start border-b border-zinc-300 pb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-black tracking-tight font-serif uppercase", children: "TRUE SELF®" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-zinc-600 font-mono", children: "Luxury Streetwear Casablanca — Maroc" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-zinc-600 font-mono", children: "Service Client: +212 6 52 61 70 44" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "inline-block px-2.5 py-1 bg-zinc-950 text-white font-mono text-xs font-bold rounded", children: [
+              "BON #",
+              printingOrder.id
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[11px] text-zinc-600 font-mono mt-1", children: [
+              "Date: ",
+              new Date(printingOrder.createdAt).toLocaleDateString("fr-MA"),
+              " ",
+              new Date(printingOrder.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+              })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-bold text-emerald-700 font-mono mt-0.5", children: "Mode: Paiement à la livraison (COD)" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4 text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-zinc-200 rounded p-3 bg-zinc-50/50", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[10px] uppercase tracking-wider text-zinc-500 block mb-1", children: "EXPÉDITEUR" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold", children: "TRUE SELF STUDIOS" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-zinc-600", children: "Casablanca, Maroc" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-zinc-600", children: "contact@trueself.ma" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-zinc-600", children: "Tél: +212 6 52 61 70 44" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-2 border-zinc-900 rounded p-3 bg-amber-50/30", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[10px] uppercase tracking-wider text-zinc-900 font-bold block mb-1", children: "DESTINATAIRE (CLIENT)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-sm text-zinc-950", children: printingOrder.customerName }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs font-semibold text-zinc-900", children: [
+              "Tél: ",
+              printingOrder.customerPhone
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-zinc-700 mt-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold uppercase text-zinc-950", children: printingOrder.customerCity }),
+              " — ",
+              printingOrder.customerAddress
+            ] }),
+            printingOrder.customerNotes && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-2 pt-2 border-t border-zinc-200 text-[10px] text-zinc-600 italic", children: [
+              'Note client: "',
+              printingOrder.customerNotes,
+              '"'
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border border-zinc-200 rounded overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "w-full text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { className: "bg-zinc-100 font-mono text-[10px] uppercase text-zinc-700 border-b border-zinc-200", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "py-2 px-3 text-left", children: "Article" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "py-2 px-2 text-center", children: "Taille" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "py-2 px-2 text-center", children: "Couleur" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "py-2 px-2 text-center", children: "Qté" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "py-2 px-3 text-right", children: "Prix Unitaire" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { className: "py-2 px-3 text-right", children: "Total" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("tbody", { className: "divide-y divide-zinc-200 font-mono", children: printingOrder.items.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { className: "hover:bg-zinc-50/50", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "py-2.5 px-3 font-sans font-medium text-zinc-900", children: [
+              item.name,
+              item.quote && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block text-[10px] text-zinc-500 italic font-normal", children: [
+                '"',
+                item.quote,
+                '"'
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2.5 px-2 text-center font-bold", children: item.size }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2.5 px-2 text-center text-zinc-600", children: item.color }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { className: "py-2.5 px-2 text-center font-bold", children: item.quantity }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "py-2.5 px-3 text-right text-zinc-600", children: [
+              item.price,
+              " MAD"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { className: "py-2.5 px-3 text-right font-bold text-zinc-950", children: [
+              item.price * item.quantity,
+              " MAD"
+            ] })
+          ] }, idx)) })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-zinc-950 text-white rounded p-4 flex justify-between items-center print:border print:border-black print:text-black print:bg-zinc-100", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xs uppercase tracking-widest text-zinc-300 print:text-zinc-700 block", children: "MONTANT TOTAL À ENCAISSER (COD)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] text-zinc-400 print:text-zinc-600", children: "Paiement en espèces à la réception du colis" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-2xl font-black text-white print:text-black", children: [
+            printingOrder.totalPrice,
+            " MAD"
+          ] }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-8 pt-4 border-t border-dashed border-zinc-300 text-center font-mono text-[10px] text-zinc-500", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-zinc-200 rounded p-3 h-20 flex flex-col justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Visa & Signature Livreur / Agence" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-b border-zinc-300 w-3/4 mx-auto" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border border-zinc-200 rounded p-3 h-20 flex flex-col justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Signature & Date Réception Client" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-b border-zinc-300 w-3/4 mx-auto" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center font-mono text-[9px] text-zinc-400 pt-2", children: "Document généré automatiquement via TRUE SELF® Back-Office — Merci pour votre confiance." })
+      ] })
+    ] }) })
   ] });
 }
 export {

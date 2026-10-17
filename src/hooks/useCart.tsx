@@ -15,6 +15,7 @@ export interface CartItem {
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (item: Omit<CartItem, "id" | "quantity">) => void;
+  buyNow: (item: Omit<CartItem, "id" | "quantity">) => void;
   updateQuantity: (id: string, delta: number) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
@@ -22,6 +23,8 @@ interface CartContextType {
   cartSubtotal: number;
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
+  requestedStep: "cart" | "checkout";
+  setRequestedStep: (step: "cart" | "checkout") => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -30,6 +33,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [requestedStep, setRequestedStep] = useState<"cart" | "checkout">("cart");
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -70,7 +74,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prevItems, { ...newItem, id: itemId, quantity: 1 }];
     });
-    // Automatically open drawer when item is added
+    setRequestedStep("cart");
+    setCartOpen(true);
+  };
+
+  const buyNow = (newItem: Omit<CartItem, "id" | "quantity">) => {
+    const itemId = `${newItem.productId}-${newItem.size}-${newItem.color}`;
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === itemId);
+      if (existingItem) {
+        return prevItems;
+      }
+      return [...prevItems, { ...newItem, id: itemId, quantity: 1 }];
+    });
+    setRequestedStep("checkout");
     setCartOpen(true);
   };
 
@@ -104,6 +121,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       value={{
         cartItems,
         addToCart,
+        buyNow,
         updateQuantity,
         removeFromCart,
         clearCart,
@@ -111,6 +129,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         cartSubtotal,
         cartOpen,
         setCartOpen,
+        requestedStep,
+        setRequestedStep,
       }}
     >
       {children}

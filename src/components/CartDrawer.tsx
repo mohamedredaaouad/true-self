@@ -3,7 +3,8 @@ import { useCart } from "../hooks/useCart";
 import { useLanguage } from "../hooks/useLanguage";
 import { createOrderFn } from "../lib/orders.server";
 import { Symbol as BrandSymbol } from "./BrandLogo";
-import { X, Plus, Minus, Trash2, ShoppingBag, Check } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShoppingBag, Check, Sparkles, Clock } from "lucide-react";
+import { MOROCCAN_CITIES, isValidMoroccanPhone } from "../lib/morocco";
 
 export interface CompletedOrder {
   id: string;
@@ -87,18 +88,26 @@ export function CartDrawer() {
     cartCount,
     cartOpen,
     setCartOpen,
+    requestedStep,
   } = useCart();
 
   // Checkout form states
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "checkout" | "success">("cart");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("Casablanca");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderError, setOrderError] = useState("");
   const [completedOrder, setCompletedOrder] = useState<CompletedOrder | null>(null);
+
+  // Sync step if 1-click buy now was triggered
+  useEffect(() => {
+    if (cartOpen && requestedStep) {
+      setCheckoutStep(requestedStep);
+    }
+  }, [cartOpen, requestedStep]);
 
   // Prevent scroll when cart is open
   useEffect(() => {
@@ -127,6 +136,14 @@ export function CartDrawer() {
     e.preventDefault();
     if (!fullName || !phone || !city || !address) {
       setOrderError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+    if (!isValidMoroccanPhone(phone)) {
+      setOrderError(
+        isAr
+          ? "يرجى إدخال رقم هاتف مغربي صالح (مثال: 06 XX XX XX XX أو 07 XX XX XX XX)."
+          : "Veuillez saisir un numéro de téléphone marocain valide (ex: 06 XX XX XX XX ou 07 XX XX XX XX)."
+      );
       return;
     }
     setIsSubmittingOrder(true);
@@ -198,6 +215,10 @@ export function CartDrawer() {
 
   const whatsAppTargetNumber = (import.meta.env.VITE_WHATSAPP_NUMBER || "+212652617044").replace(/[^0-9]/g, "");
 
+  const selectedCityData = MOROCCAN_CITIES.find(
+    (c) => c.nameFr.toLowerCase() === city.toLowerCase() || c.nameAr === city
+  ) || MOROCCAN_CITIES[0];
+
   return (
     <>
       {/* Backdrop overlay */}
@@ -242,10 +263,23 @@ export function CartDrawer() {
           </button>
         </div>
 
-        {/* Emotional Cart Copy Banner */}
+        {/* Emotional & Upsell Cart Banner */}
         {cartItems.length > 0 && checkoutStep !== "success" && (
-          <div className="bg-secondary/40 px-6 py-2.5 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground">
-            ✦ {t("cart.emotion.banner")}
+          <div className="bg-secondary/40 px-6 py-2.5 border-b border-border/30 text-center text-[10px] sm:text-xs font-mono text-foreground flex items-center justify-center gap-1.5">
+            <Sparkles size={12} className="text-amber-500 flex-shrink-0" />
+            {cartCount === 1 ? (
+              <span>
+                {isAr
+                  ? "أضف قطعة ثانية لطلبك للحصول على شحن أولوية وملصق TRUE SELF® الحصري !"
+                  : "Ajoutez un 2ème article pour débloquer le sticker collector TRUE SELF® offert !"}
+              </span>
+            ) : (
+              <span className="text-[#25D366] font-semibold">
+                {isAr
+                  ? "✓ مبروك ! تم تفعيل الشحن المجاني الأولوية والملصق الحصري."
+                  : "✓ Offre débloquée : Livraison Express & Sticker Collector Offerts !"}
+              </span>
+            )}
           </div>
         )}
 
@@ -400,17 +434,29 @@ export function CartDrawer() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">
-                      {isAr ? "المدينة" : "Ville"} *
-                    </label>
-                    <input
-                      type="text"
-                      required
+                    <div className="flex items-center justify-between">
+                      <label className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">
+                        {isAr ? "المدينة" : "Ville"} *
+                      </label>
+                      {selectedCityData && (
+                        <span className="font-mono text-[9px] text-[#25D366] font-semibold flex items-center gap-1">
+                          <Clock size={10} />
+                          {isAr ? selectedCityData.delayAr : selectedCityData.delayFr}
+                        </span>
+                      )}
+                    </div>
+                    <select
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground font-mono"
-                      placeholder={isAr ? "الدار البيضاء، مراكش، طنجة..." : "ex: Casablanca, Rabat, Marrakech..."}
-                    />
+                      required
+                      className="w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground font-mono cursor-pointer"
+                    >
+                      {MOROCCAN_CITIES.map((c) => (
+                        <option key={c.nameFr} value={c.nameFr} className="bg-background text-foreground">
+                          {isAr ? c.nameAr : c.nameFr} — ({isAr ? c.delayAr : c.delayFr})
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="space-y-1.5">

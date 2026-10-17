@@ -4,8 +4,9 @@ import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Symbol as BrandSymbol, Logo as BrandLogo } from "@/components/BrandLogo";
-import { X, ShoppingBag, Check, Plus, Minus, Trash2 } from "lucide-react";
+import { X, ShoppingBag, Check, Plus, Minus, Trash2, Ruler, Zap } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { SizeGuideModal } from "@/components/SizeGuideModal";
 
 // Assets imports
 import hero from "@/assets/hero.png";
@@ -71,6 +72,7 @@ function Index() {
   const { 
     cartItems, 
     addToCart, 
+    buyNow,
     updateQuantity, 
     removeFromCart, 
     clearCart, 
@@ -83,8 +85,7 @@ function Index() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>("");
-  const [isAdding, setIsAdding] = useState(false);
-  const [isAddedSuccess, setIsAddedSuccess] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   // Quick view interactive states
   const [selectedColor, setSelectedColor] = useState<string>("");
@@ -372,6 +373,20 @@ function Index() {
   const handleAddToCart = () => {
     if (!selectedProduct || !selectedSize || !selectedColor) return;
     addToCart({
+      productId: selectedProduct.id,
+      name: t(`product.name.${selectedProduct.key}`),
+      quote: t(`product.quote.${selectedProduct.key}`),
+      image: selectedProduct.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(selectedProduct.price.replace(" MAD", "")),
+    });
+    setSelectedProduct(null); // Close quick view immediately
+  };
+
+  const handleBuyNow = () => {
+    if (!selectedProduct || !selectedSize || !selectedColor) return;
+    buyNow({
       productId: selectedProduct.id,
       name: t(`product.name.${selectedProduct.key}`),
       quote: t(`product.quote.${selectedProduct.key}`),
@@ -1589,7 +1604,17 @@ function Index() {
 
                 {/* Sizes Selector */}
                 <div className="space-y-3">
-                  <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// Size Selector</span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// Size Selector</span>
+                    <button
+                      type="button"
+                      onClick={() => setSizeGuideOpen(true)}
+                      className="font-mono text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 underline underline-offset-4 cursor-pointer"
+                    >
+                      <Ruler size={11} />
+                      <span>{isAr ? "دليل المقاسات" : "Guide des Tailles"}</span>
+                    </button>
+                  </div>
                   <div className="flex gap-2">
                     {selectedProduct.sizes.map((size) => (
                       <button
@@ -1639,26 +1664,24 @@ function Index() {
                   <span className="font-mono text-xl font-bold text-foreground">{selectedProduct.price}</span>
                 </div>
 
-                {/* Add To Cart Trigger */}
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isAdding}
-                  className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono"
-                >
-                  {isAdding ? (
-                    <BrandSymbol size={16} className="animate-spin text-background" />
-                  ) : isAddedSuccess ? (
-                    <>
-                      <Check size={14} className="animate-bounce" />
-                      <span>{t("cart.added.journey")}</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag size={14} />
-                      <span>{isAr ? "أضف إلى السلة" : "Add To Cart"}</span>
-                    </>
-                  )}
-                </button>
+                {/* Purchase CTA Buttons */}
+                <div className="space-y-2.5 pt-2">
+                  <button
+                    onClick={handleBuyNow}
+                    className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-secondary/90 hover:text-foreground transition-all duration-300 font-bold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono"
+                  >
+                    <Zap size={14} className="fill-current text-amber-400" />
+                    <span>{isAr ? "اشتري الآن (الدفع عند الاستلام)" : "Commander Directement (Paiement à la livraison)"}</span>
+                  </button>
+
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full border border-border/80 bg-background text-foreground py-3 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs flex items-center justify-center gap-2 group cursor-pointer font-mono"
+                  >
+                    <ShoppingBag size={14} />
+                    <span>{isAr ? "أضف إلى السلة" : "Ajouter au Panier"}</span>
+                  </button>
+                </div>
 
                 {/* Mixed Reviews Block */}
                 <div className="border-t border-border/40 pt-6 space-y-4">
@@ -1852,6 +1875,9 @@ function Index() {
           </svg>
         </button>
       )}
+
+      {/* Size Guide Modal */}
+      <SizeGuideModal isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
     </div>
   );
 }

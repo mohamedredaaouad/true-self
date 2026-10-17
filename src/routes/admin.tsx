@@ -8,7 +8,7 @@ import {
   updateOrderStatusFn,
   type Order,
 } from "../lib/orders.server";
-import { RefreshCw, LogOut, CheckCircle, Package, Truck, Clock, Search, Download, MessageSquare } from "lucide-react";
+import { RefreshCw, LogOut, CheckCircle, Package, Truck, Clock, Search, Download, MessageSquare, Printer, TrendingUp, X } from "lucide-react";
 import { Logo } from "../components/BrandLogo";
 
 export const Route = createFileRoute("/admin")({
@@ -32,6 +32,7 @@ function Admin() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [printingOrder, setPrintingOrder] = useState<Order | null>(null);
 
   // Check server session on mount
   useEffect(() => {
@@ -139,6 +140,13 @@ function Admin() {
   const totalRevenue = orders.reduce((acc, order) => {
     return acc + order.totalPrice;
   }, 0);
+
+  const totalItemsSold = orders.reduce(
+    (acc, order) => acc + order.items.reduce((sum, item) => sum + item.quantity, 0),
+    0
+  );
+
+  const avgOrderValue = orders.length > 0 ? Math.round(totalRevenue / orders.length) : 0;
 
   const pendingCount = orders.filter((o) => o.status === "New").length;
   const confirmedCount = orders.filter((o) => o.status === "Confirmed").length;
@@ -293,26 +301,30 @@ function Admin() {
       </header>
 
       {/* Metrics Row (Mobile optimized card stacks) */}
-      <div className="mx-auto max-w-[1400px] grid grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
-        <div className="border border-border/60 bg-secondary/10 p-6 rounded-xs text-start">
-          <span className="font-mono text-[8px] text-muted-foreground block mb-2 uppercase">TOTAL SALES</span>
-          <span className="font-mono text-xl md:text-2xl font-bold">{totalRevenue} MAD</span>
+      <div className="mx-auto max-w-[1400px] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-12">
+        <div className="border border-border/60 bg-secondary/10 p-5 rounded-xs text-start">
+          <span className="font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider">TOTAL SALES</span>
+          <span className="font-mono text-lg md:text-xl font-bold">{totalRevenue} MAD</span>
         </div>
-        <div className="border border-border/60 bg-secondary/10 p-6 rounded-xs text-start">
-          <span className="font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1"><Clock size={10} /> NEW</span>
-          <span className="font-mono text-xl md:text-2xl font-bold">{pendingCount}</span>
+        <div className="border border-border/60 bg-secondary/10 p-5 rounded-xs text-start">
+          <span className="font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1"><TrendingUp size={10} /> PANIER MOYEN</span>
+          <span className="font-mono text-lg md:text-xl font-bold">{avgOrderValue} MAD</span>
         </div>
-        <div className="border border-border/60 bg-secondary/10 p-6 rounded-xs text-start">
-          <span className="font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1"><CheckCircle size={10} /> CONFIRMED</span>
-          <span className="font-mono text-xl md:text-2xl font-bold">{confirmedCount}</span>
+        <div className="border border-border/60 bg-secondary/10 p-5 rounded-xs text-start">
+          <span className="font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1"><Package size={10} /> ARTICLES VENDUS</span>
+          <span className="font-mono text-lg md:text-xl font-bold">{totalItemsSold}</span>
         </div>
-        <div className="border border-border/60 bg-secondary/10 p-6 rounded-xs text-start">
-          <span className="font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1"><Package size={10} /> SHIPPED</span>
-          <span className="font-mono text-xl md:text-2xl font-bold">{shippedCount}</span>
+        <div className="border border-border/60 bg-secondary/10 p-5 rounded-xs text-start">
+          <span className="font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1"><Clock size={10} /> NOUVELLES</span>
+          <span className="font-mono text-lg md:text-xl font-bold">{pendingCount}</span>
         </div>
-        <div className="border border-border/60 bg-secondary/10 p-6 rounded-xs text-start col-span-2 lg:col-span-1">
-          <span className="font-mono text-[8px] text-muted-foreground block mb-2 uppercase flex items-center gap-1"><Truck size={10} /> DELIVERED</span>
-          <span className="font-mono text-xl md:text-2xl font-bold">{deliveredCount}</span>
+        <div className="border border-border/60 bg-secondary/10 p-5 rounded-xs text-start">
+          <span className="font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1"><CheckCircle size={10} /> CONFIRMÉES</span>
+          <span className="font-mono text-lg md:text-xl font-bold">{confirmedCount}</span>
+        </div>
+        <div className="border border-border/60 bg-secondary/10 p-5 rounded-xs text-start">
+          <span className="font-mono text-[8px] text-muted-foreground block mb-1 uppercase tracking-wider flex items-center gap-1"><Truck size={10} /> LIVRÉES</span>
+          <span className="font-mono text-lg md:text-xl font-bold">{deliveredCount}</span>
         </div>
       </div>
 
@@ -389,6 +401,14 @@ function Admin() {
                           <MessageSquare size={10} />
                           <span>WhatsApp</span>
                         </a>
+                        <button
+                          onClick={() => setPrintingOrder(order)}
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-2xs bg-secondary/30 hover:bg-foreground hover:text-background text-foreground text-[10px] font-mono transition-all border border-border/60 cursor-pointer"
+                          title="Imprimer le bon de livraison pour le transporteur / livreur"
+                        >
+                          <Printer size={10} />
+                          <span>Bon Livraison</span>
+                        </button>
                       </div>
                       <p className="text-xs text-muted-foreground leading-relaxed pt-1">
                         <span className="font-semibold">{order.customerCity}</span>, {order.customerAddress}
@@ -471,6 +491,153 @@ function Admin() {
           </div>
         )}
       </main>
+
+      {/* Printable Shipping Slip Modal */}
+      {printingOrder && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="relative bg-white text-zinc-950 w-full max-w-2xl rounded-lg shadow-2xl p-6 sm:p-8 my-8 print:p-0 print:m-0 print:shadow-none print:w-full print:max-w-none">
+            {/* Modal Actions (Hidden in Print) */}
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-zinc-200 print:hidden">
+              <div className="flex items-center gap-2">
+                <Printer className="w-5 h-5 text-zinc-700" />
+                <span className="font-mono text-xs uppercase tracking-wider font-semibold text-zinc-800">
+                  Bordereau d'Expédition / Bon de Livraison
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.print()}
+                  className="px-4 py-1.5 bg-black text-white hover:bg-zinc-800 font-mono text-xs uppercase tracking-widest rounded transition-colors inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Imprimer</span>
+                </button>
+                <button
+                  onClick={() => setPrintingOrder(null)}
+                  className="p-1.5 hover:bg-zinc-100 rounded text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
+                  title="Fermer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Slip Content */}
+            <div className="space-y-6 text-zinc-900 font-sans print:text-black">
+              {/* Slip Header */}
+              <div className="flex justify-between items-start border-b border-zinc-300 pb-4">
+                <div>
+                  <h1 className="text-2xl font-black tracking-tight font-serif uppercase">TRUE SELF®</h1>
+                  <p className="text-[11px] text-zinc-600 font-mono">Luxury Streetwear Casablanca — Maroc</p>
+                  <p className="text-[11px] text-zinc-600 font-mono">Service Client: +212 6 52 61 70 44</p>
+                </div>
+                <div className="text-right">
+                  <span className="inline-block px-2.5 py-1 bg-zinc-950 text-white font-mono text-xs font-bold rounded">
+                    BON #{printingOrder.id}
+                  </span>
+                  <p className="text-[11px] text-zinc-600 font-mono mt-1">
+                    Date: {new Date(printingOrder.createdAt).toLocaleDateString("fr-MA")} {new Date(printingOrder.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </p>
+                  <p className="text-[11px] font-bold text-emerald-700 font-mono mt-0.5">
+                    Mode: Paiement à la livraison (COD)
+                  </p>
+                </div>
+              </div>
+
+              {/* Recipient & Expeditor Grid */}
+              <div className="grid grid-cols-2 gap-4 text-xs">
+                <div className="border border-zinc-200 rounded p-3 bg-zinc-50/50">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500 block mb-1">EXPÉDITEUR</span>
+                  <p className="font-bold">TRUE SELF STUDIOS</p>
+                  <p className="text-zinc-600">Casablanca, Maroc</p>
+                  <p className="text-zinc-600">contact@trueself.ma</p>
+                  <p className="text-zinc-600">Tél: +212 6 52 61 70 44</p>
+                </div>
+
+                <div className="border-2 border-zinc-900 rounded p-3 bg-amber-50/30">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-900 font-bold block mb-1">DESTINATAIRE (CLIENT)</span>
+                  <p className="font-bold text-sm text-zinc-950">{printingOrder.customerName}</p>
+                  <p className="text-xs font-semibold text-zinc-900">Tél: {printingOrder.customerPhone}</p>
+                  <p className="text-xs text-zinc-700 mt-1">
+                    <span className="font-bold uppercase text-zinc-950">{printingOrder.customerCity}</span> — {printingOrder.customerAddress}
+                  </p>
+                  {printingOrder.customerNotes && (
+                    <div className="mt-2 pt-2 border-t border-zinc-200 text-[10px] text-zinc-600 italic">
+                      Note client: "{printingOrder.customerNotes}"
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Items Table */}
+              <div className="border border-zinc-200 rounded overflow-hidden">
+                <table className="w-full text-xs">
+                  <thead className="bg-zinc-100 font-mono text-[10px] uppercase text-zinc-700 border-b border-zinc-200">
+                    <tr>
+                      <th className="py-2 px-3 text-left">Article</th>
+                      <th className="py-2 px-2 text-center">Taille</th>
+                      <th className="py-2 px-2 text-center">Couleur</th>
+                      <th className="py-2 px-2 text-center">Qté</th>
+                      <th className="py-2 px-3 text-right">Prix Unitaire</th>
+                      <th className="py-2 px-3 text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200 font-mono">
+                    {printingOrder.items.map((item, idx) => (
+                      <tr key={idx} className="hover:bg-zinc-50/50">
+                        <td className="py-2.5 px-3 font-sans font-medium text-zinc-900">
+                          {item.name}
+                          {item.quote && <span className="block text-[10px] text-zinc-500 italic font-normal">"{item.quote}"</span>}
+                        </td>
+                        <td className="py-2.5 px-2 text-center font-bold">{item.size}</td>
+                        <td className="py-2.5 px-2 text-center text-zinc-600">{item.color}</td>
+                        <td className="py-2.5 px-2 text-center font-bold">{item.quantity}</td>
+                        <td className="py-2.5 px-3 text-right text-zinc-600">{item.price} MAD</td>
+                        <td className="py-2.5 px-3 text-right font-bold text-zinc-950">{item.price * item.quantity} MAD</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Total & COD Amount Banner */}
+              <div className="bg-zinc-950 text-white rounded p-4 flex justify-between items-center print:border print:border-black print:text-black print:bg-zinc-100">
+                <div>
+                  <span className="font-mono text-xs uppercase tracking-widest text-zinc-300 print:text-zinc-700 block">
+                    MONTANT TOTAL À ENCAISSER (COD)
+                  </span>
+                  <span className="text-[11px] text-zinc-400 print:text-zinc-600">
+                    Paiement en espèces à la réception du colis
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="font-mono text-2xl font-black text-white print:text-black">
+                    {printingOrder.totalPrice} MAD
+                  </span>
+                </div>
+              </div>
+
+              {/* Signatures */}
+              <div className="grid grid-cols-2 gap-8 pt-4 border-t border-dashed border-zinc-300 text-center font-mono text-[10px] text-zinc-500">
+                <div className="border border-zinc-200 rounded p-3 h-20 flex flex-col justify-between">
+                  <span>Visa & Signature Livreur / Agence</span>
+                  <div className="border-b border-zinc-300 w-3/4 mx-auto"></div>
+                </div>
+                <div className="border border-zinc-200 rounded p-3 h-20 flex flex-col justify-between">
+                  <span>Signature & Date Réception Client</span>
+                  <div className="border-b border-zinc-300 w-3/4 mx-auto"></div>
+                </div>
+              </div>
+
+              {/* Print Footer */}
+              <div className="text-center font-mono text-[9px] text-zinc-400 pt-2">
+                Document généré automatiquement via TRUE SELF® Back-Office — Merci pour votre confiance.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

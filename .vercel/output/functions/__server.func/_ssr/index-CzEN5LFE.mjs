@@ -1,10 +1,10 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-Cn1FTn80.mjs";
-import { e as useLanguage, d as useCart, S as Symbol$1, L as Logo } from "./router-Dtmg5ANs.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./product-8-back-CL2V7HrX.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-BbGQ4Ukh.mjs";
+import { e as useLanguage, d as useCart, S as Symbol$1, L as Logo } from "./router-B0sL9v5M.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./product-8-back-CIAd_RVy.mjs";
 import "../_libs/seroval.mjs";
-import { X, a as Check, g as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
+import { X, g as Ruler, Z as Zap, h as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-D5s2sBIq.mjs";
+import "./server-BAdvd5HP.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -44,6 +44,7 @@ function Index() {
   const {
     cartItems,
     addToCart,
+    buyNow,
     updateQuantity,
     removeFromCart,
     clearCart,
@@ -55,8 +56,7 @@ function Index() {
   const [selectedProduct, setSelectedProduct] = reactExports.useState(null);
   const [hoveredProduct, setHoveredProduct] = reactExports.useState(null);
   const [selectedSize, setSelectedSize] = reactExports.useState("");
-  const [isAdding, setIsAdding] = reactExports.useState(false);
-  const [isAddedSuccess, setIsAddedSuccess] = reactExports.useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = reactExports.useState(false);
   const [selectedColor, setSelectedColor] = reactExports.useState("");
   const [activeQuickViewImage, setActiveQuickViewImage] = reactExports.useState("");
   const [lightboxImage, setLightboxImage] = reactExports.useState(null);
@@ -328,6 +328,19 @@ function Index() {
   const handleAddToCart = () => {
     if (!selectedProduct || !selectedSize || !selectedColor) return;
     addToCart({
+      productId: selectedProduct.id,
+      name: t(`product.name.${selectedProduct.key}`),
+      quote: t(`product.quote.${selectedProduct.key}`),
+      image: selectedProduct.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(selectedProduct.price.replace(" MAD", ""))
+    });
+    setSelectedProduct(null);
+  };
+  const handleBuyNow = () => {
+    if (!selectedProduct || !selectedSize || !selectedColor) return;
+    buyNow({
       productId: selectedProduct.id,
       name: t(`product.name.${selectedProduct.key}`),
       quote: t(`product.quote.${selectedProduct.key}`),
@@ -885,7 +898,13 @@ function Index() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs leading-relaxed text-muted-foreground font-light italic", children: t("specs.desc") })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: "// Size Selector" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: "// Size Selector" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setSizeGuideOpen(true), className: "font-mono text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 underline underline-offset-4 cursor-pointer", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Ruler, { size: 11 }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "دليل المقاسات" : "Guide des Tailles" })
+                ] })
+              ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2", children: selectedProduct.sizes.map((size) => /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedSize(size), className: `font-mono text-xs border px-4 py-2 hover:bg-foreground hover:text-background transition-colors duration-300 ${selectedSize === size ? "bg-foreground text-background border-foreground font-bold" : "border-border/60 text-foreground"}`, children: size }, size)) })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
@@ -903,13 +922,16 @@ function Index() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: "// Price" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-xl font-bold text-foreground", children: selectedProduct.price })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddToCart, disabled: isAdding, className: "w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono", children: isAdding ? /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "animate-spin text-background" }) : isAddedSuccess ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14, className: "animate-bounce" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("cart.added.journey") })
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 14 }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف إلى السلة" : "Add To Cart" })
-            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2.5 pt-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: handleBuyNow, className: "w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-secondary/90 hover:text-foreground transition-all duration-300 font-bold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 14, className: "fill-current text-amber-400" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "اشتري الآن (الدفع عند الاستلام)" : "Commander Directement (Paiement à la livraison)" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: handleAddToCart, className: "w-full border border-border/80 bg-background text-foreground py-3 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs flex items-center justify-center gap-2 group cursor-pointer font-mono", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 14 }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف إلى السلة" : "Ajouter au Panier" })
+              ] })
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border/40 pt-6 space-y-4", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
                 "// ",
@@ -1025,7 +1047,8 @@ function Index() {
     showScrollTop && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => window.scrollTo({
       top: 0,
       behavior: "smooth"
-    }), className: `fixed bottom-6 ${isAr ? "left-6" : "right-6"} z-50 p-3 rounded-full bg-background hover:bg-foreground hover:text-background text-foreground transition-all duration-300 border border-border/40 shadow-soft cursor-pointer animate-fade`, title: "Back to top", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeLinejoin: "round", className: "w-4 h-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m18 15-6-6-6 6" }) }) })
+    }), className: `fixed bottom-6 ${isAr ? "left-6" : "right-6"} z-50 p-3 rounded-full bg-background hover:bg-foreground hover:text-background text-foreground transition-all duration-300 border border-border/40 shadow-soft cursor-pointer animate-fade`, title: "Back to top", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeLinejoin: "round", className: "w-4 h-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m18 15-6-6-6 6" }) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(SizeGuideModal, { isOpen: sizeGuideOpen, onClose: () => setSizeGuideOpen(false) })
   ] });
 }
 export {

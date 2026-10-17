@@ -2,8 +2,8 @@ import { Q as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { Q as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { b as createRouter, a as createRootRouteWithContext, u as useRouter, L as Link, O as Outlet, H as HeadContent, S as Scripts, c as createFileRoute, l as lazyRouteComponent } from "../_libs/tanstack__react-router.mjs";
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
-import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-D5s2sBIq.mjs";
-import { X, a as Check, g as ShoppingBag, d as Minus, e as Plus, T as Trash2 } from "../_libs/lucide-react.mjs";
+import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-BAdvd5HP.mjs";
+import { X, i as Sparkles, a as Check, h as ShoppingBag, d as Minus, e as Plus, T as Trash2, c as Clock, M as MessageSquare } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -25,7 +25,7 @@ import "node:http";
 import "node:stream/promises";
 import "node:https";
 import "node:http2";
-const appCss = "/assets/styles-BExS9RE8.css";
+const appCss = "/assets/styles-BbDBvOEx.css";
 const translations = {
   fr: {
     // Nav
@@ -576,6 +576,7 @@ function CartProvider({ children }) {
   const [cartItems, setCartItems] = reactExports.useState([]);
   const [isLoaded, setIsLoaded] = reactExports.useState(false);
   const [cartOpen, setCartOpen] = reactExports.useState(false);
+  const [requestedStep, setRequestedStep] = reactExports.useState("cart");
   reactExports.useEffect(() => {
     if (typeof window !== "undefined") {
       try {
@@ -609,6 +610,19 @@ function CartProvider({ children }) {
       }
       return [...prevItems, { ...newItem, id: itemId, quantity: 1 }];
     });
+    setRequestedStep("cart");
+    setCartOpen(true);
+  };
+  const buyNow = (newItem) => {
+    const itemId = `${newItem.productId}-${newItem.size}-${newItem.color}`;
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === itemId);
+      if (existingItem) {
+        return prevItems;
+      }
+      return [...prevItems, { ...newItem, id: itemId, quantity: 1 }];
+    });
+    setRequestedStep("checkout");
     setCartOpen(true);
   };
   const updateQuantity = (id, delta) => {
@@ -636,13 +650,16 @@ function CartProvider({ children }) {
       value: {
         cartItems,
         addToCart,
+        buyNow,
         updateQuantity,
         removeFromCart,
         clearCart,
         cartCount,
         cartSubtotal,
         cartOpen,
-        setCartOpen
+        setCartOpen,
+        requestedStep,
+        setRequestedStep
       },
       children
     }
@@ -757,6 +774,40 @@ function Logo({
     ] })
   ] });
 }
+const MOROCCAN_CITIES = [
+  { nameFr: "Casablanca", nameAr: "الدار البيضاء", delayFr: "Livraison 24h", delayAr: "توصيل خلال 24 ساعة" },
+  { nameFr: "Rabat", nameAr: "الرباط", delayFr: "Livraison 24h", delayAr: "توصيل خلال 24 ساعة" },
+  { nameFr: "Marrakech", nameAr: "مراكش", delayFr: "Livraison 24h - 48h", delayAr: "توصيل 24 إلى 48 ساعة" },
+  { nameFr: "Tanger", nameAr: "طنجة", delayFr: "Livraison 24h - 48h", delayAr: "توصيل 24 إلى 48 ساعة" },
+  { nameFr: "Fès", nameAr: "فاس", delayFr: "Livraison 24h - 48h", delayAr: "توصيل 24 إلى 48 ساعة" },
+  { nameFr: "Agadir", nameAr: "أكادير", delayFr: "Livraison 48h", delayAr: "توصيل خلال 48 ساعة" },
+  { nameFr: "Salé", nameAr: "سلا", delayFr: "Livraison 24h", delayAr: "توصيل خلال 24 ساعة" },
+  { nameFr: "Meknès", nameAr: "مكناس", delayFr: "Livraison 24h - 48h", delayAr: "توصيل 24 إلى 48 ساعة" },
+  { nameFr: "Kénitra", nameAr: "القنيطرة", delayFr: "Livraison 24h - 48h", delayAr: "توصيل 24 إلى 48 ساعة" },
+  { nameFr: "Tétouan", nameAr: "تطوان", delayFr: "Livraison 48h", delayAr: "توصيل خلال 48 ساعة" },
+  { nameFr: "Oujda", nameAr: "وجدة", delayFr: "Livraison 48h - 72h", delayAr: "توصيل 48 إلى 72 ساعة" },
+  { nameFr: "Mohammédia", nameAr: "المحمدية", delayFr: "Livraison 24h", delayAr: "توصيل خلال 24 ساعة" },
+  { nameFr: "El Jadida", nameAr: "الجديدة", delayFr: "Livraison 24h - 48h", delayAr: "توصيل 24 إلى 48 ساعة" },
+  { nameFr: "Safi", nameAr: "آسفي", delayFr: "Livraison 48h", delayAr: "توصيل خلال 48 ساعة" },
+  { nameFr: "Nador", nameAr: "الناظور", delayFr: "Livraison 48h - 72h", delayAr: "توصيل 48 إلى 72 ساعة" },
+  { nameFr: "Beni Mellal", nameAr: "بني ملال", delayFr: "Livraison 48h", delayAr: "توصيل خلال 48 ساعة" },
+  { nameFr: "Témara", nameAr: "تمارة", delayFr: "Livraison 24h", delayAr: "توصيل خلال 24 ساعة" },
+  { nameFr: "Khémisset", nameAr: "الخميسات", delayFr: "Livraison 48h", delayAr: "توصيل خلال 48 ساعة" },
+  { nameFr: "Berrechid", nameAr: "برشيد", delayFr: "Livraison 24h", delayAr: "توصيل خلال 24 ساعة" },
+  { nameFr: "Dakhla", nameAr: "الداخلة", delayFr: "Livraison 3 - 5 jours", delayAr: "توصيل 3 إلى 5 أيام" },
+  { nameFr: "Laâyoune", nameAr: "العيون", delayFr: "Livraison 3 - 5 jours", delayAr: "توصيل 3 إلى 5 أيام" },
+  { nameFr: "Autre ville", nameAr: "مدينة أخرى", delayFr: "Livraison 48h - 72h", delayAr: "توصيل 48 إلى 72 ساعة" }
+];
+function isValidMoroccanPhone(phone) {
+  const clean = phone.replace(/[^0-9]/g, "");
+  if (clean.length === 10 && (clean.startsWith("06") || clean.startsWith("07") || clean.startsWith("05"))) {
+    return true;
+  }
+  if (clean.length === 12 && clean.startsWith("212") && (clean.startsWith("2126") || clean.startsWith("2127"))) {
+    return true;
+  }
+  return clean.length >= 9;
+}
 function buildWhatsAppOrderMessage(order, language) {
   const isAr = language === "ar";
   const itemsText = order.items.map((item, idx) => {
@@ -815,17 +866,23 @@ function CartDrawer() {
     cartSubtotal,
     cartCount,
     cartOpen,
-    setCartOpen
+    setCartOpen,
+    requestedStep
   } = useCart();
   const [checkoutStep, setCheckoutStep] = reactExports.useState("cart");
   const [fullName, setFullName] = reactExports.useState("");
   const [phone, setPhone] = reactExports.useState("");
-  const [city, setCity] = reactExports.useState("");
+  const [city, setCity] = reactExports.useState("Casablanca");
   const [address, setAddress] = reactExports.useState("");
   const [notes, setNotes] = reactExports.useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = reactExports.useState(false);
   const [orderError, setOrderError] = reactExports.useState("");
   const [completedOrder, setCompletedOrder] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    if (cartOpen && requestedStep) {
+      setCheckoutStep(requestedStep);
+    }
+  }, [cartOpen, requestedStep]);
   reactExports.useEffect(() => {
     if (cartOpen) {
       document.body.style.overflow = "hidden";
@@ -849,6 +906,12 @@ function CartDrawer() {
     e.preventDefault();
     if (!fullName || !phone || !city || !address) {
       setOrderError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+    if (!isValidMoroccanPhone(phone)) {
+      setOrderError(
+        isAr ? "يرجى إدخال رقم هاتف مغربي صالح (مثال: 06 XX XX XX XX أو 07 XX XX XX XX)." : "Veuillez saisir un numéro de téléphone marocain valide (ex: 06 XX XX XX XX ou 07 XX XX XX XX)."
+      );
       return;
     }
     setIsSubmittingOrder(true);
@@ -909,6 +972,9 @@ function CartDrawer() {
     setCartOpen(false);
   };
   const whatsAppTargetNumber = "212652617044".replace(/[^0-9]/g, "");
+  const selectedCityData = MOROCCAN_CITIES.find(
+    (c) => c.nameFr.toLowerCase() === city.toLowerCase() || c.nameAr === city
+  ) || MOROCCAN_CITIES[0];
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
@@ -945,9 +1011,9 @@ function CartDrawer() {
               }
             )
           ] }),
-          cartItems.length > 0 && checkoutStep !== "success" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-secondary/40 px-6 py-2.5 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground", children: [
-            "✦ ",
-            t("cart.emotion.banner")
+          cartItems.length > 0 && checkoutStep !== "success" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-secondary/40 px-6 py-2.5 border-b border-border/30 text-center text-[10px] sm:text-xs font-mono text-foreground flex items-center justify-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 12, className: "text-amber-500 flex-shrink-0" }),
+            cartCount === 1 ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف قطعة ثانية لطلبك للحصول على شحن أولوية وملصق TRUE SELF® الحصري !" : "Ajoutez un 2ème article pour débloquer le sticker collector TRUE SELF® offert !" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#25D366] font-semibold", children: isAr ? "✓ مبروك ! تم تفعيل الشحن المجاني الأولوية والملصق الحصري." : "✓ Offre débloquée : Livraison Express & Sticker Collector Offerts !" })
           ] }),
           checkoutStep === "success" && completedOrder ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-5 overflow-y-auto", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-16 bg-[#25D366]/15 text-[#25D366] flex items-center justify-center rounded-full border border-[#25D366]/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 32 }) }),
@@ -1088,19 +1154,29 @@ function CartDrawer() {
                   )
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
-                    isAr ? "المدينة" : "Ville",
-                    " *"
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                      isAr ? "المدينة" : "Ville",
+                      " *"
+                    ] }),
+                    selectedCityData && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-[9px] text-[#25D366] font-semibold flex items-center gap-1", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 10 }),
+                      isAr ? selectedCityData.delayAr : selectedCityData.delayFr
+                    ] })
                   ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "input",
+                    "select",
                     {
-                      type: "text",
-                      required: true,
                       value: city,
                       onChange: (e) => setCity(e.target.value),
-                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground font-mono",
-                      placeholder: isAr ? "الدار البيضاء، مراكش، طنجة..." : "ex: Casablanca, Rabat, Marrakech..."
+                      required: true,
+                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground font-mono cursor-pointer",
+                      children: MOROCCAN_CITIES.map((c) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: c.nameFr, className: "bg-background text-foreground", children: [
+                        isAr ? c.nameAr : c.nameFr,
+                        " — (",
+                        isAr ? c.delayAr : c.delayFr,
+                        ")"
+                      ] }, c.nameFr))
                     }
                   )
                 ] }),
@@ -1183,6 +1259,51 @@ function CartDrawer() {
       }
     )
   ] });
+}
+function FloatingWhatsApp() {
+  const { language } = useLanguage();
+  const isAr = language === "ar";
+  const [closed, setClosed] = reactExports.useState(false);
+  if (closed) return null;
+  const phone = "212652617044".replace(/[^0-9]/g, "");
+  const defaultMsg = isAr ? "السلام عليكم TRUE SELF، أحتاج مساعدة أو استفسار حول المجموعة." : "Bonjour TRUE SELF ! J'aimerais un conseil concernant la collection ou les tailles.";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      className: `fixed bottom-6 ${isAr ? "left-6" : "right-6"} z-[90] flex items-center gap-2 group animate-fade`,
+      dir: isAr ? "rtl" : "ltr",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "a",
+          {
+            href: `https://wa.me/${phone}?text=${encodeURIComponent(defaultMsg)}`,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "flex items-center gap-2.5 bg-background/95 hover:bg-background text-foreground border border-border/80 hover:border-[#25D366] px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 font-mono text-xs cursor-pointer group/wa",
+            title: "Discuter sur WhatsApp",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "relative flex h-2.5 w-2.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-75" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "relative inline-flex rounded-full h-2.5 w-2.5 bg-[#25D366]" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium tracking-tight group-hover/wa:text-[#25D366] transition-colors", children: isAr ? "تواصل معنا" : "Conseil WhatsApp" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-full bg-[#25D366] text-white flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { size: 12, className: "fill-current" }) })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setClosed(true),
+            className: "text-muted-foreground/60 hover:text-foreground p-1 transition-colors rounded-full text-[10px]",
+            "aria-label": "Fermer",
+            title: "Fermer",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 12 })
+          }
+        )
+      ]
+    }
+  );
 }
 function NotFoundComponent() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-md text-center", children: [
@@ -1278,10 +1399,11 @@ function RootComponent() {
   const { queryClient } = Route$4.useRouteContext();
   return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(LanguageProvider, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(CartDrawer, {})
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CartDrawer, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(FloatingWhatsApp, {})
   ] }) }) });
 }
-const $$splitComponentImporter$3 = () => import("./admin-DaCAD-yt.mjs");
+const $$splitComponentImporter$3 = () => import("./admin-D9FMOEjb.mjs");
 const Route$3 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -1293,7 +1415,7 @@ const Route$3 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter$2 = () => import("./about-C6fR0o9E.mjs");
+const $$splitComponentImporter$2 = () => import("./about-BLQYdgWf.mjs");
 const Route$2 = createFileRoute("/about")({
   head: () => ({
     meta: [{
@@ -1305,7 +1427,7 @@ const Route$2 = createFileRoute("/about")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-CfgRsBn4.mjs");
+const $$splitComponentImporter$1 = () => import("./index-CzEN5LFE.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
@@ -1323,7 +1445,7 @@ const Route$1 = createFileRoute("/")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("../_productId-DsnZ-LJj.mjs");
+const $$splitComponentImporter = () => import("../_productId-BSrNI4af.mjs");
 const Route = createFileRoute("/product/$productId")({
   head: ({
     params

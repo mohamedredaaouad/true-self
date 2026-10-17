@@ -1,10 +1,10 @@
-import { j as jsxRuntimeExports, r as reactExports } from "./_libs/react.mjs";
+import { r as reactExports, j as jsxRuntimeExports } from "./_libs/react.mjs";
 import { u as useRouter, L as Link } from "./_libs/tanstack__react-router.mjs";
-import { R as Route, e as useLanguage, d as useCart, S as Symbol$1, L as Logo } from "./_ssr/router-Dtmg5ANs.mjs";
-import { N as Nav, R as Reveal } from "./_ssr/Reveal-Cn1FTn80.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./_ssr/product-8-back-CL2V7HrX.mjs";
+import { R as Route, e as useLanguage, d as useCart, L as Logo } from "./_ssr/router-B0sL9v5M.mjs";
+import { N as Nav, R as Reveal } from "./_ssr/Reveal-BbGQ4Ukh.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front, S as SizeGuideModal } from "./_ssr/product-8-back-CIAd_RVy.mjs";
 import "./_libs/seroval.mjs";
-import { H as Heart, C as Calendar, f as Ruler, a as Check, g as ShoppingBag, X } from "./_libs/lucide-react.mjs";
+import { H as Heart, g as Ruler, C as Calendar, Z as Zap, a as Check, h as ShoppingBag, X } from "./_libs/lucide-react.mjs";
 import "./_libs/tanstack__router-core.mjs";
 import "./_libs/tanstack__history.mjs";
 import "./_libs/cookie-es.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "./_libs/isbot.mjs";
 import "./_libs/tanstack__query-core.mjs";
 import "./_libs/tanstack__react-query.mjs";
-import "./_ssr/server-D5s2sBIq.mjs";
+import "./_ssr/server-BAdvd5HP.mjs";
 import "node:async_hooks";
 import "./_libs/h3-v2.mjs";
 import "./_libs/rou3.mjs";
@@ -255,8 +255,9 @@ function ProductDetailRoute() {
   const isAr = language === "ar";
   const {
     addToCart,
-    cartOpen
+    buyNow
   } = useCart();
+  const [sizeGuideOpen, setSizeGuideOpen] = reactExports.useState(false);
   const router = useRouter();
   const product = products.find((p) => p.id === parseInt(productId));
   if (!product) {
@@ -340,6 +341,17 @@ function ProductDetailRoute() {
       setIsAddedSuccess(false);
     }, 2e3);
   };
+  const handleBuyNow = () => {
+    buyNow({
+      productId: product.id,
+      name: t(`product.name.${product.key}`),
+      quote: t(`product.quote.${product.key}`),
+      image: product.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(product.price.replace(" MAD", ""))
+    });
+  };
   reactExports.useEffect(() => {
     if (userHeight > 185 || userWeight > 85) {
       setSuggestedSize("XL");
@@ -398,7 +410,13 @@ function ProductDetailRoute() {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xl font-bold font-mono text-foreground pt-2", children: product.price })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: "// Size Selector" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: "// Size Selector" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setSizeGuideOpen(true), className: "font-mono text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 underline underline-offset-4 cursor-pointer", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Ruler, { size: 11 }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "دليل المقاسات" : "Guide des Tailles" })
+            ] })
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2", children: product.sizes.map((size) => /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setSelectedSize(size), className: `font-mono text-xs border px-4 py-2 hover:bg-foreground hover:text-background transition-colors duration-300 ${selectedSize === size ? "bg-foreground text-background border-foreground font-bold" : "border-border/60 text-foreground"}`, children: size }, size)) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
@@ -439,13 +457,19 @@ function ProductDetailRoute() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-foreground text-sm bg-foreground text-background px-2.5 py-0.5 rounded-2xs", children: suggestedSize })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddToCart, disabled: isAdding, className: "w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono", children: isAdding ? /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "animate-spin text-background" }) : isAddedSuccess ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14, className: "animate-bounce" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("cart.added.journey") })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 14 }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف إلى السلة" : "Add To Cart" })
-        ] }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2.5 pt-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { onClick: handleBuyNow, className: "w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-secondary/90 hover:text-foreground transition-all duration-300 font-bold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 14, className: "fill-current text-amber-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "اشتري الآن (الدفع عند الاستلام)" : "Commander Directement (Paiement à la livraison)" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleAddToCart, className: "w-full border border-border/80 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs flex items-center justify-center gap-2 group cursor-pointer font-mono", children: isAddedSuccess ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14, className: "text-[#25D366]" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("cart.added.journey") })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 14 }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "أضف إلى السلة" : "Ajouter au Panier" })
+          ] }) })
+        ] })
       ] })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-20 lg:py-32 border-b border-border/40 bg-secondary/15 relative overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mx-auto max-w-[1000px] px-6 text-center space-y-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Reveal, { children: [
@@ -606,7 +630,8 @@ function ProductDetailRoute() {
     lightboxImage && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[200] flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setLightboxImage(null), className: "absolute top-6 right-6 z-50 p-2 hover:opacity-60 transition-opacity bg-foreground/10 text-foreground rounded-full border border-border/20 cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 24 }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-[90vw] max-h-[90vh] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: lightboxImage, alt: "Enlarged view", className: "max-w-full max-h-[90vh] object-contain rounded-xs border border-border/20 shadow-2xl animate-fade" }) })
-    ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(SizeGuideModal, { isOpen: sizeGuideOpen, onClose: () => setSizeGuideOpen(false) })
   ] });
 }
 export {

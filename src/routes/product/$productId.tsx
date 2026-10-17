@@ -5,7 +5,8 @@ import { useCart } from "@/hooks/useCart";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { Symbol as BrandSymbol, Logo as BrandLogo } from "@/components/BrandLogo";
-import { X, ShoppingBag, Check, Plus, Minus, Heart, Ruler, Info, Calendar } from "lucide-react";
+import { X, ShoppingBag, Check, Plus, Minus, Heart, Ruler, Info, Calendar, Zap } from "lucide-react";
+import { SizeGuideModal } from "@/components/SizeGuideModal";
 
 // Assets imports
 import cottonTexture from "@/assets/cream_cotton_texture_closeup.png";
@@ -157,7 +158,8 @@ function ProductDetailRoute() {
   const { productId } = Route.useParams();
   const { t, language } = useLanguage();
   const isAr = language === "ar";
-  const { addToCart, cartOpen } = useCart();
+  const { addToCart, buyNow } = useCart();
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const router = useRouter();
 
   const product = products.find((p) => p.id === parseInt(productId));
@@ -258,6 +260,19 @@ function ProductDetailRoute() {
     setTimeout(() => {
       setIsAddedSuccess(false);
     }, 2000);
+  };
+
+  // 1-Click Buy Now (Express Direct Checkout)
+  const handleBuyNow = () => {
+    buyNow({
+      productId: product.id,
+      name: t(`product.name.${product.key}`),
+      quote: t(`product.quote.${product.key}`),
+      image: product.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(product.price.replace(" MAD", "")),
+    });
   };
 
   // Calculate suggested size
@@ -397,7 +412,17 @@ function ProductDetailRoute() {
 
             {/* Size selection */}
             <div className="space-y-3">
-              <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// Size Selector</span>
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase block">// Size Selector</span>
+                <button
+                  type="button"
+                  onClick={() => setSizeGuideOpen(true)}
+                  className="font-mono text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 underline underline-offset-4 cursor-pointer"
+                >
+                  <Ruler size={11} />
+                  <span>{isAr ? "دليل المقاسات" : "Guide des Tailles"}</span>
+                </button>
+              </div>
               <div className="flex gap-2">
                 {product.sizes.map((size) => (
                   <button
@@ -477,26 +502,33 @@ function ProductDetailRoute() {
               </div>
             </div>
 
-            {/* Add To Cart trigger */}
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono"
-            >
-              {isAdding ? (
-                <BrandSymbol size={16} className="animate-spin text-background" />
-              ) : isAddedSuccess ? (
-                <>
-                  <Check size={14} className="animate-bounce" />
-                  <span>{t("cart.added.journey")}</span>
-                </>
-              ) : (
-                <>
-                  <ShoppingBag size={14} />
-                  <span>{isAr ? "أضف إلى السلة" : "Add To Cart"}</span>
-                </>
-              )}
-            </button>
+            {/* Purchase CTA buttons */}
+            <div className="space-y-2.5 pt-2">
+              <button
+                onClick={handleBuyNow}
+                className="w-full border border-foreground bg-foreground text-background py-4 text-xs tracking-brand uppercase hover:bg-secondary/90 hover:text-foreground transition-all duration-300 font-bold rounded-xs shadow-soft flex items-center justify-center gap-2 group cursor-pointer font-mono"
+              >
+                <Zap size={14} className="fill-current text-amber-400" />
+                <span>{isAr ? "اشتري الآن (الدفع عند الاستلام)" : "Commander Directement (Paiement à la livraison)"}</span>
+              </button>
+
+              <button
+                onClick={handleAddToCart}
+                className="w-full border border-border/80 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs flex items-center justify-center gap-2 group cursor-pointer font-mono"
+              >
+                {isAddedSuccess ? (
+                  <>
+                    <Check size={14} className="text-[#25D366]" />
+                    <span>{t("cart.added.journey")}</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag size={14} />
+                    <span>{isAr ? "أضف إلى السلة" : "Ajouter au Panier"}</span>
+                  </>
+                )}
+              </button>
+            </div>
 
           </div>
 
@@ -709,6 +741,9 @@ function ProductDetailRoute() {
           </div>
         </div>
       )}
+
+      {/* Size Guide Modal */}
+      <SizeGuideModal isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
 
     </div>
   );
