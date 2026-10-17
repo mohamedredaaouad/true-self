@@ -1,12 +1,12 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-Cpl4glPv.mjs";
-import { a as useLanguage, u as useCart } from "./router-arO96cx8.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-COQVNrNK.mjs";
+import { a as useLanguage, u as useCart } from "./router-aBMtPNjF.mjs";
 import { S as Symbol$1, L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
-import { d as createOrderFn } from "./orders.server-csezWl4-.mjs";
+import { d as createOrderFn } from "./orders.server-KSTSIsAq.mjs";
 import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./product-8-back-CL2V7HrX.mjs";
 import "../_libs/seroval.mjs";
-import { X, a as Check, S as ShoppingBag, T as Trash2, M as Minus, d as Plus } from "../_libs/lucide-react.mjs";
+import { X, a as Check, g as ShoppingBag, T as Trash2, d as Minus, e as Plus } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -21,7 +21,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-DCdGJl-k.mjs";
+import "./server-DDZzebLx.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -906,7 +906,7 @@ function Index() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.faq") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.shipping") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.returns") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors block", children: t("footer.support.contact") }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://wa.me/${"212652617044".replace(/[^0-9]/g, "")}`, target: "_blank", rel: "noopener noreferrer", className: "hover:text-foreground transition-colors block", children: t("footer.support.contact") }) })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-2 lg:col-start-7 xl:col-start-11", children: [
@@ -1128,7 +1128,7 @@ function Index() {
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-muted-foreground font-light leading-relaxed max-w-sm", children: isAr ? "تم تسجيل طلبك بنجاح في نظامنا. لتأكيد التوصيل فوراً وبسرعة، اضغط على الزر أدناه لمراسلتنا عبر واتساب." : language === "fr" ? "Votre commande est enregistrée avec succès. Pour une confirmation et livraison rapide, contactez-nous directement sur WhatsApp :" : "Your order is registered successfully. For express confirmation and shipping, please ping us directly on WhatsApp:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://wa.me/${"+212600000000".replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Bonjour True Self ! Je viens de passer la commande #${completedOrder?.id || ""}.
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://wa.me/${"212652617044".replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Bonjour True Self ! Je viens de passer la commande #${completedOrder?.id || ""}.
 • Nom : ${completedOrder?.customerName || ""}
 • Ville : ${completedOrder?.customerCity || ""}
 • Total : ${completedOrder?.totalPrice || cartSubtotal} MAD

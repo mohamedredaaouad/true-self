@@ -1530,7 +1530,12 @@ function Index() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-colors block">
+                <a
+                  href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "+212652617044").replace(/[^0-9]/g, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground transition-colors block"
+                >
                   {t("footer.support.contact")}
                 </a>
               </li>
@@ -1950,7 +1955,7 @@ function Index() {
 
                 {/* Direct WhatsApp Confirmation Button */}
                 <a
-                  href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "+212600000000").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                  href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "+212652617044").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
                     `Bonjour True Self ! Je viens de passer la commande #${completedOrder?.id || ""}.\n` +
                     `• Nom : ${completedOrder?.customerName || ""}\n` +
                     `• Ville : ${completedOrder?.customerCity || ""}\n` +

@@ -682,7 +682,7 @@ function ProductDetailRoute() {
               <li><a href="#" className="hover:text-foreground transition-colors">{t("footer.support.faq")}</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t("footer.support.shipping")}</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t("footer.support.returns")}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t("footer.support.contact")}</a></li>
+              <li><a href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "+212652617044").replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">{t("footer.support.contact")}</a></li>
             </ul>
           </div>
         </div>

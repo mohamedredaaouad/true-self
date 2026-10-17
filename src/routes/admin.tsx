@@ -8,7 +8,7 @@ import {
   updateOrderStatusFn,
   type Order,
 } from "../lib/orders.server";
-import { RefreshCw, LogOut, CheckCircle, Package, Truck, Clock } from "lucide-react";
+import { RefreshCw, LogOut, CheckCircle, Package, Truck, Clock, Search, Download, MessageSquare } from "lucide-react";
 import { Logo } from "../components/BrandLogo";
 
 export const Route = createFileRoute("/admin")({
@@ -31,6 +31,7 @@ function Admin() {
   const [loading, setLoading] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Check server session on mount
   useEffect(() => {
@@ -144,8 +145,66 @@ function Admin() {
   const shippedCount = orders.filter((o) => o.status === "Shipped").length;
   const deliveredCount = orders.filter((o) => o.status === "Delivered").length;
 
-  const filteredOrders =
-    filterStatus === "All" ? orders : orders.filter((o) => o.status === filterStatus);
+  function formatWhatsAppLink(phone: string, orderId: string, customerName: string, city: string) {
+    let clean = (phone || "").replace(/[^0-9]/g, "");
+    if (clean.startsWith("0")) {
+      clean = "212" + clean.slice(1);
+    } else if (!clean.startsWith("212") && clean.length === 9) {
+      clean = "212" + clean;
+    }
+    const message = `Bonjour ${customerName || ""}, nous vous contactons de la part de TRUE SELF® concernant votre commande #${orderId}. Votre adresse à ${city || ""} est bien confirmée pour la livraison ?`;
+    return `https://wa.me/${clean}?text=${encodeURIComponent(message)}`;
+  }
+
+  const exportToCSV = () => {
+    if (orders.length === 0) return;
+    const headers = [
+      "Order ID",
+      "Date",
+      "Customer Name",
+      "Phone",
+      "City",
+      "Address",
+      "Items",
+      "Total Price (MAD)",
+      "Status",
+      "Notes",
+    ];
+    const rows = filteredOrders.map((o) => [
+      `"${o.id}"`,
+      `"${new Date(o.createdAt).toLocaleString("fr-FR")}"`,
+      `"${(o.customerName || "").replace(/"/g, '""')}"`,
+      `"${(o.customerPhone || "").replace(/"/g, '""')}"`,
+      `"${(o.customerCity || "").replace(/"/g, '""')}"`,
+      `"${(o.customerAddress || "").replace(/"/g, '""')}"`,
+      `"${o.items.map((i) => `${i.name} (Q${i.quantity}, ${i.size})`).join("; ").replace(/"/g, '""')}"`,
+      o.totalPrice,
+      `"${o.status}"`,
+      `"${(o.customerNotes || "").replace(/"/g, '""')}"`,
+    ]);
+    const csvContent =
+      "\uFEFF" + [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `true_self_orders_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const filteredOrders = orders.filter((order) => {
+    const matchesStatus = filterStatus === "All" || order.status === filterStatus;
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return matchesStatus;
+    const matchesQuery =
+      order.id.toLowerCase().includes(q) ||
+      (order.customerName || "").toLowerCase().includes(q) ||
+      (order.customerPhone || "").toLowerCase().includes(q) ||
+      (order.customerCity || "").toLowerCase().includes(q);
+    return matchesStatus && matchesQuery;
+  });
 
   if (checkingAuth) {
     return (
@@ -205,18 +264,27 @@ function Admin() {
           <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">// INTERNAL ACCESS</span>
           <h1 className="font-display text-4xl lg:text-5xl mt-2 leading-none">Order Management</h1>
         </div>
-        <div className="flex gap-3 font-mono text-xs">
+        <div className="flex flex-wrap gap-2.5 font-mono text-xs">
+          <button
+            onClick={exportToCSV}
+            disabled={orders.length === 0}
+            className="border border-border/60 bg-secondary/15 px-3.5 py-2 hover:bg-foreground hover:text-background transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer disabled:opacity-40"
+            title="Exporter les commandes en fichier CSV (Excel)"
+          >
+            <Download size={12} />
+            Export CSV
+          </button>
           <button
             onClick={fetchOrders}
             disabled={loading}
-            className="border border-border/60 bg-secondary/15 px-4 py-2 hover:bg-foreground hover:text-background transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer"
+            className="border border-border/60 bg-secondary/15 px-3.5 py-2 hover:bg-foreground hover:text-background transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer"
           >
             <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
             Refresh
           </button>
           <button
             onClick={handleLogout}
-            className="border border-border/60 bg-secondary/15 px-4 py-2 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer"
+            className="border border-border/60 bg-secondary/15 px-3.5 py-2 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors duration-300 flex items-center gap-2 rounded-xs cursor-pointer"
           >
             <LogOut size={12} />
             Logout
@@ -250,22 +318,35 @@ function Admin() {
 
       {/* Filter and Content Panel */}
       <main className="mx-auto max-w-[1400px]">
-        {/* Filter Controls */}
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-border/30 font-mono text-xs select-none">
-          {["All", "New", "Confirmed", "Shipped", "Delivered"].map((status) => (
-            <button
-              key={status}
-              onClick={() => setFilterStatus(status)}
-              className={`px-4 py-2 border transition-all rounded-xs cursor-pointer whitespace-nowrap ${filterStatus === status
-                  ? "bg-foreground text-background border-foreground font-semibold"
-                  : "border-border/60 text-muted-foreground hover:border-foreground/60"
-                }`}
-            >
-              {status === "All" ? "All Orders" : status} ({
-                status === "All" ? orders.length : orders.filter(o => o.status === status).length
-              })
-            </button>
-          ))}
+        {/* Filter & Search Bar */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-6 border-b border-border/30">
+          <div className="flex gap-2 overflow-x-auto font-mono text-xs select-none">
+            {["All", "New", "Confirmed", "Shipped", "Delivered"].map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilterStatus(status)}
+                className={`px-4 py-2 border transition-all rounded-xs cursor-pointer whitespace-nowrap ${filterStatus === status
+                    ? "bg-foreground text-background border-foreground font-semibold"
+                    : "border-border/60 text-muted-foreground hover:border-foreground/60"
+                  }`}
+              >
+                {status === "All" ? "All Orders" : status} ({
+                  status === "All" ? orders.length : orders.filter(o => o.status === status).length
+                })
+              </button>
+            ))}
+          </div>
+
+          <div className="relative min-w-[240px] max-w-sm">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by ID, name, phone, city..."
+              className="w-full bg-secondary/10 border border-border/60 rounded-xs pl-9 pr-3 py-2 text-xs font-mono placeholder:text-muted-foreground/60 focus:outline-none focus:border-foreground"
+            />
+          </div>
         </div>
 
         {/* Orders List */}
@@ -296,7 +377,19 @@ function Admin() {
 
                     <div className="space-y-2 pt-2 border-t border-border/30">
                       <h3 className="font-display text-xl leading-none text-foreground/95">{order.customerName}</h3>
-                      <p className="font-mono text-xs text-foreground/80">{order.customerPhone}</p>
+                      <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                        <span className="font-mono text-xs text-foreground/80 font-medium">{order.customerPhone}</span>
+                        <a
+                          href={formatWhatsAppLink(order.customerPhone, order.id, order.customerName, order.customerCity)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-2xs bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white text-[10px] font-mono transition-all border border-[#25D366]/40 hover:border-[#25D366]"
+                          title="Discuter directement sur WhatsApp avec le client"
+                        >
+                          <MessageSquare size={10} />
+                          <span>WhatsApp</span>
+                        </a>
+                      </div>
                       <p className="text-xs text-muted-foreground leading-relaxed pt-1">
                         <span className="font-semibold">{order.customerCity}</span>, {order.customerAddress}
                       </p>

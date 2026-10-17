@@ -1,10 +1,10 @@
 import { j as jsxRuntimeExports, r as reactExports } from "./_libs/react.mjs";
 import { u as useRouter, L as Link } from "./_libs/tanstack__react-router.mjs";
-import { R as Route, a as useLanguage, u as useCart } from "./_ssr/router-arO96cx8.mjs";
-import { N as Nav, R as Reveal } from "./_ssr/Reveal-Cpl4glPv.mjs";
+import { R as Route, a as useLanguage, u as useCart } from "./_ssr/router-aBMtPNjF.mjs";
+import { N as Nav, R as Reveal } from "./_ssr/Reveal-COQVNrNK.mjs";
 import { S as Symbol$1, L as Logo } from "./_ssr/BrandLogo-Be2G5YYH.mjs";
 import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./_ssr/product-8-back-CL2V7HrX.mjs";
-import { H as Heart, C as Calendar, e as Ruler, a as Check, S as ShoppingBag, X } from "./_libs/lucide-react.mjs";
+import { H as Heart, C as Calendar, f as Ruler, a as Check, g as ShoppingBag, X } from "./_libs/lucide-react.mjs";
 import "./_libs/tanstack__router-core.mjs";
 import "./_libs/tanstack__history.mjs";
 import "./_libs/cookie-es.mjs";
@@ -585,7 +585,7 @@ function ProductDetailRoute() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors", children: t("footer.support.faq") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors", children: t("footer.support.shipping") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors", children: t("footer.support.returns") }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#", className: "hover:text-foreground transition-colors", children: t("footer.support.contact") }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: `https://wa.me/${"212652617044".replace(/[^0-9]/g, "")}`, target: "_blank", rel: "noopener noreferrer", className: "hover:text-foreground transition-colors", children: t("footer.support.contact") }) })
           ] })
         ] })
       ] }),
