@@ -1,8 +1,8 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-Ccfl1aPf.mjs";
-import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-BZnIH0Ji.mjs";
-import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p6Back, i as p6Front, j as p7Back, k as p7Front, S as SizeGuideModal } from "./product-7-back-BdJWBFEI.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-BmeHJ2ln.mjs";
+import { f as useLanguage, R as Route$1, e as useCart, S as Symbol$1, L as Logo } from "./router-MTDi5Sqt.mjs";
+import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p6Back, i as p6Front, j as p7Back, k as p7Front, S as SizeGuideModal } from "./product-7-back-BzWGhxWE.mjs";
 import "../_libs/seroval.mjs";
 import { X, g as Ruler, Z as Zap, h as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
@@ -19,7 +19,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-BtjoV9_h.mjs";
+import "./server-zaSQRbKD.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -368,13 +368,18 @@ function Index() {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "top", className: "bg-background text-foreground overflow-x-hidden", dir: isAr ? "rtl" : "ltr", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Nav, { wishlistCount: wishlist.length, onOpenWishlist: () => setWishlistOpen(true) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "relative min-h-screen w-full overflow-hidden flex flex-col justify-end", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: hero, alt: "Authentic Moroccan face looking into the distance, representing inner peace and freedom", width: 1600, height: 1920, fetchPriority: "high", className: "absolute inset-0 h-full w-full object-cover" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-b from-background/30 via-background/15 to-background/95" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: hero, alt: "Authentic Moroccan face looking into the distance, representing inner peace and freedom", width: 1600, height: 1920, fetchPriority: "high", className: "absolute inset-0 h-full w-full object-cover animate-kenburns select-none pointer-events-none" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-b from-background/30 via-background/20 to-background/95 pointer-events-none" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative z-10 mx-auto max-w-[1400px] w-full px-6 lg:px-10 pb-20 lg:pb-28", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-4xl text-start", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "animate-fade text-[10px] sm:text-xs tracking-brand uppercase text-foreground/80 font-mono", children: t("hero.vol") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "animate-rise delay-1 mt-6 font-display text-[15vw] leading-[0.85] sm:text-[11vw] lg:text-[8rem] text-balance", children: [
-          "LIVE FOR YOURSELF.",
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block mt-4 font-sans text-lg md:text-2xl font-light tracking-wide text-foreground/90 uppercase", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3.5 mb-6", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 32, animated: true, className: "text-foreground shrink-0" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 w-px bg-border/60" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "animate-fade text-[10px] sm:text-xs tracking-brand uppercase text-foreground/80 font-mono", children: t("hero.vol") })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "mt-2 font-display text-[15vw] leading-[0.88] sm:text-[11vw] lg:text-[8rem] text-balance", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block animate-mask-up", children: "LIVE FOR" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block animate-mask-up delay-1", children: "YOURSELF." }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "block mt-4 font-sans text-lg md:text-2xl font-light tracking-wide text-foreground/90 uppercase animate-fade delay-3", children: [
             "TRUE SELF",
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground/60", children: "®" })
           ] })
@@ -386,7 +391,11 @@ function Index() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "#story", className: "border border-foreground/45 bg-background/20 backdrop-blur px-7 py-3.5 text-[10px] tracking-brand uppercase hover:bg-foreground hover:text-background transition-all duration-300 font-semibold rounded-xs shadow-xs text-center", children: t("story.title") })
           ] })
         ] })
-      ] }) })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute bottom-6 right-6 lg:right-12 z-10 flex flex-col items-center gap-2 pointer-events-none select-none", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-mono tracking-[0.25em] text-foreground/60 uppercase", children: "SCROLL" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-[1px] h-9 bg-foreground/20 overflow-hidden relative", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full bg-foreground animate-scroll-pulse" }) })
+      ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "featured-products", className: "bg-background text-foreground py-24 border-b border-border/40", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-start mb-16 border-b border-border/40 pb-8", children: [
@@ -473,7 +482,7 @@ function Index() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { className: "lg:col-span-5 flex justify-center lg:justify-start lg:ps-12", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full max-w-[360px] lg:p-12 lg:bg-secondary/15 lg:rounded-xs lg:border lg:border-border/30 lg:aspect-square flex items-center justify-center lg:shadow-soft", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block", children: "// ARCHIVE 001 // IDENTITY" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block", children: "33.5731° N · 7.5898° W" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { className: "text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { animated: true, className: "text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Reveal, { delay: 150, className: "lg:col-span-7 text-start space-y-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [

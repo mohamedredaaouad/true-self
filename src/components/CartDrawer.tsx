@@ -236,7 +236,7 @@ export function CartDrawer() {
           isAr ? "left-0" : "right-0"
         } w-full sm:w-[480px] z-[121] bg-background border-border/60 ${
           isAr ? "border-r" : "border-l"
-        } shadow-2xl flex flex-col justify-between overflow-hidden transition-transform duration-300 ease-out ${
+        } shadow-2xl flex flex-col justify-between overflow-hidden transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           cartOpen
             ? "translate-x-0"
             : isAr

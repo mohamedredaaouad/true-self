@@ -2,7 +2,7 @@ import { Q as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { Q as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { b as createRouter, a as createRootRouteWithContext, u as useRouter, L as Link, O as Outlet, H as HeadContent, S as Scripts, c as createFileRoute, l as lazyRouteComponent } from "../_libs/tanstack__react-router.mjs";
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
-import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-BtjoV9_h.mjs";
+import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-zaSQRbKD.mjs";
 import { X, i as Sparkles, a as Check, h as ShoppingBag, d as Minus, e as Plus, T as Trash2, c as Clock, M as MessageSquare } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
@@ -25,7 +25,7 @@ import "node:http";
 import "node:stream/promises";
 import "node:https";
 import "node:http2";
-const appCss = "/assets/styles-Cup0IboW.css";
+const appCss = "/assets/styles-Dq4_pdEM.css";
 const translations = {
   fr: {
     // Nav
@@ -714,7 +714,7 @@ const getOrdersFn = createServerFn({
 const updateOrderStatusFn = createServerFn({
   method: "POST"
 }).inputValidator((data) => data).handler(createSsrRpc("ff7cbb0d15363131f77420f707143b0cf9e674ee544c429c38510ff1cf368a3f"));
-function Symbol$1({ size = 24, className = "", ...props }) {
+function Symbol$1({ size = 24, className = "", animated = false, ...props }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "svg",
     {
@@ -723,7 +723,7 @@ function Symbol$1({ size = 24, className = "", ...props }) {
       height: size,
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: `inline-block align-middle transition-transform duration-700 group/symbol ${className}`,
+      className: `inline-block align-middle transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group/symbol ${className}`,
       ...props,
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -734,7 +734,7 @@ function Symbol$1({ size = 24, className = "", ...props }) {
             r: "22",
             stroke: "currentColor",
             strokeWidth: "2.5",
-            className: "transition-opacity duration-700 group-hover/symbol:opacity-80"
+            className: `transition-all duration-700 group-hover/symbol:opacity-80 ${animated ? "animate-draw-circle" : ""}`
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -744,7 +744,7 @@ function Symbol$1({ size = 24, className = "", ...props }) {
             cy: "33",
             r: "5.5",
             fill: "currentColor",
-            className: "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] origin-[72px_33px] group-hover/symbol:scale-130 group-hover/symbol:translate-x-1 group-hover/symbol:-translate-y-1"
+            className: `transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-[72px_33px] group-hover/symbol:scale-125 group-hover/symbol:translate-x-1 group-hover/symbol:-translate-y-1 ${animated ? "animate-dot-emerge" : ""}`
           }
         )
       ]
@@ -758,7 +758,8 @@ function Logo({
   textSize,
   taglineSize,
   className = "",
-  showTagline = true
+  showTagline = true,
+  animated = false
 }) {
   if (layout === "horizontal") {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `inline-flex items-center gap-3 select-none group/symbol cursor-pointer ${className}`, children: [
@@ -766,10 +767,11 @@ function Logo({
         Symbol$1,
         {
           size: symbolSize,
+          animated,
           className: `${symbolClassName || ""}`
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.15em] text-foreground uppercase transition-colors duration-700 group-hover/symbol:opacity-80 ${textSize || "text-sm sm:text-base"}`, children: "TRUE SELF" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.18em] text-foreground uppercase transition-all duration-700 group-hover/symbol:opacity-80 ${animated ? "animate-fade delay-2" : ""} ${textSize || "text-sm sm:text-base"}`, children: "TRUE SELF" })
     ] });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex flex-col items-center text-center gap-4 select-none group/symbol cursor-pointer ${className}`, children: [
@@ -777,12 +779,13 @@ function Logo({
       Symbol$1,
       {
         size: symbolSize || 64,
+        animated,
         className: `${symbolClassName || ""}`
       }
     ),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.25em] text-foreground uppercase block font-medium transition-colors duration-700 group-hover/symbol:opacity-80 ${textSize || "text-2xl md:text-3xl"}`, children: "TRUE SELF" }),
-      showTagline && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-mono tracking-[0.3em] text-muted-foreground uppercase block leading-none transition-colors duration-700 group-hover/symbol:opacity-80 ${taglineSize || "text-[9px] md:text-[10px]"}`, children: "LIVE FOR YOURSELF." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.25em] text-foreground uppercase block font-medium transition-all duration-700 group-hover/symbol:opacity-80 ${animated ? "animate-fade delay-3" : ""} ${textSize || "text-2xl md:text-3xl"}`, children: "TRUE SELF" }),
+      showTagline && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-mono tracking-[0.32em] text-muted-foreground uppercase block leading-none transition-all duration-700 group-hover/symbol:opacity-80 ${animated ? "animate-fade delay-5" : ""} ${taglineSize || "text-[9px] md:text-[10px]"}`, children: "LIVE FOR YOURSELF." })
     ] })
   ] });
 }
@@ -999,7 +1002,7 @@ function CartDrawer() {
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "aside",
       {
-        className: `fixed top-0 bottom-0 ${isAr ? "left-0" : "right-0"} w-full sm:w-[480px] z-[121] bg-background border-border/60 ${isAr ? "border-r" : "border-l"} shadow-2xl flex flex-col justify-between overflow-hidden transition-transform duration-300 ease-out ${cartOpen ? "translate-x-0" : isAr ? "-translate-x-full" : "translate-x-full"}`,
+        className: `fixed top-0 bottom-0 ${isAr ? "left-0" : "right-0"} w-full sm:w-[480px] z-[121] bg-background border-border/60 ${isAr ? "border-r" : "border-l"} shadow-2xl flex flex-col justify-between overflow-hidden transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${cartOpen ? "translate-x-0" : isAr ? "-translate-x-full" : "translate-x-full"}`,
         dir: isAr ? "rtl" : "ltr",
         "aria-label": "Shopping Bag",
         children: [
@@ -1415,7 +1418,7 @@ function RootComponent() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(FloatingWhatsApp, {})
   ] }) }) });
 }
-const $$splitComponentImporter$3 = () => import("./admin-DbMV_Bt2.mjs");
+const $$splitComponentImporter$3 = () => import("./admin-Deh8dKGU.mjs");
 const Route$3 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -1427,7 +1430,7 @@ const Route$3 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter$2 = () => import("./about-BlYTNO1c.mjs");
+const $$splitComponentImporter$2 = () => import("./about-BvJLT3Qb.mjs");
 const Route$2 = createFileRoute("/about")({
   head: () => ({
     meta: [{
@@ -1439,7 +1442,7 @@ const Route$2 = createFileRoute("/about")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-BZ1iHirq.mjs");
+const $$splitComponentImporter$1 = () => import("./index-CaGHAGww.mjs");
 const Route$1 = createFileRoute("/")({
   validateSearch: (search) => ({
     category: search.category || "all"
@@ -1460,7 +1463,7 @@ const Route$1 = createFileRoute("/")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("../_productId-hg7vTMlK.mjs");
+const $$splitComponentImporter = () => import("../_productId-CaDMvoAh.mjs");
 const Route = createFileRoute("/product/$productId")({
   head: ({
     params

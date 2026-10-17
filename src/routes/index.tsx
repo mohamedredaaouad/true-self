@@ -429,18 +429,34 @@ function Index() {
           width={1600}
           height={1920}
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover animate-kenburns select-none pointer-events-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/15 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/20 to-background/95 pointer-events-none" />
         
         <div className="relative z-10 mx-auto max-w-[1400px] w-full px-6 lg:px-10 pb-20 lg:pb-28">
           <div className="max-w-4xl text-start">
-            <p className="animate-fade text-[10px] sm:text-xs tracking-brand uppercase text-foreground/80 font-mono">
-              {t("hero.vol")}
-            </p>
-            <h1 className="animate-rise delay-1 mt-6 font-display text-[15vw] leading-[0.85] sm:text-[11vw] lg:text-[8rem] text-balance">
-              LIVE FOR YOURSELF.
-              <span className="block mt-4 font-sans text-lg md:text-2xl font-light tracking-wide text-foreground/90 uppercase">
+            {/* Signature Logo & Vol Tag */}
+            <div className="flex items-center gap-3.5 mb-6">
+              <BrandSymbol size={32} animated className="text-foreground shrink-0" />
+              <div className="h-3 w-px bg-border/60" />
+              <p className="animate-fade text-[10px] sm:text-xs tracking-brand uppercase text-foreground/80 font-mono">
+                {t("hero.vol")}
+              </p>
+            </div>
+
+            {/* Staggered Mask Headline Reveal */}
+            <h1 className="mt-2 font-display text-[15vw] leading-[0.88] sm:text-[11vw] lg:text-[8rem] text-balance">
+              <div className="overflow-hidden">
+                <span className="inline-block animate-mask-up">
+                  LIVE FOR
+                </span>
+              </div>
+              <div className="overflow-hidden">
+                <span className="inline-block animate-mask-up delay-1">
+                  YOURSELF.
+                </span>
+              </div>
+              <span className="block mt-4 font-sans text-lg md:text-2xl font-light tracking-wide text-foreground/90 uppercase animate-fade delay-3">
                 TRUE SELF<span className="text-muted-foreground/60">®</span>
               </span>
             </h1>
@@ -464,6 +480,16 @@ function Index() {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Minimal Editorial Scroll Indicator */}
+        <div className="absolute bottom-6 right-6 lg:right-12 z-10 flex flex-col items-center gap-2 pointer-events-none select-none">
+          <span className="text-[9px] font-mono tracking-[0.25em] text-foreground/60 uppercase">
+            SCROLL
+          </span>
+          <div className="w-[1px] h-9 bg-foreground/20 overflow-hidden relative">
+            <div className="w-full h-full bg-foreground animate-scroll-pulse" />
           </div>
         </div>
       </section>
@@ -706,7 +732,7 @@ function Index() {
                 <div className="absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">// ARCHIVE 001 // IDENTITY</div>
                 <div className="absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">33.5731° N · 7.5898° W</div>
                 
-                <BrandSymbol className="text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" />
+                <BrandSymbol animated className="text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" />
               </div>
             </Reveal>
 

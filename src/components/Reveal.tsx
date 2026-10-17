@@ -1,20 +1,39 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+export interface RevealProps {
+  children: ReactNode;
+  delay?: number;
+  duration?: number;
+  className?: string;
+  variant?: "fade-up" | "fade" | "scale" | "mask";
+  threshold?: number;
+}
+
 export function Reveal({
   children,
   delay = 0,
+  duration = 900,
   className = "",
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}) {
+  variant = "fade-up",
+  threshold = 0.15,
+}: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const [prefersReduced, setPrefersReduced] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      setPrefersReduced(mediaQuery.matches);
+      if (mediaQuery.matches) {
+        setVisible(true);
+        return;
+      }
+    }
+
     const el = ref.current;
     if (!el) return;
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -24,22 +43,50 @@ export function Reveal({
           }
         });
       },
-      { threshold: 0.15 },
+      { threshold },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [threshold]);
+
+  if (prefersReduced) {
+    return <div className={className}>{children}</div>;
+  }
+
+  // Define styles based on variant
+  let initialTransform = "translateY(24px)";
+  let targetTransform = "translateY(0)";
+  let initialScale = "1";
+  let targetScale = "1";
+
+  if (variant === "scale") {
+    initialTransform = "scale(0.96)";
+    targetTransform = "scale(1)";
+  } else if (variant === "fade") {
+    initialTransform = "none";
+    targetTransform = "none";
+  } else if (variant === "mask") {
+    initialTransform = "translateY(100%)";
+    targetTransform = "translateY(0%)";
+  }
+
+  const baseStyle: React.CSSProperties = {
+    opacity: visible ? 1 : 0,
+    transform: visible ? targetTransform : initialTransform,
+    transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+    willChange: visible ? "auto" : "opacity, transform",
+  };
+
+  if (variant === "mask") {
+    return (
+      <div className={`overflow-hidden ${className}`}>
+        <div style={baseStyle}>{children}</div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(28px)",
-        transition: `opacity 1.1s var(--ease-soft) ${delay}ms, transform 1.1s var(--ease-soft) ${delay}ms`,
-      }}
-    >
+    <div ref={ref} className={className} style={baseStyle}>
       {children}
     </div>
   );
