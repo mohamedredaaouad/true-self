@@ -1,14 +1,13 @@
 import { j as jsxRuntimeExports, r as reactExports } from "./_libs/react.mjs";
 import { u as useRouter, L as Link } from "./_libs/tanstack__react-router.mjs";
-import { R as Route, a as useLanguage, u as useCart } from "./_ssr/router-aBMtPNjF.mjs";
-import { N as Nav, R as Reveal } from "./_ssr/Reveal-COQVNrNK.mjs";
-import { S as Symbol$1, L as Logo } from "./_ssr/BrandLogo-Be2G5YYH.mjs";
+import { R as Route, e as useLanguage, d as useCart, S as Symbol$1, L as Logo } from "./_ssr/router-Dtmg5ANs.mjs";
+import { N as Nav, R as Reveal } from "./_ssr/Reveal-Cn1FTn80.mjs";
 import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./_ssr/product-8-back-CL2V7HrX.mjs";
+import "./_libs/seroval.mjs";
 import { H as Heart, C as Calendar, f as Ruler, a as Check, g as ShoppingBag, X } from "./_libs/lucide-react.mjs";
 import "./_libs/tanstack__router-core.mjs";
 import "./_libs/tanstack__history.mjs";
 import "./_libs/cookie-es.mjs";
-import "./_libs/seroval.mjs";
 import "./_libs/seroval-plugins.mjs";
 import "node:stream/web";
 import "node:stream";
@@ -20,6 +19,15 @@ import "stream";
 import "./_libs/isbot.mjs";
 import "./_libs/tanstack__query-core.mjs";
 import "./_libs/tanstack__react-query.mjs";
+import "./_ssr/server-D5s2sBIq.mjs";
+import "node:async_hooks";
+import "./_libs/h3-v2.mjs";
+import "./_libs/rou3.mjs";
+import "./_libs/srvx.mjs";
+import "node:http";
+import "node:stream/promises";
+import "node:https";
+import "node:http2";
 const cottonTexture = "/assets/cream_cotton_texture_closeup-c6XCiD8F.png";
 const products = [{
   id: 1,
@@ -318,23 +326,19 @@ function ProductDetailRoute() {
     });
   };
   const handleAddToCart = () => {
-    setIsAdding(true);
+    addToCart({
+      productId: product.id,
+      name: t(`product.name.${product.key}`),
+      quote: t(`product.quote.${product.key}`),
+      image: product.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(product.price.replace(" MAD", ""))
+    });
+    setIsAddedSuccess(true);
     setTimeout(() => {
-      addToCart({
-        productId: product.id,
-        name: t(`product.name.${product.key}`),
-        quote: t(`product.quote.${product.key}`),
-        image: product.imgFront,
-        size: selectedSize,
-        color: selectedColor,
-        price: parseFloat(product.price.replace(" MAD", ""))
-      });
-      setIsAdding(false);
-      setIsAddedSuccess(true);
-      setTimeout(() => {
-        setIsAddedSuccess(false);
-      }, 2e3);
-    }, 800);
+      setIsAddedSuccess(false);
+    }, 2e3);
   };
   reactExports.useEffect(() => {
     if (userHeight > 185 || userWeight > 85) {

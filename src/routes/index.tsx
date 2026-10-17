@@ -6,7 +6,6 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { Symbol as BrandSymbol, Logo as BrandLogo } from "@/components/BrandLogo";
 import { X, ShoppingBag, Check, Plus, Minus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
-import { createOrderFn } from "@/lib/orders.server";
 
 // Assets imports
 import hero from "@/assets/hero.png";
@@ -102,16 +101,7 @@ function Index() {
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Checkout form states
-  const [checkoutStep, setCheckoutStep] = useState<"cart" | "checkout" | "success">("cart");
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [address, setAddress] = useState("");
-  const [notes, setNotes] = useState("");
-  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
-  const [orderError, setOrderError] = useState("");
-  const [completedOrder, setCompletedOrder] = useState<{ id: string; customerName: string; customerCity: string; totalPrice: number } | null>(null);
+
 
   const products: Product[] = [
     { 
@@ -278,19 +268,16 @@ function Index() {
     };
   }, [selectedProduct, cartOpen]);
 
-  // Handle ESC key to close overlay or cart drawer
+  // Handle ESC key to close product overlay
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSelectedProduct(null);
-        if (checkoutStep !== "success") {
-          setCartOpen(false);
-        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [checkoutStep, setCartOpen]);
+  }, []);
 
   // Load wishlist and recently viewed from localStorage on mount
   useEffect(() => {
@@ -384,80 +371,16 @@ function Index() {
 
   const handleAddToCart = () => {
     if (!selectedProduct || !selectedSize || !selectedColor) return;
-    setIsAdding(true);
-    setTimeout(() => {
-      addToCart({
-        productId: selectedProduct.id,
-        name: t(`product.name.${selectedProduct.key}`),
-        quote: t(`product.quote.${selectedProduct.key}`),
-        image: selectedProduct.imgFront,
-        size: selectedSize,
-        color: selectedColor,
-        price: parseFloat(selectedProduct.price.replace(" MAD", "")),
-      });
-      setIsAdding(false);
-      setIsAddedSuccess(true);
-      setTimeout(() => {
-        setIsAddedSuccess(false);
-        setSelectedProduct(null); // Close product detail overlay
-      }, 1000);
-    }, 800);
-  };
-
-  const handleCheckoutSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!fullName || !phone || !city || !address) {
-      setOrderError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Please fill in all required fields.");
-      return;
-    }
-    setIsSubmittingOrder(true);
-    setOrderError("");
-    try {
-      const orderItems = cartItems.map((item) => ({
-        productId: item.productId,
-        name: item.name,
-        quote: item.quote,
-        size: item.size,
-        color: item.color,
-        quantity: item.quantity,
-        price: item.price,
-      }));
-
-      const result = await createOrderFn({
-        data: {
-          customerName: fullName,
-          customerPhone: phone,
-          customerCity: city,
-          customerAddress: address,
-          customerNotes: notes || undefined,
-          items: orderItems,
-          totalPrice: cartSubtotal,
-        },
-      });
-
-      if (result && result.order) {
-        setCompletedOrder({
-          id: result.order.id,
-          customerName: result.order.customerName,
-          customerCity: result.order.customerCity,
-          totalPrice: result.order.totalPrice,
-        });
-      }
-
-      // Clear states and cart
-      clearCart();
-      setFullName("");
-      setPhone("");
-      setCity("");
-      setAddress("");
-      setNotes("");
-      setCheckoutStep("success");
-    } catch (err) {
-      console.error("Error submitting order:", err);
-      setOrderError(isAr ? "حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى." : "There was an error processing your order. Please try again.");
-    } finally {
-      setIsSubmittingOrder(false);
-    }
+    addToCart({
+      productId: selectedProduct.id,
+      name: t(`product.name.${selectedProduct.key}`),
+      quote: t(`product.quote.${selectedProduct.key}`),
+      image: selectedProduct.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(selectedProduct.price.replace(" MAD", "")),
+    });
+    setSelectedProduct(null); // Close quick view immediately
   };
 
   return (
@@ -1889,288 +1812,7 @@ function Index() {
         </div>
       )}
 
-      {/* ----------------- MINI CART DRAWER ----------------- */}
-      {cartOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-end bg-background/50 backdrop-blur-md transition-all duration-500">
-          {/* Backdrop click close */}
-          <div className="absolute inset-0" onClick={() => {
-            if (checkoutStep !== "success") {
-              setCartOpen(false);
-            }
-          }} />
 
-          {/* Drawer container */}
-          <div className="relative w-full sm:w-[480px] h-full bg-background border-l border-border/60 shadow-soft flex flex-col justify-between overflow-hidden z-10 animate-fade" dir={isAr ? "rtl" : "ltr"}>
-            
-            {/* Drawer Header */}
-            <div className="p-6 border-b border-border/40 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <BrandSymbol size={16} className="text-foreground animate-pulse" />
-                <span className="font-mono text-xs font-semibold tracking-brand uppercase">{isAr ? "حقيبتك" : "Your Bag"} ({cartCount})</span>
-              </div>
-              {checkoutStep !== "success" && (
-                <button 
-                  onClick={() => {
-                    setCheckoutStep("cart");
-                    setCartOpen(false);
-                  }}
-                  className="p-1 hover:opacity-60 transition-opacity border border-border/40 rounded-full bg-background/80"
-                >
-                  <X size={14} />
-                </button>
-              )}
-            </div>
-
-            {/* Emotional Cart Copy Banner */}
-            {cartItems.length > 0 && checkoutStep !== "success" && (
-              <div className="bg-secondary/40 px-6 py-3 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground animate-fade">
-                ✦ {t("cart.emotion.banner")}
-              </div>
-            )}
-
-            {/* Success screen */}
-            {checkoutStep === "success" ? (
-              <div className="flex-1 p-8 flex flex-col items-center justify-center text-center space-y-5">
-                <div className="h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce shadow-soft">
-                  <BrandSymbol size={32} className="text-background animate-pulse" />
-                </div>
-                <h3 className="font-display text-3xl lg:text-4xl leading-tight">
-                  {isAr ? "شكراً لاختيارك ذاتك" : language === "fr" ? "Merci de vous choisir." : "Thank You For Choosing Yourself."}
-                </h3>
-                
-                {completedOrder && (
-                  <div className="inline-flex items-center gap-2 bg-secondary/40 border border-border/60 px-4 py-2 rounded-xs font-mono text-xs">
-                    <span className="text-muted-foreground">{isAr ? "رقم الطلب:" : "N° de Commande:"}</span>
-                    <span className="font-bold tracking-wider text-foreground">#{completedOrder.id}</span>
-                  </div>
-                )}
-
-                <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed max-w-sm">
-                  {isAr 
-                    ? "تم تسجيل طلبك بنجاح في نظامنا. لتأكيد التوصيل فوراً وبسرعة، اضغط على الزر أدناه لمراسلتنا عبر واتساب."
-                    : language === "fr"
-                    ? "Votre commande est enregistrée avec succès. Pour une confirmation et livraison rapide, contactez-nous directement sur WhatsApp :"
-                    : "Your order is registered successfully. For express confirmation and shipping, please ping us directly on WhatsApp:"}
-                </p>
-
-                {/* Direct WhatsApp Confirmation Button */}
-                <a
-                  href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "+212652617044").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                    `Bonjour True Self ! Je viens de passer la commande #${completedOrder?.id || ""}.\n` +
-                    `• Nom : ${completedOrder?.customerName || ""}\n` +
-                    `• Ville : ${completedOrder?.customerCity || ""}\n` +
-                    `• Total : ${completedOrder?.totalPrice || cartSubtotal} MAD\n` +
-                    `Merci de me confirmer la livraison !`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full max-w-xs flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white py-3.5 px-6 rounded-xs font-semibold text-xs tracking-wider uppercase transition-all duration-300 shadow-soft cursor-pointer font-mono"
-                >
-                  <svg className="w-4 h-4 fill-current flex-shrink-0" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
-                  <span>{isAr ? "تأكيد عبر واتساب" : language === "fr" ? "Confirmer sur WhatsApp" : "Confirm via WhatsApp"}</span>
-                </a>
-
-                <button
-                  onClick={() => {
-                    setCheckoutStep("cart");
-                    setCartOpen(false);
-                  }}
-                  className="border border-border/80 hover:border-foreground bg-transparent text-foreground px-8 py-3 text-[10px] tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer"
-                >
-                  {isAr ? "العودة للمجموعة" : "Return to Collection"}
-                </button>
-              </div>
-            ) : (
-              <>
-                {/* Cart Items List or Checkout Form */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                  {cartItems.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-center space-y-2">
-                      <span className="font-display text-2xl italic text-muted-foreground">{isAr ? "حقيبتك فارغة" : "Your bag is empty."}</span>
-                      <p className="text-xs text-muted-foreground/60 font-mono">{isAr ? "اختر الهدوء." : "Choose calm."}</p>
-                    </div>
-                  ) : checkoutStep === "cart" ? (
-                    /* Cart list */
-                    <ul className="divide-y divide-border/30">
-                      {cartItems.map((item) => (
-                        <li key={item.id} className="py-4 flex items-center justify-between gap-4 first:pt-0">
-                          <div className="flex items-center gap-4">
-                            <div className="w-16 aspect-[3/4] border border-border/40 bg-secondary/15 rounded-2xs overflow-hidden flex-shrink-0">
-                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                            </div>
-                            <div className="text-start">
-                              <h4 className="font-display text-xl leading-tight text-foreground/95">{item.quote}</h4>
-                              <p className="font-mono text-[9px] text-muted-foreground uppercase mt-0.5">
-                                {item.name.split(" ")[item.name.split(" ").length - 1]} // {isAr ? "المقاس" : language === "fr" ? "Taille" : "Size"}: {item.size} // {isAr ? "اللون" : language === "fr" ? "Couleur" : "Color"}: {item.color}
-                              </p>
-                              
-                              {/* Quantity adjustments */}
-                              <div className="flex items-center gap-2 mt-2 font-mono">
-                                <button 
-                                  onClick={() => updateQuantity(item.id, -1)}
-                                  className="border border-border/60 hover:bg-foreground hover:text-background p-1 text-[8px] transition-colors rounded-3xs cursor-pointer"
-                                >
-                                  <Minus size={8} />
-                                </button>
-                                <span className="text-[10px] px-1">{item.quantity}</span>
-                                <button 
-                                  onClick={() => updateQuantity(item.id, 1)}
-                                  className="border border-border/60 hover:bg-foreground hover:text-background p-1 text-[8px] transition-colors rounded-3xs cursor-pointer"
-                                >
-                                  <Plus size={8} />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex flex-col items-end gap-3 font-mono">
-                            <span className="text-xs font-semibold">{item.price * item.quantity} MAD</span>
-                            <button 
-                              onClick={() => removeFromCart(item.id)}
-                              className="text-muted-foreground/60 hover:text-red-500 transition-colors p-1"
-                            >
-                              <Trash2 size={12} />
-                            </button>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    /* Checkout form */
-                    <form onSubmit={handleCheckoutSubmit} className="space-y-5 text-start">
-                      <h3 className="font-display text-2xl mb-4 italic font-light">
-                        {isAr ? "مرحباً بك في ذاتك الحقيقية" : language === "fr" ? "Bienvenue chez TRUE SELF" : "Welcome To TRUE SELF"}
-                      </h3>
-                      
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">{isAr ? "الاسم الكامل" : "Full Name"} *</label>
-                        <input
-                          type="text"
-                          required
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          className="w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground"
-                          placeholder={isAr ? "أدخل اسمك الكامل" : "Enter your full name"}
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">{isAr ? "رقم الهاتف" : "Phone Number"} *</label>
-                        <input
-                          type="tel"
-                          required
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground text-start"
-                          placeholder={isAr ? "أدخل رقم هاتفك" : "Enter your phone number"}
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">{isAr ? "المدينة" : "City"} *</label>
-                        <input
-                          type="text"
-                          required
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          className="w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground"
-                          placeholder={isAr ? "الدار البيضاء، الرباط..." : "Casablanca, Rabat..."}
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">{isAr ? "العنوان الكامل" : "Full Address"} *</label>
-                        <textarea
-                          required
-                          rows={2}
-                          value={address}
-                          onChange={(e) => setAddress(e.target.value)}
-                          className="w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground resize-none"
-                          placeholder={isAr ? "أدخل عنوانك بالتفصيل" : "Enter your complete delivery address"}
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[8px] tracking-widest text-muted-foreground uppercase">{isAr ? "ملاحظات إضافية (اختياري)" : "Notes (Optional)"}</label>
-                        <textarea
-                          rows={1}
-                          value={notes}
-                          onChange={(e) => setNotes(e.target.value)}
-                          className="w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground resize-none"
-                          placeholder={isAr ? "أي تعليمات خاصة بالتوصيل" : "Any special delivery instructions"}
-                        />
-                      </div>
-
-                      {orderError && <p className="text-[10px] text-red-500 font-mono">{orderError}</p>}
-                    </form>
-                  )}
-                </div>
-
-                {/* Drawer Footer summary */}
-                {cartItems.length > 0 && (
-                  <div className="p-6 border-t border-border/40 bg-secondary/10 space-y-4">
-                    <div className="flex justify-between items-center font-mono">
-                      <span className="text-xs text-muted-foreground uppercase tracking-widest">{isAr ? "المجموع الفرعي" : "Subtotal"}</span>
-                      <span className="text-base font-semibold">{cartSubtotal} MAD</span>
-                    </div>
-
-                    {checkoutStep === "cart" ? (
-                      <button
-                        onClick={() => setCheckoutStep("checkout")}
-                        className="w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono"
-                      >
-                        {isAr ? "ابدأ رحلتك" : language === "fr" ? "Commencer votre voyage" : "Start Your Journey"}
-                      </button>
-                    ) : (
-                      <>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => setCheckoutStep("cart")}
-                            className="flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer"
-                          >
-                            {isAr ? "عودة" : "Back"}
-                          </button>
-                          <button
-                            onClick={handleCheckoutSubmit}
-                            disabled={isSubmittingOrder}
-                            className="flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer"
-                          >
-                            {isSubmittingOrder ? (
-                              <BrandSymbol size={16} className="animate-spin text-background" />
-                            ) : (
-                              <span>{isAr ? "تأكيد مسارك" : language === "fr" ? "Confirmer votre chemin" : "Confirm Your Path"}</span>
-                            )}
-                          </button>
-                        </div>
-
-                        {/* Secure Checkout Trust Badges */}
-                        <div className="border-t border-border/40 pt-4 mt-6 space-y-3 font-mono text-[9px] text-muted-foreground/80 animate-fade">
-                          <div className="flex items-center gap-2">
-                            <Check size={10} className="text-green-600" />
-                            <span>{isAr ? "توصيل سريع مجاني للمشتريات فوق 500 درهم" : "Free delivery in Morocco for orders above 500 MAD"}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Check size={10} className="text-green-600" />
-                            <span>{isAr ? "الدفع عند الاستلام آمن وموثوق 100%" : "Secure cash on delivery"}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Check size={10} className="text-green-600" />
-                            <span>{isAr ? "دعم وتواصل مستمر لتأكيد طلبك" : "Dedicated order confirmation support"}</span>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-              </>
-            )}
-
-          </div>
-        </div>
-      )}
       {/* Lightbox Modal */}
       {lightboxImage && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300">

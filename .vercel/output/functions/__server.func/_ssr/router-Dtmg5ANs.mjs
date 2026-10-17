@@ -2,6 +2,8 @@ import { Q as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { Q as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { b as createRouter, a as createRootRouteWithContext, u as useRouter, L as Link, O as Outlet, H as HeadContent, S as Scripts, c as createFileRoute, l as lazyRouteComponent } from "../_libs/tanstack__react-router.mjs";
 import { j as jsxRuntimeExports, r as reactExports } from "../_libs/react.mjs";
+import { b as createServerFn, T as TSS_SERVER_FUNCTION, g as getServerFnById } from "./server-D5s2sBIq.mjs";
+import { X, a as Check, g as ShoppingBag, d as Minus, e as Plus, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -15,7 +17,15 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-const appCss = "/assets/styles-CPLqFV3_.css";
+import "node:async_hooks";
+import "../_libs/h3-v2.mjs";
+import "../_libs/rou3.mjs";
+import "../_libs/srvx.mjs";
+import "node:http";
+import "node:stream/promises";
+import "node:https";
+import "node:http2";
+const appCss = "/assets/styles-BExS9RE8.css";
 const translations = {
   fr: {
     // Nav
@@ -645,6 +655,535 @@ function useCart() {
   }
   return context;
 }
+var createSsrRpc = (functionId) => {
+  const url = "/_serverFn/" + functionId;
+  const serverFnMeta = { id: functionId };
+  const fn = async (...args) => {
+    return (await getServerFnById(functionId))(...args);
+  };
+  return Object.assign(fn, {
+    url,
+    serverFnMeta,
+    [TSS_SERVER_FUNCTION]: true
+  });
+};
+const adminLoginFn = createServerFn({
+  method: "POST"
+}).inputValidator((data) => data).handler(createSsrRpc("0b5d8222b5c5a5ff0f3803ede304ca52c9c10930a4565e2a4f72a783bdc1e4b6"));
+const adminLogoutFn = createServerFn({
+  method: "POST"
+}).handler(createSsrRpc("ad2d1adea7cacd7aadc7949f303d1d45d753a0b6af4dfbc011b658dbfec24060"));
+const checkAdminAuthFn = createServerFn({
+  method: "GET"
+}).handler(createSsrRpc("04ab80446e4cad863179eef6336b29a74d685340ba866db7e3333a7019b456bc"));
+const createOrderFn = createServerFn({
+  method: "POST"
+}).inputValidator((data) => data).handler(createSsrRpc("0b1d791ec81a3d0a4252766c5f213de9e95dc8deb15e746e4a8369e5de20e062"));
+const getOrdersFn = createServerFn({
+  method: "GET"
+}).handler(createSsrRpc("4da6ed92fc94ebf6c0a8932f19c99ab60a000695af9dbcc44b5ac25671f83b7a"));
+const updateOrderStatusFn = createServerFn({
+  method: "POST"
+}).inputValidator((data) => data).handler(createSsrRpc("ff7cbb0d15363131f77420f707143b0cf9e674ee544c429c38510ff1cf368a3f"));
+function Symbol$1({ size = 24, className = "", ...props }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "svg",
+    {
+      viewBox: "0 0 100 100",
+      width: size,
+      height: size,
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: `inline-block align-middle transition-transform duration-700 group/symbol ${className}`,
+      ...props,
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "circle",
+          {
+            cx: "50",
+            cy: "55",
+            r: "22",
+            stroke: "currentColor",
+            strokeWidth: "2.5",
+            className: "transition-opacity duration-700 group-hover/symbol:opacity-80"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "circle",
+          {
+            cx: "72",
+            cy: "33",
+            r: "5.5",
+            fill: "currentColor",
+            className: "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] origin-[72px_33px] group-hover/symbol:scale-130 group-hover/symbol:translate-x-1 group-hover/symbol:-translate-y-1"
+          }
+        )
+      ]
+    }
+  );
+}
+function Logo({
+  layout = "horizontal",
+  symbolSize,
+  symbolClassName,
+  textSize,
+  taglineSize,
+  className = "",
+  showTagline = true
+}) {
+  if (layout === "horizontal") {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `inline-flex items-center gap-3 select-none group/symbol cursor-pointer ${className}`, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Symbol$1,
+        {
+          size: symbolSize,
+          className: `${symbolClassName || ""}`
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.15em] text-foreground uppercase transition-colors duration-700 group-hover/symbol:opacity-80 ${textSize || "text-sm sm:text-base"}`, children: "TRUE SELF" })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex flex-col items-center text-center gap-4 select-none group/symbol cursor-pointer ${className}`, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Symbol$1,
+      {
+        size: symbolSize || 64,
+        className: `${symbolClassName || ""}`
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-display tracking-[0.25em] text-foreground uppercase block font-medium transition-colors duration-700 group-hover/symbol:opacity-80 ${textSize || "text-2xl md:text-3xl"}`, children: "TRUE SELF" }),
+      showTagline && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-mono tracking-[0.3em] text-muted-foreground uppercase block leading-none transition-colors duration-700 group-hover/symbol:opacity-80 ${taglineSize || "text-[9px] md:text-[10px]"}`, children: "LIVE FOR YOURSELF." })
+    ] })
+  ] });
+}
+function buildWhatsAppOrderMessage(order, language) {
+  const isAr = language === "ar";
+  const itemsText = order.items.map((item, idx) => {
+    const quoteStr = item.quote ? ` « ${item.quote} »` : "";
+    return `${idx + 1}. *${item.name}*${quoteStr}
+   • ${isAr ? "المقاس" : "Taille"} : ${item.size} | ${isAr ? "اللون" : "Couleur"} : ${item.color}
+   • ${isAr ? "الكمية" : "Qté"} : ${item.quantity} × ${item.price} MAD = *${item.quantity * item.price} MAD*`;
+  }).join("\n\n");
+  if (isAr) {
+    return `✨ *طلب جديد من متجر TRUE SELF®* ✨
+━━━━━━━━━━━━━━━━━━━━
+📦 *رقم الطلب :* #${order.id}
+👤 *الاسم :* ${order.customerName}
+📞 *الهاتف :* ${order.customerPhone}
+📍 *المدينة :* ${order.customerCity}
+🏠 *العنوان :* ${order.customerAddress}
+` + (order.customerNotes ? `📝 *ملاحظات :* ${order.customerNotes}
+` : "") + `━━━━━━━━━━━━━━━━━━━━
+🛍️ *تفاصيل الطلب :*
+
+${itemsText}
+
+━━━━━━━━━━━━━━━━━━━━
+💰 *المجموع الإجمالي :* *${order.totalPrice} MAD*
+🚚 *التوصيل :* بالمجان (الدفع عند الاستلام)
+
+السلام عليكم، أود تأكيد طلبي وشكراً !`;
+  }
+  return `✨ *NOUVELLE COMMANDE TRUE SELF®* ✨
+━━━━━━━━━━━━━━━━━━━━
+📦 *Commande N° :* #${order.id}
+👤 *Client :* ${order.customerName}
+📞 *Téléphone :* ${order.customerPhone}
+📍 *Ville :* ${order.customerCity}
+🏠 *Adresse :* ${order.customerAddress}
+` + (order.customerNotes ? `📝 *Note client :* ${order.customerNotes}
+` : "") + `━━━━━━━━━━━━━━━━━━━━
+🛍️ *ARTICLES COMMANDÉS :*
+
+${itemsText}
+
+━━━━━━━━━━━━━━━━━━━━
+💰 *TOTAL À PAYER :* *${order.totalPrice} MAD*
+🚚 *Livraison :* Gratuite (Paiement à la livraison)
+
+Bonjour ! Je confirme ma commande ci-dessus. Merci de me tenir informé de l'expédition.`;
+}
+function CartDrawer() {
+  const { t, language } = useLanguage();
+  const isAr = language === "ar";
+  const {
+    cartItems,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    cartSubtotal,
+    cartCount,
+    cartOpen,
+    setCartOpen
+  } = useCart();
+  const [checkoutStep, setCheckoutStep] = reactExports.useState("cart");
+  const [fullName, setFullName] = reactExports.useState("");
+  const [phone, setPhone] = reactExports.useState("");
+  const [city, setCity] = reactExports.useState("");
+  const [address, setAddress] = reactExports.useState("");
+  const [notes, setNotes] = reactExports.useState("");
+  const [isSubmittingOrder, setIsSubmittingOrder] = reactExports.useState(false);
+  const [orderError, setOrderError] = reactExports.useState("");
+  const [completedOrder, setCompletedOrder] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    if (cartOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [cartOpen]);
+  reactExports.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && cartOpen && checkoutStep !== "success") {
+        setCartOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [cartOpen, checkoutStep, setCartOpen]);
+  const handleCheckoutSubmit = async (e) => {
+    e.preventDefault();
+    if (!fullName || !phone || !city || !address) {
+      setOrderError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+    setIsSubmittingOrder(true);
+    setOrderError("");
+    try {
+      const orderItems = cartItems.map((item) => ({
+        productId: item.productId,
+        name: item.name,
+        quote: item.quote,
+        size: item.size,
+        color: item.color,
+        quantity: item.quantity,
+        price: item.price
+      }));
+      const result = await createOrderFn({
+        data: {
+          customerName: fullName.trim(),
+          customerPhone: phone.trim(),
+          customerCity: city.trim(),
+          customerAddress: address.trim(),
+          customerNotes: notes.trim() || void 0,
+          items: orderItems,
+          totalPrice: cartSubtotal
+        }
+      });
+      const orderId = result?.order?.id || `TS-${Date.now().toString().slice(-6)}`;
+      setCompletedOrder({
+        id: orderId,
+        customerName: fullName.trim(),
+        customerPhone: phone.trim(),
+        customerCity: city.trim(),
+        customerAddress: address.trim(),
+        customerNotes: notes.trim() || void 0,
+        items: orderItems,
+        totalPrice: cartSubtotal
+      });
+      clearCart();
+      setFullName("");
+      setPhone("");
+      setCity("");
+      setAddress("");
+      setNotes("");
+      setCheckoutStep("success");
+    } catch (err) {
+      console.error("Error submitting order:", err);
+      setOrderError(
+        isAr ? "حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى." : "Une erreur est survenue lors de l'enregistrement de votre commande. Veuillez réessayer."
+      );
+    } finally {
+      setIsSubmittingOrder(false);
+    }
+  };
+  const closeDrawer = () => {
+    if (checkoutStep === "success") {
+      setCheckoutStep("cart");
+      setCompletedOrder(null);
+    }
+    setCartOpen(false);
+  };
+  const whatsAppTargetNumber = "212652617044".replace(/[^0-9]/g, "");
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: `fixed inset-0 z-[120] bg-black/50 transition-opacity duration-300 ${cartOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`,
+        onClick: closeDrawer,
+        "aria-hidden": "true"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "aside",
+      {
+        className: `fixed top-0 bottom-0 ${isAr ? "left-0" : "right-0"} w-full sm:w-[480px] z-[121] bg-background border-border/60 ${isAr ? "border-r" : "border-l"} shadow-2xl flex flex-col justify-between overflow-hidden transition-transform duration-300 ease-out ${cartOpen ? "translate-x-0" : isAr ? "-translate-x-full" : "translate-x-full"}`,
+        dir: isAr ? "rtl" : "ltr",
+        "aria-label": "Shopping Bag",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 border-b border-border/40 flex items-center justify-between bg-background/90", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "text-foreground" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-xs font-semibold tracking-brand uppercase", children: [
+                isAr ? "حقيبتك" : "Votre Panier",
+                " (",
+                cartCount,
+                ")"
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: closeDrawer,
+                className: "p-1.5 hover:opacity-70 transition-opacity border border-border/40 rounded-full bg-secondary/20 cursor-pointer",
+                "aria-label": "Fermer le panier",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 })
+              }
+            )
+          ] }),
+          cartItems.length > 0 && checkoutStep !== "success" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-secondary/40 px-6 py-2.5 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground", children: [
+            "✦ ",
+            t("cart.emotion.banner")
+          ] }),
+          checkoutStep === "success" && completedOrder ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-5 overflow-y-auto", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-16 bg-[#25D366]/15 text-[#25D366] flex items-center justify-center rounded-full border border-[#25D366]/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 32 }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl sm:text-3xl leading-tight", children: isAr ? "شكراً لاختيارك ذاتك" : "Commande Enregistrée !" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 bg-secondary/40 border border-border/60 px-4 py-2 rounded-xs font-mono text-xs", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: isAr ? "رقم الطلب:" : "N° de Commande:" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold tracking-wider text-foreground", children: [
+                "#",
+                completedOrder.id
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-muted-foreground font-light leading-relaxed max-w-sm", children: isAr ? "تم تسجيل طلبك بنجاح. لتأكيد التوصيل فوراً وبسرعة، اضغط على الزر أدناه لإرسال تفاصيل طلبك كاملة عبر واتساب :" : "Votre commande est bien enregistrée. Pour une expédition express, cliquez sur le bouton ci-dessous pour nous envoyer votre commande détaillée sur WhatsApp :" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "a",
+              {
+                href: `https://wa.me/${whatsAppTargetNumber}?text=${encodeURIComponent(
+                  buildWhatsAppOrderMessage(completedOrder, language)
+                )}`,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                className: "w-full max-w-xs flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white py-3.5 px-6 rounded-xs font-semibold text-xs tracking-wider uppercase transition-all duration-300 shadow-soft cursor-pointer font-mono",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { className: "w-4 h-4 fill-current flex-shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد فوري عبر واتساب" : "Envoyer la commande sur WhatsApp" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: closeDrawer,
+                className: "border border-border/80 hover:border-foreground bg-transparent text-foreground px-8 py-3 text-[10px] tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer",
+                children: isAr ? "العودة للمجموعة" : "Retour à la boutique"
+              }
+            )
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-6 space-y-6", children: cartItems.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center text-center space-y-3 py-16", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full bg-secondary/30 flex items-center justify-center text-muted-foreground", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingBag, { size: 20 }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-display text-2xl italic text-muted-foreground", children: isAr ? "حقيبتك فارغة" : "Votre panier est vide." }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground/70 font-mono", children: isAr ? "اختر القطع التي تعبر عن ذاتك." : "Découvrez notre collection." })
+            ] }) : checkoutStep === "cart" ? (
+              /* Cart list */
+              /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-border/30", children: cartItems.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "py-4 flex items-center justify-between gap-4 first:pt-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 aspect-[3/4] border border-border/40 bg-secondary/15 rounded-2xs overflow-hidden flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.image, alt: item.name, className: "w-full h-full object-cover" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-start", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-display text-lg leading-tight text-foreground/95", children: item.quote }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-mono text-[9px] text-muted-foreground uppercase mt-0.5", children: [
+                      item.name.split(" ")[item.name.split(" ").length - 1],
+                      " //",
+                      " ",
+                      isAr ? "المقاس" : "Taille",
+                      ": ",
+                      item.size,
+                      " // ",
+                      isAr ? "اللون" : "Couleur",
+                      ": ",
+                      item.color
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-2 font-mono", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: () => updateQuantity(item.id, -1),
+                          className: "border border-border/60 hover:bg-foreground hover:text-background p-1 text-[8px] transition-colors rounded-3xs cursor-pointer",
+                          "aria-label": "Diminuer la quantité",
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { size: 10 })
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[11px] px-1 font-semibold", children: item.quantity }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          onClick: () => updateQuantity(item.id, 1),
+                          className: "border border-border/60 hover:bg-foreground hover:text-background p-1 text-[8px] transition-colors rounded-3xs cursor-pointer",
+                          "aria-label": "Augmenter la quantité",
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 10 })
+                        }
+                      )
+                    ] })
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-end gap-3 font-mono", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-semibold", children: [
+                    item.price * item.quantity,
+                    " MAD"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: () => removeFromCart(item.id),
+                      className: "text-muted-foreground/60 hover:text-red-500 transition-colors p-1 cursor-pointer",
+                      "aria-label": "Supprimer cet article",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 13 })
+                    }
+                  )
+                ] })
+              ] }, item.id)) })
+            ) : (
+              /* Checkout Form */
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { id: "checkout-form", onSubmit: handleCheckoutSubmit, className: "space-y-4 text-start", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-b border-border/40 pb-3 mb-4", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl italic font-light", children: isAr ? "معلومات التوصيل" : "Informations de livraison" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-mono text-[10px] text-muted-foreground mt-1", children: isAr ? "الدفع عند الاستلام في جميع مدن المغرب" : "Paiement en espèces à la livraison partout au Maroc" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                    isAr ? "الاسم الكامل" : "Nom & Prénom",
+                    " *"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      required: true,
+                      value: fullName,
+                      onChange: (e) => setFullName(e.target.value),
+                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground font-mono",
+                      placeholder: isAr ? "أدخل اسمك الكامل" : "ex: Mohamed Bennani"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                    isAr ? "رقم الهاتف" : "Numéro de téléphone",
+                    " *"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "tel",
+                      required: true,
+                      value: phone,
+                      onChange: (e) => setPhone(e.target.value),
+                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground text-start font-mono",
+                      placeholder: isAr ? "06 XX XX XX XX" : "06 XX XX XX XX"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                    isAr ? "المدينة" : "Ville",
+                    " *"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "input",
+                    {
+                      type: "text",
+                      required: true,
+                      value: city,
+                      onChange: (e) => setCity(e.target.value),
+                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2.5 text-xs focus:outline-none focus:border-foreground font-mono",
+                      placeholder: isAr ? "الدار البيضاء، مراكش، طنجة..." : "ex: Casablanca, Rabat, Marrakech..."
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: [
+                    isAr ? "العنوان بالتفصيل" : "Adresse complète",
+                    " *"
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "textarea",
+                    {
+                      required: true,
+                      rows: 2,
+                      value: address,
+                      onChange: (e) => setAddress(e.target.value),
+                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2 text-xs focus:outline-none focus:border-foreground resize-none font-mono",
+                      placeholder: isAr ? "الحي، الشارع، رقم المنزل..." : "Quartier, Rue, N° d'appartement..."
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "font-mono text-[9px] tracking-widest text-muted-foreground uppercase block", children: isAr ? "ملاحظات للتوصيل (اختياري)" : "Instructions de livraison (Optionnel)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "textarea",
+                    {
+                      rows: 1,
+                      value: notes,
+                      onChange: (e) => setNotes(e.target.value),
+                      className: "w-full bg-secondary/10 border border-border/60 rounded-xs px-3 py-2 text-xs focus:outline-none focus:border-foreground resize-none font-mono",
+                      placeholder: isAr ? "أي تعليمات خاصة بالتوصيل..." : "ex: Appeler avant d'arriver..."
+                    }
+                  )
+                ] }),
+                orderError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-red-500 font-mono", children: orderError })
+              ] })
+            ) }),
+            cartItems.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 border-t border-border/40 bg-secondary/15 space-y-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center font-mono", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-muted-foreground uppercase tracking-widest", children: isAr ? "المجموع الفرعي" : "Sous-total" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-base font-bold", children: [
+                  cartSubtotal,
+                  " MAD"
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center font-mono text-[11px] text-muted-foreground", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "التوصيل" : "Livraison" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#25D366] font-semibold", children: isAr ? "بالمجان" : "Gratuite" })
+              ] }),
+              checkoutStep === "cart" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => setCheckoutStep("checkout"),
+                  className: "w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs shadow-soft cursor-pointer font-mono",
+                  children: isAr ? "متابعة الطلب" : "Commander (Paiement à la livraison)"
+                }
+              ) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: () => setCheckoutStep("cart"),
+                    className: "flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer",
+                    children: isAr ? "عودة" : "Retour"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "submit",
+                    form: "checkout-form",
+                    disabled: isSubmittingOrder,
+                    className: "flex-2 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer disabled:opacity-50",
+                    children: isSubmittingOrder ? /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "animate-spin text-background" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد الطلب" : "Confirmer la commande" })
+                  }
+                )
+              ] })
+            ] })
+          ] })
+        ]
+      }
+    )
+  ] });
+}
 function NotFoundComponent() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex min-h-screen items-center justify-center bg-background px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-md text-center", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-display text-7xl text-foreground", children: "404" }),
@@ -737,9 +1276,12 @@ function RootShell({ children }) {
 }
 function RootComponent() {
   const { queryClient } = Route$4.useRouteContext();
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}) }) }) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsx(CartProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(LanguageProvider, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Outlet, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CartDrawer, {})
+  ] }) }) });
 }
-const $$splitComponentImporter$3 = () => import("./admin-DXP5GpNw.mjs");
+const $$splitComponentImporter$3 = () => import("./admin-DaCAD-yt.mjs");
 const Route$3 = createFileRoute("/admin")({
   head: () => ({
     meta: [{
@@ -751,7 +1293,7 @@ const Route$3 = createFileRoute("/admin")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const $$splitComponentImporter$2 = () => import("./about-Dugftkzd.mjs");
+const $$splitComponentImporter$2 = () => import("./about-C6fR0o9E.mjs");
 const Route$2 = createFileRoute("/about")({
   head: () => ({
     meta: [{
@@ -763,7 +1305,7 @@ const Route$2 = createFileRoute("/about")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-BJ5SbDRu.mjs");
+const $$splitComponentImporter$1 = () => import("./index-CfgRsBn4.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
@@ -781,7 +1323,7 @@ const Route$1 = createFileRoute("/")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("../_productId-6TvtAOxA.mjs");
+const $$splitComponentImporter = () => import("../_productId-DsnZ-LJj.mjs");
 const Route = createFileRoute("/product/$productId")({
   head: ({
     params
@@ -851,8 +1393,15 @@ const router = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   getRouter
 }, Symbol.toStringTag, { value: "Module" }));
 export {
+  Logo as L,
   Route as R,
-  useLanguage as a,
+  Symbol$1 as S,
+  adminLoginFn as a,
+  adminLogoutFn as b,
+  checkAdminAuthFn as c,
+  useCart as d,
+  useLanguage as e,
+  getOrdersFn as g,
   router as r,
-  useCart as u
+  updateOrderStatusFn as u
 };

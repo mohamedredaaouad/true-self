@@ -243,25 +243,21 @@ function ProductDetailRoute() {
     });
   };
 
-  // Add to cart with simulated latency
+  // Add to cart instantly
   const handleAddToCart = () => {
-    setIsAdding(true);
+    addToCart({
+      productId: product.id,
+      name: t(`product.name.${product.key}`),
+      quote: t(`product.quote.${product.key}`),
+      image: product.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(product.price.replace(" MAD", "")),
+    });
+    setIsAddedSuccess(true);
     setTimeout(() => {
-      addToCart({
-        productId: product.id,
-        name: t(`product.name.${product.key}`),
-        quote: t(`product.quote.${product.key}`),
-        image: product.imgFront,
-        size: selectedSize,
-        color: selectedColor,
-        price: parseFloat(product.price.replace(" MAD", "")),
-      });
-      setIsAdding(false);
-      setIsAddedSuccess(true);
-      setTimeout(() => {
-        setIsAddedSuccess(false);
-      }, 2000);
-    }, 800);
+      setIsAddedSuccess(false);
+    }, 2000);
   };
 
   // Calculate suggested size

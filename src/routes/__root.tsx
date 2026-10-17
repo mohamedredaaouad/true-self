@@ -103,6 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 import { LanguageProvider } from "../hooks/useLanguage";
 import { CartProvider } from "../hooks/useCart";
+import { CartDrawer } from "../components/CartDrawer";
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
@@ -125,6 +126,7 @@ function RootComponent() {
       <CartProvider>
         <LanguageProvider>
           <Outlet />
+          <CartDrawer />
         </LanguageProvider>
       </CartProvider>
     </QueryClientProvider>

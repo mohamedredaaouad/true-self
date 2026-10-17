@@ -1,12 +1,10 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-COQVNrNK.mjs";
-import { a as useLanguage, u as useCart } from "./router-aBMtPNjF.mjs";
-import { S as Symbol$1, L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
-import { d as createOrderFn } from "./orders.server-KSTSIsAq.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-Cn1FTn80.mjs";
+import { e as useLanguage, d as useCart, S as Symbol$1, L as Logo } from "./router-Dtmg5ANs.mjs";
 import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./product-8-back-CL2V7HrX.mjs";
 import "../_libs/seroval.mjs";
-import { X, a as Check, g as ShoppingBag, T as Trash2, d as Minus, e as Plus } from "../_libs/lucide-react.mjs";
+import { X, a as Check, g as ShoppingBag, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";
 import "../_libs/cookie-es.mjs";
@@ -21,7 +19,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-DDZzebLx.mjs";
+import "./server-D5s2sBIq.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -68,15 +66,6 @@ function Index() {
   const [recentlyViewed, setRecentlyViewed] = reactExports.useState([]);
   const [wishlistOpen, setWishlistOpen] = reactExports.useState(false);
   const [showScrollTop, setShowScrollTop] = reactExports.useState(false);
-  const [checkoutStep, setCheckoutStep] = reactExports.useState("cart");
-  const [fullName, setFullName] = reactExports.useState("");
-  const [phone, setPhone] = reactExports.useState("");
-  const [city, setCity] = reactExports.useState("");
-  const [address, setAddress] = reactExports.useState("");
-  const [notes, setNotes] = reactExports.useState("");
-  const [isSubmittingOrder, setIsSubmittingOrder] = reactExports.useState(false);
-  const [orderError, setOrderError] = reactExports.useState("");
-  const [completedOrder, setCompletedOrder] = reactExports.useState(null);
   const products = [{
     id: 1,
     key: "1",
@@ -255,14 +244,11 @@ function Index() {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         setSelectedProduct(null);
-        if (checkoutStep !== "success") {
-          setCartOpen(false);
-        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [checkoutStep, setCartOpen]);
+  }, []);
   reactExports.useEffect(() => {
     if (typeof window !== "undefined") {
       try {
@@ -341,75 +327,16 @@ function Index() {
   };
   const handleAddToCart = () => {
     if (!selectedProduct || !selectedSize || !selectedColor) return;
-    setIsAdding(true);
-    setTimeout(() => {
-      addToCart({
-        productId: selectedProduct.id,
-        name: t(`product.name.${selectedProduct.key}`),
-        quote: t(`product.quote.${selectedProduct.key}`),
-        image: selectedProduct.imgFront,
-        size: selectedSize,
-        color: selectedColor,
-        price: parseFloat(selectedProduct.price.replace(" MAD", ""))
-      });
-      setIsAdding(false);
-      setIsAddedSuccess(true);
-      setTimeout(() => {
-        setIsAddedSuccess(false);
-        setSelectedProduct(null);
-      }, 1e3);
-    }, 800);
-  };
-  const handleCheckoutSubmit = async (e) => {
-    e.preventDefault();
-    if (!fullName || !phone || !city || !address) {
-      setOrderError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Please fill in all required fields.");
-      return;
-    }
-    setIsSubmittingOrder(true);
-    setOrderError("");
-    try {
-      const orderItems = cartItems.map((item) => ({
-        productId: item.productId,
-        name: item.name,
-        quote: item.quote,
-        size: item.size,
-        color: item.color,
-        quantity: item.quantity,
-        price: item.price
-      }));
-      const result = await createOrderFn({
-        data: {
-          customerName: fullName,
-          customerPhone: phone,
-          customerCity: city,
-          customerAddress: address,
-          customerNotes: notes || void 0,
-          items: orderItems,
-          totalPrice: cartSubtotal
-        }
-      });
-      if (result && result.order) {
-        setCompletedOrder({
-          id: result.order.id,
-          customerName: result.order.customerName,
-          customerCity: result.order.customerCity,
-          totalPrice: result.order.totalPrice
-        });
-      }
-      clearCart();
-      setFullName("");
-      setPhone("");
-      setCity("");
-      setAddress("");
-      setNotes("");
-      setCheckoutStep("success");
-    } catch (err) {
-      console.error("Error submitting order:", err);
-      setOrderError(isAr ? "حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى." : "There was an error processing your order. Please try again.");
-    } finally {
-      setIsSubmittingOrder(false);
-    }
+    addToCart({
+      productId: selectedProduct.id,
+      name: t(`product.name.${selectedProduct.key}`),
+      quote: t(`product.quote.${selectedProduct.key}`),
+      image: selectedProduct.imgFront,
+      size: selectedSize,
+      color: selectedColor,
+      price: parseFloat(selectedProduct.price.replace(" MAD", ""))
+    });
+    setSelectedProduct(null);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "top", className: "bg-background text-foreground overflow-x-hidden", dir: isAr ? "rtl" : "ltr", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Nav, { wishlistCount: wishlist.length, onOpenWishlist: () => setWishlistOpen(true) }),
@@ -1089,163 +1016,6 @@ function Index() {
           ] }, item.id);
         }) }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-6 border-t border-border/40 bg-secondary/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setWishlistOpen(false), className: "w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono", children: isAr ? "العودة للتصفح" : language === "fr" ? "Retour au shopping" : "Back to shopping" }) })
-      ] })
-    ] }),
-    cartOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[110] flex items-center justify-end bg-background/50 backdrop-blur-md transition-all duration-500", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0", onClick: () => {
-        if (checkoutStep !== "success") {
-          setCartOpen(false);
-        }
-      } }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-full sm:w-[480px] h-full bg-background border-l border-border/60 shadow-soft flex flex-col justify-between overflow-hidden z-10 animate-fade", dir: isAr ? "rtl" : "ltr", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 border-b border-border/40 flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "text-foreground animate-pulse" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-mono text-xs font-semibold tracking-brand uppercase", children: [
-              isAr ? "حقيبتك" : "Your Bag",
-              " (",
-              cartCount,
-              ")"
-            ] })
-          ] }),
-          checkoutStep !== "success" && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-            setCheckoutStep("cart");
-            setCartOpen(false);
-          }, className: "p-1 hover:opacity-60 transition-opacity border border-border/40 rounded-full bg-background/80", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 14 }) })
-        ] }),
-        cartItems.length > 0 && checkoutStep !== "success" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-secondary/40 px-6 py-3 border-b border-border/30 text-center text-[10px] sm:text-xs italic font-light font-mono text-muted-foreground animate-fade", children: [
-          "✦ ",
-          t("cart.emotion.banner")
-        ] }),
-        checkoutStep === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-8 flex flex-col items-center justify-center text-center space-y-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce shadow-soft", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 32, className: "text-background animate-pulse" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-3xl lg:text-4xl leading-tight", children: isAr ? "شكراً لاختيارك ذاتك" : language === "fr" ? "Merci de vous choisir." : "Thank You For Choosing Yourself." }),
-          completedOrder && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 bg-secondary/40 border border-border/60 px-4 py-2 rounded-xs font-mono text-xs", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: isAr ? "رقم الطلب:" : "N° de Commande:" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold tracking-wider text-foreground", children: [
-              "#",
-              completedOrder.id
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-muted-foreground font-light leading-relaxed max-w-sm", children: isAr ? "تم تسجيل طلبك بنجاح في نظامنا. لتأكيد التوصيل فوراً وبسرعة، اضغط على الزر أدناه لمراسلتنا عبر واتساب." : language === "fr" ? "Votre commande est enregistrée avec succès. Pour une confirmation et livraison rapide, contactez-nous directement sur WhatsApp :" : "Your order is registered successfully. For express confirmation and shipping, please ping us directly on WhatsApp:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://wa.me/${"212652617044".replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Bonjour True Self ! Je viens de passer la commande #${completedOrder?.id || ""}.
-• Nom : ${completedOrder?.customerName || ""}
-• Ville : ${completedOrder?.customerCity || ""}
-• Total : ${completedOrder?.totalPrice || cartSubtotal} MAD
-Merci de me confirmer la livraison !`)}`, target: "_blank", rel: "noopener noreferrer", className: "w-full max-w-xs flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white py-3.5 px-6 rounded-xs font-semibold text-xs tracking-wider uppercase transition-all duration-300 shadow-soft cursor-pointer font-mono", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { className: "w-4 h-4 fill-current flex-shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد عبر واتساب" : language === "fr" ? "Confirmer sur WhatsApp" : "Confirm via WhatsApp" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
-            setCheckoutStep("cart");
-            setCartOpen(false);
-          }, className: "border border-border/80 hover:border-foreground bg-transparent text-foreground px-8 py-3 text-[10px] tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer", children: isAr ? "العودة للمجموعة" : "Return to Collection" })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-6 space-y-6", children: cartItems.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center text-center space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-display text-2xl italic text-muted-foreground", children: isAr ? "حقيبتك فارغة" : "Your bag is empty." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground/60 font-mono", children: isAr ? "اختر الهدوء." : "Choose calm." })
-          ] }) : checkoutStep === "cart" ? (
-            /* Cart list */
-            /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "divide-y divide-border/30", children: cartItems.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "py-4 flex items-center justify-between gap-4 first:pt-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 aspect-[3/4] border border-border/40 bg-secondary/15 rounded-2xs overflow-hidden flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.image, alt: item.name, className: "w-full h-full object-cover" }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-start", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-display text-xl leading-tight text-foreground/95", children: item.quote }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-mono text-[9px] text-muted-foreground uppercase mt-0.5", children: [
-                    item.name.split(" ")[item.name.split(" ").length - 1],
-                    " // ",
-                    isAr ? "المقاس" : language === "fr" ? "Taille" : "Size",
-                    ": ",
-                    item.size,
-                    " // ",
-                    isAr ? "اللون" : language === "fr" ? "Couleur" : "Color",
-                    ": ",
-                    item.color
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-2 font-mono", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => updateQuantity(item.id, -1), className: "border border-border/60 hover:bg-foreground hover:text-background p-1 text-[8px] transition-colors rounded-3xs cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { size: 8 }) }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] px-1", children: item.quantity }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => updateQuantity(item.id, 1), className: "border border-border/60 hover:bg-foreground hover:text-background p-1 text-[8px] transition-colors rounded-3xs cursor-pointer", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 8 }) })
-                  ] })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-end gap-3 font-mono", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-semibold", children: [
-                  item.price * item.quantity,
-                  " MAD"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => removeFromCart(item.id), className: "text-muted-foreground/60 hover:text-red-500 transition-colors p-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { size: 12 }) })
-              ] })
-            ] }, item.id)) })
-          ) : (
-            /* Checkout form */
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleCheckoutSubmit, className: "space-y-5 text-start", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-2xl mb-4 italic font-light", children: isAr ? "مرحباً بك في ذاتك الحقيقية" : language === "fr" ? "Bienvenue chez TRUE SELF" : "Welcome To TRUE SELF" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[8px] tracking-widest text-muted-foreground uppercase", children: [
-                  isAr ? "الاسم الكامل" : "Full Name",
-                  " *"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "text", required: true, value: fullName, onChange: (e) => setFullName(e.target.value), className: "w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground", placeholder: isAr ? "أدخل اسمك الكامل" : "Enter your full name" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[8px] tracking-widest text-muted-foreground uppercase", children: [
-                  isAr ? "رقم الهاتف" : "Phone Number",
-                  " *"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "tel", required: true, value: phone, onChange: (e) => setPhone(e.target.value), className: "w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground text-start", placeholder: isAr ? "أدخل رقم هاتفك" : "Enter your phone number" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[8px] tracking-widest text-muted-foreground uppercase", children: [
-                  isAr ? "المدينة" : "City",
-                  " *"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "text", required: true, value: city, onChange: (e) => setCity(e.target.value), className: "w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground", placeholder: isAr ? "الدار البيضاء، الرباط..." : "Casablanca, Rabat..." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "font-mono text-[8px] tracking-widest text-muted-foreground uppercase", children: [
-                  isAr ? "العنوان الكامل" : "Full Address",
-                  " *"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("textarea", { required: true, rows: 2, value: address, onChange: (e) => setAddress(e.target.value), className: "w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground resize-none", placeholder: isAr ? "أدخل عنوانك بالتفصيل" : "Enter your complete delivery address" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "font-mono text-[8px] tracking-widest text-muted-foreground uppercase", children: isAr ? "ملاحظات إضافية (اختياري)" : "Notes (Optional)" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("textarea", { rows: 1, value: notes, onChange: (e) => setNotes(e.target.value), className: "w-full bg-secondary/10 border-b border-border/60 px-3 py-2 text-sm focus:outline-none focus:border-foreground resize-none", placeholder: isAr ? "أي تعليمات خاصة بالتوصيل" : "Any special delivery instructions" })
-              ] }),
-              orderError && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-red-500 font-mono", children: orderError })
-            ] })
-          ) }),
-          cartItems.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 border-t border-border/40 bg-secondary/10 space-y-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center font-mono", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-muted-foreground uppercase tracking-widest", children: isAr ? "المجموع الفرعي" : "Subtotal" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-base font-semibold", children: [
-                cartSubtotal,
-                " MAD"
-              ] })
-            ] }),
-            checkoutStep === "cart" ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setCheckoutStep("checkout"), className: "w-full border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft cursor-pointer font-mono", children: isAr ? "ابدأ رحلتك" : language === "fr" ? "Commencer votre voyage" : "Start Your Journey" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setCheckoutStep("cart"), className: "flex-1 border border-border/60 bg-background text-foreground py-3.5 text-xs tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer", children: isAr ? "عودة" : "Back" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: handleCheckoutSubmit, disabled: isSubmittingOrder, className: "flex-1 border border-foreground bg-foreground text-background py-3.5 text-xs tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-500 font-semibold rounded-xs shadow-soft flex items-center justify-center gap-2 font-mono cursor-pointer", children: isSubmittingOrder ? /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 16, className: "animate-spin text-background" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد مسارك" : language === "fr" ? "Confirmer votre chemin" : "Confirm Your Path" }) })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-border/40 pt-4 mt-6 space-y-3 font-mono text-[9px] text-muted-foreground/80 animate-fade", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 10, className: "text-green-600" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "توصيل سريع مجاني للمشتريات فوق 500 درهم" : "Free delivery in Morocco for orders above 500 MAD" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 10, className: "text-green-600" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "الدفع عند الاستلام آمن وموثوق 100%" : "Secure cash on delivery" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 10, className: "text-green-600" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "دعم وتواصل مستمر لتأكيد طلبك" : "Dedicated order confirmation support" })
-                ] })
-              ] })
-            ] })
-          ] })
-        ] })
       ] })
     ] }),
     lightboxImage && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[200] flex items-center justify-center bg-background/95 backdrop-blur-md transition-all duration-300", children: [
