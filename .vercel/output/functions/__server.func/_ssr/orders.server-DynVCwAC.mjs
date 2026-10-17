@@ -1,4 +1,4 @@
-import { T as TSS_SERVER_FUNCTION, b as createServerFn } from "./server-CCDptq_C.mjs";
+import { T as TSS_SERVER_FUNCTION, b as createServerFn } from "./server-DCdGJl-k.mjs";
 import "../_libs/seroval.mjs";
 import "../_libs/react.mjs";
 import "node:async_hooks";
@@ -162,6 +162,38 @@ async function assertAdminAuthenticated() {
 }
 async function readOrders() {
   try {
+    const {
+      getSupabaseServerClient
+    } = await import("./supabase.server-CTlXEW4q.mjs");
+    const supabase = getSupabaseServerClient();
+    if (supabase) {
+      const {
+        data,
+        error
+      } = await supabase.from("orders").select("*").order("created_at", {
+        ascending: false
+      });
+      if (error) {
+        console.error("[Supabase Orders] Fetch error:", error.message);
+      } else if (data) {
+        return data.map((row) => ({
+          id: row.id,
+          createdAt: row.created_at,
+          customerName: row.customer_name,
+          customerPhone: row.customer_phone,
+          customerCity: row.customer_city,
+          customerAddress: row.customer_address,
+          customerNotes: row.customer_notes || void 0,
+          items: typeof row.items === "string" ? JSON.parse(row.items) : row.items || [],
+          totalPrice: Number(row.total_price),
+          status: row.status
+        }));
+      }
+    }
+  } catch (err) {
+    console.error("[Supabase Orders] Error attempting Supabase read:", err);
+  }
+  try {
     const fs = await import("fs");
     const path = await import("path");
     const isVercel = !!process.env.VERCEL;
@@ -175,7 +207,7 @@ async function readOrders() {
     const content = fs.readFileSync(ordersFilePath, "utf8");
     return JSON.parse(content || "[]");
   } catch (err) {
-    console.error("Error reading orders file:", err);
+    console.error("Error reading fallback orders file:", err);
     return [];
   }
 }
@@ -187,7 +219,7 @@ async function writeOrders(orders) {
     const ordersFilePath = isVercel ? "/tmp/orders.json" : path.resolve("./orders.json");
     fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2), "utf8");
   } catch (err) {
-    console.error("Error writing orders file:", err);
+    console.error("Error writing fallback orders file:", err);
   }
 }
 const adminLoginFn_createServerFn_handler = createServerRpc({
@@ -306,16 +338,52 @@ const createOrderFn = createServerFn({
 }).inputValidator((data) => data).handler(createOrderFn_createServerFn_handler, async ({
   data
 }) => {
-  const orders = await readOrders();
   const newOrder = {
     ...data,
-    id: Math.random().toString(36).substring(2, 11).toUpperCase(),
+    id: "TS-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
     createdAt: (/* @__PURE__ */ new Date()).toISOString(),
     status: "New"
   };
-  orders.push(newOrder);
-  await writeOrders(orders);
-  console.log(`[Order Server] Saved new order ${newOrder.id}`);
+  try {
+    const {
+      getSupabaseServerClient
+    } = await import("./supabase.server-CTlXEW4q.mjs");
+    const supabase = getSupabaseServerClient();
+    if (supabase) {
+      const {
+        error
+      } = await supabase.from("orders").insert({
+        id: newOrder.id,
+        created_at: newOrder.createdAt,
+        customer_name: newOrder.customerName,
+        customer_phone: newOrder.customerPhone,
+        customer_city: newOrder.customerCity,
+        customer_address: newOrder.customerAddress,
+        customer_notes: newOrder.customerNotes || null,
+        items: newOrder.items,
+        total_price: newOrder.totalPrice,
+        status: newOrder.status
+      });
+      if (error) {
+        console.error("[Supabase Orders] Insert error:", error.message);
+        const orders = await readOrders();
+        orders.push(newOrder);
+        await writeOrders(orders);
+      } else {
+        console.log(`[Supabase Orders] Saved new order ${newOrder.id}`);
+      }
+    } else {
+      const orders = await readOrders();
+      orders.push(newOrder);
+      await writeOrders(orders);
+      console.log(`[File Orders] Saved new order ${newOrder.id}`);
+    }
+  } catch (err) {
+    console.error("[Orders Server] Error saving order:", err);
+    const orders = await readOrders();
+    orders.push(newOrder);
+    await writeOrders(orders);
+  }
   return newOrder;
 });
 const getOrdersFn_createServerFn_handler = createServerRpc({
@@ -327,7 +395,6 @@ const getOrdersFn = createServerFn({
   method: "GET"
 }).handler(getOrdersFn_createServerFn_handler, async () => {
   await assertAdminAuthenticated();
-  console.log("[Order Server] Authenticated admin fetching all orders");
   return await readOrders();
 });
 const updateOrderStatusFn_createServerFn_handler = createServerRpc({
@@ -341,6 +408,39 @@ const updateOrderStatusFn = createServerFn({
   data
 }) => {
   await assertAdminAuthenticated();
+  try {
+    const {
+      getSupabaseServerClient
+    } = await import("./supabase.server-CTlXEW4q.mjs");
+    const supabase = getSupabaseServerClient();
+    if (supabase) {
+      const {
+        data: updated,
+        error
+      } = await supabase.from("orders").update({
+        status: data.status
+      }).eq("id", data.id).select().single();
+      if (error) {
+        console.error("[Supabase Orders] Update status error:", error.message);
+      } else if (updated) {
+        console.log(`[Supabase Orders] Updated status of order ${data.id} to ${data.status}`);
+        return {
+          id: updated.id,
+          createdAt: updated.created_at,
+          customerName: updated.customer_name,
+          customerPhone: updated.customer_phone,
+          customerCity: updated.customer_city,
+          customerAddress: updated.customer_address,
+          customerNotes: updated.customer_notes || void 0,
+          items: typeof updated.items === "string" ? JSON.parse(updated.items) : updated.items,
+          totalPrice: Number(updated.total_price),
+          status: updated.status
+        };
+      }
+    }
+  } catch (err) {
+    console.error("[Orders Server] Error updating order via Supabase:", err);
+  }
   const orders = await readOrders();
   const orderIndex = orders.findIndex((o) => o.id === data.id);
   if (orderIndex === -1) {
@@ -348,7 +448,6 @@ const updateOrderStatusFn = createServerFn({
   }
   orders[orderIndex].status = data.status;
   await writeOrders(orders);
-  console.log(`[Order Server] Authenticated admin updated status of order ${data.id} to ${data.status}`);
   return orders[orderIndex];
 });
 export {

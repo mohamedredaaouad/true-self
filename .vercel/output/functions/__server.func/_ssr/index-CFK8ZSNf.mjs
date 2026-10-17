@@ -1,9 +1,9 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-bA3XLiJa.mjs";
-import { a as useLanguage, u as useCart } from "./router-BcwldphC.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-Cpl4glPv.mjs";
+import { a as useLanguage, u as useCart } from "./router-arO96cx8.mjs";
 import { S as Symbol$1, L as Logo } from "./BrandLogo-Be2G5YYH.mjs";
-import { d as createOrderFn } from "./orders.server-tiomaIkn.mjs";
+import { d as createOrderFn } from "./orders.server-csezWl4-.mjs";
 import { p as p1Back, a as p1Front, b as p2Back, c as p2Front, l as p7Back, m as p7Front, n as p8Back, o as p8Front, d as p3Back, e as p3Front, f as p4Back, g as p4Front, h as p5Back, i as p5Front, j as p6Back, k as p6Front } from "./product-8-back-CL2V7HrX.mjs";
 import "../_libs/seroval.mjs";
 import { X, a as Check, S as ShoppingBag, T as Trash2, M as Minus, d as Plus } from "../_libs/lucide-react.mjs";
@@ -21,7 +21,7 @@ import "stream";
 import "../_libs/isbot.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
-import "./server-CCDptq_C.mjs";
+import "./server-DCdGJl-k.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -76,6 +76,7 @@ function Index() {
   const [notes, setNotes] = reactExports.useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = reactExports.useState(false);
   const [orderError, setOrderError] = reactExports.useState("");
+  const [completedOrder, setCompletedOrder] = reactExports.useState(null);
   const products = [{
     id: 1,
     key: "1",
@@ -377,7 +378,7 @@ function Index() {
         quantity: item.quantity,
         price: item.price
       }));
-      await createOrderFn({
+      const result = await createOrderFn({
         data: {
           customerName: fullName,
           customerPhone: phone,
@@ -388,6 +389,14 @@ function Index() {
           totalPrice: cartSubtotal
         }
       });
+      if (result && result.order) {
+        setCompletedOrder({
+          id: result.order.id,
+          customerName: result.order.customerName,
+          customerCity: result.order.customerCity,
+          totalPrice: result.order.totalPrice
+        });
+      }
       clearCart();
       setFullName("");
       setPhone("");
@@ -1108,14 +1117,29 @@ function Index() {
           "✦ ",
           t("cart.emotion.banner")
         ] }),
-        checkoutStep === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-8 flex flex-col items-center justify-center text-center space-y-6", children: [
+        checkoutStep === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-8 flex flex-col items-center justify-center text-center space-y-5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-16 w-16 bg-foreground text-background flex items-center justify-center rounded-full animate-bounce shadow-soft", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Symbol$1, { size: 32, className: "text-background animate-pulse" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display text-3xl lg:text-4xl leading-tight", children: isAr ? "شكراً لاختيارك ذاتك" : language === "fr" ? "Merci de vous choisir." : "Thank You For Choosing Yourself." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground font-light leading-relaxed max-w-xs", children: isAr ? "لقد بدأت رحلتك معنا بنجاح. سنتواصل معك لتأكيد خطوتك القادمة قريباً." : language === "fr" ? "Votre voyage commence. Nous vous contacterons sous peu pour confirmer votre chemin." : "Your journey has officially begun. We will contact you shortly to confirm your path." }),
+          completedOrder && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 bg-secondary/40 border border-border/60 px-4 py-2 rounded-xs font-mono text-xs", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: isAr ? "رقم الطلب:" : "N° de Commande:" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold tracking-wider text-foreground", children: [
+              "#",
+              completedOrder.id
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs sm:text-sm text-muted-foreground font-light leading-relaxed max-w-sm", children: isAr ? "تم تسجيل طلبك بنجاح في نظامنا. لتأكيد التوصيل فوراً وبسرعة، اضغط على الزر أدناه لمراسلتنا عبر واتساب." : language === "fr" ? "Votre commande est enregistrée avec succès. Pour une confirmation et livraison rapide, contactez-nous directement sur WhatsApp :" : "Your order is registered successfully. For express confirmation and shipping, please ping us directly on WhatsApp:" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("a", { href: `https://wa.me/${"+212600000000".replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Bonjour True Self ! Je viens de passer la commande #${completedOrder?.id || ""}.
+• Nom : ${completedOrder?.customerName || ""}
+• Ville : ${completedOrder?.customerCity || ""}
+• Total : ${completedOrder?.totalPrice || cartSubtotal} MAD
+Merci de me confirmer la livraison !`)}`, target: "_blank", rel: "noopener noreferrer", className: "w-full max-w-xs flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white py-3.5 px-6 rounded-xs font-semibold text-xs tracking-wider uppercase transition-all duration-300 shadow-soft cursor-pointer font-mono", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { className: "w-4 h-4 fill-current flex-shrink-0", viewBox: "0 0 24 24", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isAr ? "تأكيد عبر واتساب" : language === "fr" ? "Confirmer sur WhatsApp" : "Confirm via WhatsApp" })
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
             setCheckoutStep("cart");
             setCartOpen(false);
-          }, className: "border border-foreground bg-foreground text-background px-8 py-3.5 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs font-mono", children: isAr ? "العودة للمجموعة" : "Return to Collection" })
+          }, className: "border border-border/80 hover:border-foreground bg-transparent text-foreground px-8 py-3 text-[10px] tracking-brand uppercase hover:bg-secondary/20 transition-all duration-300 font-semibold rounded-xs font-mono cursor-pointer", children: isAr ? "العودة للمجموعة" : "Return to Collection" })
         ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-6 space-y-6", children: cartItems.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center text-center space-y-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-display text-2xl italic text-muted-foreground", children: isAr ? "حقيبتك فارغة" : "Your bag is empty." }),
