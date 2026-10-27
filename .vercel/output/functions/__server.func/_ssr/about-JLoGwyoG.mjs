@@ -1,6 +1,6 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
-import { f as useLanguage, S as Symbol$1, L as Logo } from "./router-MTDi5Sqt.mjs";
-import { N as Nav, R as Reveal } from "./Reveal-BmeHJ2ln.mjs";
+import { f as useLanguage, S as Symbol$1, L as Logo } from "./router-lR-N5aK3.mjs";
+import { N as Nav, R as Reveal } from "./Reveal-BGTdLwmE.mjs";
 import "../_libs/seroval.mjs";
 import "../_libs/tanstack__query-core.mjs";
 import "../_libs/tanstack__react-query.mjs";
@@ -17,7 +17,7 @@ import "crypto";
 import "async_hooks";
 import "stream";
 import "../_libs/isbot.mjs";
-import "./server-zaSQRbKD.mjs";
+import "./server-C98cEizI.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -140,7 +140,7 @@ function About() {
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lg:col-span-5 flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { delay: 150, className: "w-full max-w-[420px]", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "aspect-[3/4] overflow-hidden bg-secondary border border-border/40 rounded-xs", children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: coastlineCampaign, alt: "Scenic coastline of North Africa representing inner peace and horizon", className: "w-full h-full object-cover transition-transform duration-[2000ms] hover:scale-[1.03]" }) }) }) })
     ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-20 lg:py-32 border-b border-border/40", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "manifesto", className: "py-20 lg:py-32 border-b border-border/40", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mx-auto max-w-[1400px] px-6 lg:px-10", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Reveal, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center max-w-2xl mx-auto mb-16", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-mono text-[9px] tracking-brand text-muted-foreground block", children: "// 04 // MANIFESTO" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display text-4xl md:text-6xl mt-3", children: content.valuesTitle })

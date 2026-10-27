@@ -8,8 +8,18 @@ import { X, ShoppingBag, Check, Plus, Minus, Trash2, Ruler, Zap } from "lucide-r
 import { useCart } from "@/hooks/useCart";
 import { SizeGuideModal } from "@/components/SizeGuideModal";
 
+import { CinematicCarousel } from "@/components/CinematicCarousel";
+
+// Campaign editorial images
+import c1 from "@/assets/campaign/campaign-1-real-perfect.png";
+import c2 from "@/assets/campaign/campaign-2-be-real.png";
+import c3 from "@/assets/campaign/campaign-3-not-fit-in.png";
+import c4 from "@/assets/campaign/campaign-4-their-opinion.png";
+import cSunset from "@/assets/campaign/campaign-sunset-coastal.jpg";
+
 // Assets imports
 import hero from "@/assets/hero.png";
+import heroPoster from "@/assets/hero-coastal-sunset.jpg";
 import philosophy from "@/assets/philosophy.jpg";
 import g1 from "@/assets/gallery-1.png";
 import g2 from "@/assets/gallery-2.png";
@@ -61,6 +71,8 @@ interface Product {
   price: string;
   imgFront: string;
   imgBack: string;
+  campaignImg?: string;
+  campaignVideo?: string;
   tag: string;
   sizes: string[];
   colors: { name: string; hex: string }[];
@@ -112,6 +124,18 @@ function Index() {
   const [recentlyViewed, setRecentlyViewed] = useState<number[]>([]);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    if (mq.addEventListener) {
+      mq.addEventListener("change", handler);
+      return () => mq.removeEventListener("change", handler);
+    }
+  }, []);
 
 
 
@@ -123,6 +147,7 @@ function Index() {
       price: "650 MAD", 
       imgFront: p1Front, 
       imgBack: p1Back, 
+      campaignImg: c1,
       tag: "collection.bestsellers", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Cream", hex: "#F9F6F0" }],
@@ -138,6 +163,7 @@ function Index() {
       price: "350 MAD", 
       imgFront: p2Front, 
       imgBack: p2Back, 
+      campaignImg: c2,
       tag: "collection.new", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Olive", hex: "#4F5243" }],
@@ -153,6 +179,7 @@ function Index() {
       price: "550 MAD", 
       imgFront: p3Front, 
       imgBack: p3Back, 
+      campaignImg: c3,
       tag: "collection.new", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Olive", hex: "#4F5243" }, { name: "Charcoal", hex: "#2C2C2A" }],
@@ -168,6 +195,7 @@ function Index() {
       price: "350 MAD", 
       imgFront: p4Front, 
       imgBack: p4Back, 
+      campaignImg: c4,
       tag: "collection.bestsellers", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Charcoal", hex: "#2C2C2A" }, { name: "Cream", hex: "#F9F6F0" }],
@@ -228,6 +256,7 @@ function Index() {
       price: "350 MAD", 
       imgFront: p2Front, 
       imgBack: p2Back, 
+      campaignImg: cSunset,
       tag: "collection.bestsellers", 
       sizes: ["S", "M", "L", "XL"],
       colors: [{ name: "Cream", hex: "#F9F6F0" }, { name: "Olive", hex: "#4F5243" }],
@@ -423,15 +452,40 @@ function Index() {
 
       {/* 1. EMOTIONAL HERO SECTION */}
       <section className="relative min-h-screen w-full overflow-hidden flex flex-col justify-end">
-        <img
-          src={hero}
-          alt="Authentic Moroccan face looking into the distance, representing inner peace and freedom"
-          width={1600}
-          height={1920}
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover animate-kenburns select-none pointer-events-none"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/20 to-background/95 pointer-events-none" />
+        {/* Cinematic Background Video / Static Fallback */}
+        {prefersReducedMotion ? (
+          <img
+            src={heroPoster}
+            alt="TRUE SELF® — Two models wearing authentic streetwear by the Moroccan Atlantic coast at sunset"
+            width={1600}
+            height={1920}
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-[center_35%] select-none pointer-events-none"
+          />
+        ) : (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={heroPoster}
+            className="absolute inset-0 h-full w-full object-cover object-[center_35%] select-none pointer-events-none hero-video"
+          >
+            <source src="/videos/hero-cinematic.mp4" type="video/mp4" />
+            <source src="/videos/hero-cinematic.webm" type="video/webm" />
+            {/* Fallback image if video cannot play or format is unsupported */}
+            <img
+              src={heroPoster}
+              alt="TRUE SELF® — Two models wearing authentic streetwear by the Moroccan Atlantic coast at sunset"
+              width={1600}
+              height={1920}
+              fetchPriority="high"
+              className="absolute inset-0 h-full w-full object-cover object-[center_35%] select-none pointer-events-none"
+            />
+          </video>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/20 to-background/95 pointer-events-none" />
         
         <div className="relative z-10 mx-auto max-w-[1400px] w-full px-6 lg:px-10 pb-20 lg:pb-28">
           <div className="max-w-4xl text-start">
@@ -494,133 +548,33 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. FEATURED PRODUCTS */}
-      <section id="featured-products" className="bg-background text-foreground py-24 border-b border-border/40">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <Reveal>
-            <div className="text-start mb-16 border-b border-border/40 pb-8">
-              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                {t("collection.featured")} // {t("hero.vol").split(" — ")[0]}
-              </span>
-              <h2 className="mt-3 font-display text-4xl md:text-6xl text-balance max-w-2xl">
-                {language === "fr" ? "Sélection de Saison" : language === "ar" ? "المميزة هذا الموسم" : "Seasonal Featured"}
-              </h2>
+      {/* 2. FEATURED PRODUCTS — CINEMATIC EDITORIAL CAROUSEL */}
+      <section id="featured-products" className="bg-background text-foreground py-16 sm:py-24 border-b border-border/40 overflow-hidden">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 mb-8 sm:mb-12">
+          <Reveal variant="mask">
+            <div className="text-start border-b border-border/40 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                  {t("collection.featured")} // {t("hero.vol").split(" — ")[0]}
+                </span>
+                <h2 className="mt-3 font-display text-4xl md:text-6xl text-balance max-w-2xl">
+                  {language === "fr" ? "Campagne Éditoriale" : language === "ar" ? "حملة الموسم السينمائية" : "Editorial Campaign"}
+                </h2>
+              </div>
+              <p className="font-mono text-[10px] sm:text-xs text-muted-foreground uppercase tracking-brand">
+                VOLUME 01 // ATLANTIC HORIZONS
+              </p>
             </div>
           </Reveal>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products
-              .filter((p) => p.isFeatured)
-              .map((p, i) => (
-                <Reveal key={p.id} delay={i * 100}>
-                  <div 
-                    className="group text-start relative flex flex-col justify-between h-full"
-                  >
-                    {/* Wrap visual element to open modal pop-up */}
-                    <div onClick={() => openProduct(p)} className="block relative cursor-pointer">
-                    {/* Image frame */}
-                    <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
-                      {/* Front Image */}
-                      <img
-                        src={p.imgFront}
-                        alt={t(`product.name.${p.key}`)}
-                        loading="lazy"
-                        className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0"
-                      />
-                      {/* Back Image */}
-                      <img
-                        src={p.imgBack}
-                        alt={`${t(`product.name.${p.key}`)} back view`}
-                        loading="lazy"
-                        className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100"
-                      />
-                      
-                      {/* Quick View Button overlay */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openProduct(p);
-                        }}
-                        className="absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0"
-                      >
-                        {language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View"}
-                      </button>
-
-                      {/* Tag Badge */}
-                      <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
-                        {t(p.tag)}
-                      </div>
-
-                      {/* Wishlist Heart Button */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWishlist(p.id);
-                        }}
-                        className={`absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`}
-                        title={wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill={wishlist.includes(p.id) ? "currentColor" : "none"}
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className={`w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`}
-                        >
-                          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                        </svg>
-                      </button>
-                    </div>
-                    </div>
-
-                    {/* Card Content - Story & Quote focused */}
-                    <div className="mt-4 flex-1 flex flex-col justify-between">
-                      <div onClick={() => openProduct(p)} className="block group-hover:opacity-85 transition-opacity cursor-pointer">
-                        {/* Quote & Name */}
-                        <h3 className="font-display text-2xl tracking-tight text-foreground/95 italic leading-snug">
-                          {t(`product.quote.${p.key}`)}
-                        </h3>
-                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                          <span className="font-mono text-[9px] font-semibold uppercase px-1.5 py-0.5 rounded-2xs bg-secondary/80 border border-border/40 text-foreground">
-                            {t(`category.${p.category}`)}
-                          </span>
-                          <p className="text-[10px] text-muted-foreground font-mono uppercase">
-                            {t(`product.name.${p.key}`)}
-                          </p>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2 font-light leading-relaxed max-w-sm">
-                          {t(`product.story.${p.key}`)}
-                        </p>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-between">
-                        {/* Price - Bold and Prominent */}
-                        <span className="font-mono text-base font-bold text-foreground">
-                          {p.price}
-                        </span>
-
-                        {/* Color Selector Pastilles */}
-                        <div className="flex gap-1.5" onClick={(e) => e.stopPropagation()}>
-                          {p.colors.map((color) => (
-                            <button
-                              key={color.name}
-                              onClick={() => openProduct(p, color.name)}
-                              className="w-3.5 h-3.5 rounded-full border border-border hover:scale-125 transition-transform duration-200"
-                              style={{ backgroundColor: color.hex }}
-                              title={color.name}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-          </div>
         </div>
+
+        {/* Cinematic Widescreen Carousel */}
+        <CinematicCarousel
+          products={products.filter((p) => p.campaignImg)}
+          onOpenProduct={(p, color) => openProduct(p, color)}
+          language={language}
+          t={t}
+        />
       </section>
 
       {/* MARQUEE */}
@@ -637,150 +591,50 @@ function Index() {
         </div>
       </section>
 
-      {/* 3. BRAND STORY CONTAINER */}
-      <div id="story">
-        {/* 3.1 THE PROBLEM SECTION */}
-        <section id="problem" className="bg-background text-foreground border-b border-border/40 py-24 lg:py-36 relative overflow-hidden">
-          <div className="mx-auto max-w-4xl px-6 text-center">
-            <Reveal>
-              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                {t("problem.tag")}
-              </span>
-            </Reveal>
-            <Reveal delay={150}>
-              <h2 className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-3xl mx-auto italic font-light text-foreground/90">
-                {t("problem.title")}
-              </h2>
-            </Reveal>
-            <Reveal delay={300}>
-              <div className="mt-10 max-w-2xl mx-auto space-y-5 text-sm leading-relaxed text-muted-foreground font-light text-balance">
-                <p>{t("problem.desc1")}</p>
-                <p>{t("problem.desc2")}</p>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* 3.2 THE SOLUTION SECTION */}
-        <section id="solution" className="theme-dark bg-background text-foreground py-24 lg:py-36 relative overflow-hidden">
-          <div className="mx-auto max-w-4xl px-6 text-center">
-            <Reveal>
-              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                {t("solution.tag")}
-              </span>
-            </Reveal>
-            <Reveal delay={150}>
-              <h2 className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-3xl mx-auto italic font-light text-foreground/95">
-                {t("solution.title")}
-              </h2>
-            </Reveal>
-            <Reveal delay={300}>
-              <div className="mt-10 max-w-2xl mx-auto space-y-5 text-sm leading-relaxed text-foreground/80 font-light text-balance">
-                <p>{t("solution.desc1")}</p>
-                <p>{t("solution.desc2")}</p>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* 3.3 OUR STORY (North African Heritage Narrative) */}
-        <section className="relative py-24 lg:py-36 overflow-hidden bg-secondary/35 border-b border-border/40">
-          <div className="mx-auto max-w-[1000px] px-6 text-center">
-            <Reveal>
-              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                {t("story.title")}
-              </span>
-            </Reveal>
-            <Reveal delay={150}>
-              <blockquote className="mt-8 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.25] text-balance max-w-4xl mx-auto italic font-light text-foreground/90">
-                {t("story.quote")}
-              </blockquote>
-            </Reveal>
-            <Reveal delay={300}>
-              <p className="mt-10 max-w-2xl mx-auto text-sm leading-relaxed text-muted-foreground font-light text-balance">
-                {t("story.desc")}
-              </p>
-            </Reveal>
-            <Reveal delay={450}>
-              <div className="mt-14 inline-flex items-center gap-4 text-[10px] tracking-widest text-muted-foreground font-mono">
-                <span className="h-px w-8 bg-border/60" />
-                <span>CASABLANCA 33.5731° N</span>
-                <span className="opacity-30">·</span>
-                <span>TANGIER 35.7595° N</span>
-                <span className="h-px w-8 bg-border/60" />
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      </div>
-
-      {/* Decorative divider */}
-      <div className="w-full flex items-center justify-center my-8 opacity-45">
-        <span className="h-px w-16 bg-border/60" />
-        <BrandSymbol size={14} className="mx-4 text-muted-foreground animate-pulse" />
-        <span className="h-px w-16 bg-border/60" />
-      </div>
-
-      {/* THE SYMBOL SECTION */}
-      <section id="brand-symbol" className="bg-background text-foreground py-16 lg:py-36 border-b border-border/40 relative overflow-hidden">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-            
-            {/* Left Column: Asymmetric Large Symbol representation with blueprints details */}
-            <Reveal className="lg:col-span-5 flex justify-center lg:justify-start lg:ps-12">
-              <div className="relative w-full max-w-[360px] lg:p-12 lg:bg-secondary/15 lg:rounded-xs lg:border lg:border-border/30 lg:aspect-square flex items-center justify-center lg:shadow-soft">
-                <div className="absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">// ARCHIVE 001 // IDENTITY</div>
-                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">33.5731° N · 7.5898° W</div>
-                
-                <BrandSymbol animated className="text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" />
-              </div>
-            </Reveal>
-
-            {/* Right Column: Editorial Philosophy text */}
-            <Reveal delay={150} className="lg:col-span-7 text-start space-y-8">
-              <div className="space-y-3">
-                <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                  // {t("symbol.title")}
-                </span>
-                <h2 className="font-display text-4xl md:text-6xl text-balance italic font-light">
-                  {t("symbol.title")}
-                </h2>
-              </div>
-
-              <div className="space-y-6 max-w-xl text-foreground/80 leading-relaxed font-light text-base border-l-2 border-border/40 ps-6">
-                <p className="text-balance">{t("symbol.desc1")}</p>
-                <p className="text-balance">{t("symbol.desc2")}</p>
-              </div>
-
-              <div className="pt-4 max-w-xl">
-                <p className="font-display text-2xl md:text-3xl italic text-foreground tracking-wide text-balance leading-normal">
-                  {t("symbol.desc3")}
-                </p>
-                <p className="mt-4 font-mono text-[9px] tracking-[0.2em] uppercase text-muted-foreground/60">
-                  LIVE FOR YOURSELF.
-                </p>
-              </div>
-            </Reveal>
-
-          </div>
+      {/* 4. MANIFESTE CONDENSÉ (Fusion : Le Conflit & La Réponse) */}
+      <section id="story" className="theme-dark bg-background text-foreground py-20 lg:py-28 relative overflow-hidden grain border-b border-border/40">
+        <div className="mx-auto max-w-4xl px-6 text-center relative z-10">
+          <Reveal>
+            <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+              // {t("problem.tag")} & {t("solution.tag")}
+            </span>
+          </Reveal>
+          <Reveal delay={150}>
+            <h2 className="mt-6 font-display text-3xl md:text-5xl lg:text-6xl leading-[1.2] text-balance max-w-3xl mx-auto italic font-light text-foreground/95">
+              {t("problem.title")}
+            </h2>
+          </Reveal>
+          <Reveal delay={300}>
+            <div className="mt-8 max-w-2xl mx-auto space-y-4 text-sm leading-relaxed text-foreground/80 font-light text-balance">
+              <p>{t("solution.desc2")}</p>
+            </div>
+          </Reveal>
+          <Reveal delay={450}>
+            <div className="mt-10 inline-flex flex-wrap items-center justify-center gap-3 text-[10px] tracking-widest text-muted-foreground font-mono">
+              <span className="h-px w-6 bg-border/60 hidden sm:inline-block" />
+              <span>CASABLANCA 33.5731° N</span>
+              <span className="opacity-40">·</span>
+              <span>TANGIER 35.7595° N</span>
+              <span className="h-px w-6 bg-border/60 hidden sm:inline-block" />
+              <Link 
+                to="/about" 
+                className="text-foreground hover:text-foreground/80 underline underline-offset-4 font-semibold transition-colors ms-2"
+              >
+                {t("story.title")} →
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Decorative divider */}
-      <div className="w-full flex items-center justify-center my-8 opacity-45">
-        <span className="h-px w-16 bg-border/60" />
-        <BrandSymbol size={14} className="mx-4 text-muted-foreground" />
-        <span className="h-px w-16 bg-border/60" />
-      </div>
-
-      {/* 4. FULL COLLECTION SECTION (with interactive tabs & clean cards) */}
-      <section id="collection" className="mx-auto max-w-[1400px] px-6 lg:px-10 py-24 lg:py-36 border-b border-border/40">
+      {/* 5. COLLECTION COMPLÈTE (Remontée en 5e position) */}
+      <section id="collection" className="mx-auto max-w-[1400px] px-6 lg:px-10 py-20 lg:py-32 border-b border-border/40">
         <Reveal>
           <div className="text-start mb-12">
             <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
               {t("hero.vol").split(" — ")[0]}
             </p>
-            <h2 className="mt-3 font-display text-5xl md:text-7xl text-balance max-w-2xl">
+            <h2 className="mt-3 font-display text-4xl md:text-6xl lg:text-7xl text-balance max-w-2xl">
               {t("featured.title")}
             </h2>
           </div>
@@ -833,62 +687,62 @@ function Index() {
                 >
                   {/* Wrap visual element to open modal pop-up */}
                   <div onClick={() => openProduct(p)} className="block relative cursor-pointer">
-                  {/* Image Frame */}
-                  <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
-                    {/* Front Image */}
-                    <img
-                      src={p.imgFront}
-                      alt={t(`product.name.${p.key}`)}
-                      loading="lazy"
-                      className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0"
-                    />
-                    {/* Back Image (Reveals on Hover) */}
-                    <img
-                      src={p.imgBack}
-                      alt={`${t(`product.name.${p.key}`)} back view`}
-                      loading="lazy"
-                      className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100"
-                    />
-                    
-                    {/* Quick View Button overlay */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openProduct(p);
-                      }}
-                      className="absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0"
-                    >
-                      {language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View"}
-                    </button>
-
-                    {/* Subtle Tag Badge */}
-                    <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
-                      {t(p.tag)}
-                    </div>
-
-                    {/* Wishlist Heart Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleWishlist(p.id);
-                      }}
-                      className={`absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`}
-                      title={wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill={wishlist.includes(p.id) ? "currentColor" : "none"}
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={`w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`}
+                    {/* Image Frame */}
+                    <div className="relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
+                      {/* Front Image */}
+                      <img
+                        src={p.imgFront}
+                        alt={t(`product.name.${p.key}`)}
+                        loading="lazy"
+                        className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] group-hover:opacity-0"
+                      />
+                      {/* Back Image (Reveals on Hover) */}
+                      <img
+                        src={p.imgBack}
+                        alt={`${t(`product.name.${p.key}`)} back view`}
+                        loading="lazy"
+                        className="h-full w-full object-cover absolute inset-0 transition-all duration-1000 ease-[var(--ease-soft)] group-hover:scale-[1.02] opacity-0 group-hover:opacity-100"
+                      />
+                      
+                      {/* Quick View Button overlay */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openProduct(p);
+                        }}
+                        className="absolute bottom-4 left-4 right-4 bg-background/95 hover:bg-foreground hover:text-background text-foreground py-2.5 text-[10px] tracking-brand uppercase font-mono font-medium border border-border/40 text-center transition-all duration-300 rounded-2xs opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 max-md:opacity-100 max-md:translate-y-0"
                       >
-                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                      </svg>
-                    </button>
-                  </div>
+                        {language === "fr" ? "Aperçu Rapide" : language === "ar" ? "ألقِ نظرة" : "Quick View"}
+                      </button>
+
+                      {/* Subtle Tag Badge */}
+                      <div className={`absolute top-4 ${isAr ? "right-4" : "left-4"} text-[8px] tracking-brand uppercase bg-background/95 backdrop-blur-xs px-2 py-0.5 text-foreground/90 font-mono border border-border/40`}>
+                        {t(p.tag)}
+                      </div>
+
+                      {/* Wishlist Heart Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(p.id);
+                        }}
+                        className={`absolute top-4 ${isAr ? "left-4" : "right-4"} z-20 p-1.5 rounded-full bg-background/90 hover:bg-background text-foreground transition-all duration-300 border border-border/40 shadow-xs cursor-pointer`}
+                        title={wishlist.includes(p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill={wishlist.includes(p.id) ? "currentColor" : "none"}
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`w-3.5 h-3.5 ${wishlist.includes(p.id) ? "text-red-500 fill-red-500 animate-pulse" : "text-foreground"}`}
+                        >
+                          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
 
                   {/* Card Content - Story & Quote focused */}
@@ -937,130 +791,49 @@ function Index() {
         </div>
       </section>
 
-      {/* 5. BRAND PHILOSOPHY */}
-      <section
-        id="philosophy"
-        className="bg-background text-foreground border-b border-border/40"
-      >
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-24 lg:py-36 grid lg:grid-cols-12 gap-16 items-center">
-          <Reveal className="lg:col-span-5">
-            <div className="overflow-hidden bg-secondary aspect-[4/5] rounded-xs border border-border/30">
-              <img
-                src={philosophy}
-                alt="Quiet moment of reflection, choosing inner calm over expectation"
-                loading="lazy"
-                width={1280}
-                height={1600}
-                className="w-full h-full object-cover grayscale transition-all duration-1000 hover:grayscale-0 hover:scale-[1.02]"
-              />
-            </div>
-          </Reveal>
-          
-          <Reveal delay={150} className="lg:col-span-7 lg:ps-6 text-start">
-            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-              {t("nav.philosophy")}
-            </p>
-            <h2 className="mt-4 font-display text-4xl md:text-6xl text-balance leading-[1.1]">
-              {t("philosophy.title")}
-            </h2>
-            <div className="mt-8 space-y-6 text-foreground/80 leading-relaxed font-light text-sm max-w-xl">
-              <p className="text-base">{t("philosophy.desc1")}</p>
-              <p>{t("philosophy.desc2")}</p>
-            </div>
-            
-            <div className="mt-12 grid grid-cols-3 gap-6 text-xs tracking-brand uppercase border-t border-border/30 pt-8 max-w-xl">
-              <div>
-                <p className="font-display text-3xl normal-case tracking-normal italic text-foreground">{t("philosophy.val1")}</p>
-                <p className="mt-1.5 text-[10px] text-muted-foreground font-mono lowercase">{t("philosophy.sub1")}</p>
-              </div>
-              <div>
-                <p className="font-display text-3xl normal-case tracking-normal italic text-foreground">{t("philosophy.val2")}</p>
-                <p className="mt-1.5 text-[10px] text-muted-foreground font-mono lowercase">{t("philosophy.sub2")}</p>
-              </div>
-              <div>
-                <p className="font-display text-3xl normal-case tracking-normal italic text-foreground">{t("philosophy.val3")}</p>
-                <p className="mt-1.5 text-[10px] text-muted-foreground font-mono lowercase">{t("philosophy.sub3")}</p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 6. MANIFESTO SECTION (The 4 Pillars) */}
-      <section id="manifesto" className="bg-secondary/25 py-24 lg:py-36 border-b border-border/40">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <Reveal>
-            <div className="text-center max-w-3xl mx-auto mb-20">
-              <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
-                {t("nav.philosophy")}
+      {/* 6. LOOKBOOK AVEC INTERMÈDE OCÉANIQUE INTÉGRÉ */}
+      <section id="lookbook" className="border-b border-border/40 overflow-hidden">
+        {/* Intermède Océanique — Visuel d'ouverture immersif */}
+        <div className="relative h-[48vh] sm:h-[55vh] w-full overflow-hidden border-b border-border/40 select-none">
+          <img
+            src={cinematic}
+            alt="Misty Atlantic ocean landscape representing movement in silence"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover grayscale opacity-75 scale-105 animate-kenburns"
+          />
+          <div className="absolute inset-0 bg-background/20 backdrop-blur-3xs" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+            <Reveal>
+              <span className="font-mono text-[9px] tracking-brand uppercase text-background bg-foreground/60 px-3 py-1 mb-4 inline-block rounded-2xs">
+                // {t("lookbook.title")} // LITTORAL ATLANTIQUE
               </span>
-              <h2 className="mt-4 font-display text-4xl md:text-6xl text-balance">
-                {t("manifesto.title")}
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-background italic font-light drop-shadow-md">
+                {isAr ? "الحركة في السكون" : language === "fr" ? "Le mouvement dans le calme." : "Movement in silence."}
               </h2>
-              <p className="mt-4 text-sm text-muted-foreground font-light leading-relaxed">
-                {t("manifesto.desc")}
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map((num) => (
-              <Reveal key={num} delay={num * 80}>
-                <div className="border border-border/60 bg-background p-8 rounded-xs text-start h-full flex flex-col justify-between">
-                  <div>
-                    <span className="font-mono text-[9px] text-muted-foreground block mb-4">0{num} // VALUE</span>
-                    <h3 className="font-display text-2xl mb-3 text-foreground/95">{t(`manifesto.p${num}.title`)}</h3>
-                    <p className="text-xs text-muted-foreground font-light leading-relaxed">
-                      {t(`manifesto.p${num}.desc`)}
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+            </Reveal>
           </div>
         </div>
-      </section>
 
-      {/* CINEMATIC INTERLUDE */}
-      <section className="relative h-[65vh] w-full overflow-hidden border-b border-border/40 select-none">
-        <img
-          src={cinematic}
-          alt="Misty Atlantic ocean landscape representing movement in silence"
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover grayscale opacity-70 scale-105 animate-kenburns"
-        />
-        <div className="absolute inset-0 bg-background/10 backdrop-blur-3xs" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+        {/* Galerie Éditoriale Asymétrique */}
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-20 lg:py-32 text-start">
           <Reveal>
-            <span className="font-mono text-[9px] tracking-brand uppercase text-background bg-foreground/50 px-2 py-0.5 mb-4 inline-block">// cinematic loop</span>
-            <h2 className="font-display text-4xl md:text-5xl text-background italic font-light drop-shadow-md">
-              {isAr ? "الحركة في السكون" : language === "fr" ? "Le mouvement dans le calme." : "Movement in silence."}
-            </h2>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 8. LOOKBOOK */}
-      <section id="lookbook" className="py-24 lg:py-36 border-b border-border/40">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 text-start">
-          <Reveal>
-            <div className="mb-16 max-w-2xl">
+            <div className="mb-14 max-w-2xl">
               <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
                 {t("lookbook.title")}
               </p>
-              <h2 className="mt-3 font-display text-4xl md:text-6xl text-balance">
+              <h3 className="mt-3 font-display text-4xl md:text-5xl text-balance">
                 {t("lookbook.desc").split(". ")[0]}
-              </h2>
-              <p className="mt-4 text-xs text-muted-foreground font-light tracking-wide max-w-md">
+              </h3>
+              <p className="mt-3 text-xs text-muted-foreground font-light tracking-wide max-w-md">
                 {t("lookbook.desc").split(". ").slice(1).join(". ")}
               </p>
             </div>
           </Reveal>
 
-          {/* Asymmetrical Editorial Campaign Grid */}
+          {/* Grille Asymétrique des 4 photographies de campagne */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-            {/* Image 1 - Vertical Offset Left */}
-            <div className="md:col-span-5 md:mt-12">
+            {/* Image 1 - Verticale Gauche (Casablanca) */}
+            <div className="md:col-span-5 md:mt-8">
               <Reveal delay={100}>
                 <div className="group relative overflow-hidden bg-secondary aspect-[3/4] rounded-xs border border-border/30">
                   <img
@@ -1079,7 +852,7 @@ function Index() {
               </Reveal>
             </div>
 
-            {/* Image 2 - Smaller Offset Right */}
+            {/* Images 2 & 3 & 4 (Droite) */}
             <div className="md:col-span-7">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <Reveal delay={200}>
@@ -1099,9 +872,8 @@ function Index() {
                   </div>
                 </Reveal>
 
-                {/* Image 3 - Courtyard View */}
                 <Reveal delay={300}>
-                  <div className="group relative overflow-hidden bg-secondary aspect-square rounded-xs border border-border/30 sm:mt-16">
+                  <div className="group relative overflow-hidden bg-secondary aspect-square rounded-xs border border-border/30 sm:mt-12">
                     <img
                       src={g3}
                       alt="African model in green organic clothing, looking calm"
@@ -1118,7 +890,7 @@ function Index() {
                 </Reveal>
               </div>
 
-              {/* Image 4 - Large Landscape Bottom Right */}
+              {/* Image 4 - Format Paysage (Tanger) */}
               <Reveal delay={400} className="block mt-8">
                 <div className="group relative overflow-hidden bg-secondary aspect-[16/10] rounded-xs border border-border/30">
                   <img
@@ -1140,18 +912,131 @@ function Index() {
         </div>
       </section>
 
-      {/* 9. LIMITED DROPS */}
-      <section className="bg-secondary/40 py-24 lg:py-36 border-b border-border/40">
+      {/* 7. PHILOSOPHIE & SPÉCIFICATIONS DES MATIÈRES (Fusion : Art & Savoir-faire) */}
+      <section id="philosophy" className="bg-background text-foreground border-b border-border/40">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-20 lg:py-32 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <Reveal className="lg:col-span-5">
+            <div className="overflow-hidden bg-secondary aspect-[4/5] rounded-xs border border-border/30 shadow-card">
+              <img
+                src={philosophy}
+                alt="Quiet moment of reflection, choosing inner calm over expectation"
+                loading="lazy"
+                width={1280}
+                height={1600}
+                className="w-full h-full object-cover grayscale transition-all duration-1000 hover:grayscale-0 hover:scale-[1.02]"
+              />
+            </div>
+          </Reveal>
+          
+          <Reveal delay={150} className="lg:col-span-7 text-start space-y-8">
+            <div>
+              <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                // {t("nav.philosophy")} // {t("specs.tag")}
+              </p>
+              <h2 className="mt-3 font-display text-4xl md:text-5xl lg:text-6xl text-balance leading-[1.1]">
+                {t("philosophy.title")}
+              </h2>
+              <p className="mt-6 text-foreground/85 leading-relaxed font-light text-sm max-w-xl">
+                {t("philosophy.desc1")} {t("specs.desc")}
+              </p>
+            </div>
+            
+            {/* 3 Piliers de Valeurs */}
+            <div className="grid grid-cols-3 gap-6 text-xs tracking-brand uppercase border-t border-border/30 pt-6 max-w-xl">
+              <div>
+                <p className="font-display text-2xl lg:text-3xl normal-case tracking-normal italic text-foreground">{t("philosophy.val1")}</p>
+                <p className="mt-1 text-[9px] text-muted-foreground font-mono lowercase">{t("philosophy.sub1")}</p>
+              </div>
+              <div>
+                <p className="font-display text-2xl lg:text-3xl normal-case tracking-normal italic text-foreground">{t("philosophy.val2")}</p>
+                <p className="mt-1 text-[9px] text-muted-foreground font-mono lowercase">{t("philosophy.sub2")}</p>
+              </div>
+              <div>
+                <p className="font-display text-2xl lg:text-3xl normal-case tracking-normal italic text-foreground">{t("philosophy.val3")}</p>
+                <p className="mt-1 text-[9px] text-muted-foreground font-mono lowercase">{t("philosophy.sub3")}</p>
+              </div>
+            </div>
+
+            {/* Tableau des Spécifications Concrètes */}
+            <ul className="space-y-3 text-xs font-mono border-t border-border/40 pt-6 max-w-xl">
+              <li className="flex justify-between border-b border-border/30 pb-3">
+                <span className="text-muted-foreground">{t("specs.weight")}</span>
+                <span className="font-semibold text-foreground">100% Coton peigné bio lourd (420 GSM / 240 GSM)</span>
+              </li>
+              <li className="flex justify-between border-b border-border/30 pb-3">
+                <span className="text-muted-foreground">{t("specs.fit")}</span>
+                <span>{t("specs.fitVal")}</span>
+              </li>
+              <li className="flex justify-between border-b border-border/30 pb-3">
+                <span className="text-muted-foreground">{t("specs.detail")}</span>
+                <span>{t("specs.detailVal")}</span>
+              </li>
+              <li className="flex justify-between pb-1">
+                <span className="text-muted-foreground">{t("specs.origin")}</span>
+                <span>{t("specs.originVal")} (Casablanca & Tanger)</span>
+              </li>
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 8. ANATOMIE DU SYMBOLE (Explication post-vêtements) */}
+      <section id="brand-symbol" className="bg-background text-foreground py-20 lg:py-32 border-b border-border/40 relative overflow-hidden">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+            
+            {/* Left Column: Asymmetric Large Symbol representation with blueprints details */}
+            <Reveal className="lg:col-span-5 flex justify-center lg:justify-start lg:ps-12">
+              <div className="relative w-full max-w-[360px] lg:p-12 lg:bg-secondary/15 lg:rounded-xs lg:border lg:border-border/30 lg:aspect-square flex items-center justify-center lg:shadow-soft">
+                <div className="absolute top-4 left-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">// ARCHIVE 001 // IDENTITY</div>
+                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-muted-foreground/45 hidden lg:block">33.5731° N · 7.5898° W</div>
+                
+                <BrandSymbol animated className="text-foreground hover:scale-110 duration-700 ease-soft w-[90px] h-[90px] lg:w-[160px] lg:h-[160px]" />
+              </div>
+            </Reveal>
+
+            {/* Right Column: Editorial Philosophy text */}
+            <Reveal delay={150} className="lg:col-span-7 text-start space-y-8">
+              <div className="space-y-3">
+                <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">
+                  // {t("symbol.title")}
+                </span>
+                <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-balance italic font-light">
+                  {t("symbol.title")}
+                </h2>
+              </div>
+
+              <div className="space-y-5 max-w-xl text-foreground/80 leading-relaxed font-light text-base border-l-2 border-border/40 ps-6">
+                <p className="text-balance">{t("symbol.desc1")}</p>
+                <p className="text-balance">{t("symbol.desc2")}</p>
+              </div>
+
+              <div className="pt-2 max-w-xl">
+                <p className="font-display text-2xl md:text-3xl italic text-foreground tracking-wide text-balance leading-normal">
+                  {t("symbol.desc3")}
+                </p>
+                <p className="mt-3 font-mono text-[9px] tracking-[0.2em] uppercase text-muted-foreground/60">
+                  LIVE FOR YOURSELF.
+                </p>
+              </div>
+            </Reveal>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 9. ÉDITIONS LIMITÉES, COMMUNAUTÉ ET PACKAGING DURABLE */}
+      {/* 9.1 LIMITED DROPS */}
+      <section className="bg-secondary/35 py-20 lg:py-28 border-b border-border/40">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10 text-center">
           <Reveal>
             <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">{t("drops.title")}</p>
-            <h2 className="mt-4 font-display text-4xl md:text-6xl max-w-xl mx-auto">{t("drops.title")}</h2>
-            <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto font-light">{t("drops.desc")}</p>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl max-w-xl mx-auto">{t("drops.title")}</h2>
+            <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto font-light">{t("drops.desc")}</p>
           </Reveal>
 
-          <Reveal delay={150} className="mt-16 max-w-lg mx-auto">
+          <Reveal delay={150} className="mt-12 max-w-lg mx-auto">
             <div className="bg-background border border-border/60 p-8 rounded-xs shadow-soft text-start relative overflow-hidden">
-              {/* Decorative design coordinates corner */}
               <div className="absolute top-0 right-0 p-4 font-mono text-[8px] opacity-30 select-none">
                 DROP 01 // SER.100
               </div>
@@ -1160,7 +1045,7 @@ function Index() {
                 DROP 01 — ACTIVE
               </span>
               
-              <h3 className="mt-4 font-display text-3xl">Volume 01: Be Real, Protect Your Peace</h3>
+              <h3 className="mt-4 font-display text-2xl lg:text-3xl">Volume 01: Be Real, Protect Your Peace</h3>
               <p className="mt-2 text-xs text-muted-foreground font-light leading-relaxed">
                 Our first release highlights heavyweight custom-dyed fabrics with minimal, ton-sur-ton embroidery phrases.
               </p>
@@ -1184,112 +1069,19 @@ function Index() {
         </div>
       </section>
 
-      {/* PIECE PHILOSOPHY (Replaces technical specifications details) */}
-      <section className="grid md:grid-cols-2 border-b border-border/40">
-        <Reveal className="relative aspect-[4/5] md:aspect-auto md:min-h-[640px] overflow-hidden bg-muted">
-          <img
-            src={p4Front}
-            alt="Embellished minimal design, representing silent strength"
-            loading="lazy"
-            width={1024}
-            height={1280}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </Reveal>
-        <Reveal delay={150} className="flex items-center bg-secondary/20 text-start">
-          <div className="px-8 lg:px-20 py-20">
-            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">{t("specs.tag")}</p>
-            <h2 className="mt-4 font-display text-4xl md:text-6xl text-balance">
-              {t("specs.title")}
-            </h2>
-            <p className="mt-6 text-sm text-foreground/80 leading-relaxed max-w-md font-light">
-              {t("specs.desc")}
-            </p>
-            <ul className="mt-12 space-y-4 text-xs font-mono border-t border-border/50 pt-8">
-              <li className="flex justify-between border-b border-border/40 pb-4">
-                <span className="text-muted-foreground">{t("specs.weight")}</span>
-                <span>{t("specs.weight") === "Intention" ? "Intention" : "Support of the message"}</span>
-              </li>
-              <li className="flex justify-between border-b border-border/40 pb-4">
-                <span className="text-muted-foreground">{t("specs.fit")}</span>
-                <span>{t("specs.fitVal")}</span>
-              </li>
-              <li className="flex justify-between border-b border-border/40 pb-4">
-                <span className="text-muted-foreground">{t("specs.detail")}</span>
-                <span>{t("specs.detailVal")}</span>
-              </li>
-              <li className="flex justify-between pb-2">
-                <span className="text-muted-foreground">{t("specs.origin")}</span>
-                <span>{t("specs.originVal")}</span>
-              </li>
-            </ul>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* 10. JOURNAL */}
-      <section id="journal" className="py-24 lg:py-36 border-b border-border/40">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-          <Reveal>
-            <div className="mb-16 text-center">
-              <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">{t("journal.title")}</p>
-              <h2 className="mt-3 font-display text-4xl md:text-6xl">{t("journal.title")}</h2>
-            </div>
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Entry 1 */}
-            <Reveal delay={100}>
-              <div className="group border border-border/50 bg-background/50 hover:bg-secondary/20 p-8 rounded-xs transition-all duration-500 cursor-pointer text-start flex flex-col justify-between h-full min-h-[300px]">
-                <div>
-                  <span className="text-[9px] text-muted-foreground font-mono block mb-4 uppercase">Journal — Entry 01 · 6 Min Read</span>
-                  <h3 className="font-display text-3xl group-hover:text-foreground/80 transition-colors">
-                    {t("journal.entry1.title")}
-                  </h3>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed font-light">
-                    {t("journal.entry1.desc")}
-                  </p>
-                </div>
-                <div className="mt-8 text-[10px] tracking-brand uppercase border-b border-foreground w-max pb-0.5 group-hover:opacity-75 transition-opacity font-semibold">
-                  {isAr ? "اقرأ التدوينة ←" : "Read Entry →"}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Entry 2 */}
-            <Reveal delay={200}>
-              <div className="group border border-border/50 bg-background/50 hover:bg-secondary/20 p-8 rounded-xs transition-all duration-500 cursor-pointer text-start flex flex-col justify-between h-full min-h-[300px]">
-                <div>
-                  <span className="text-[9px] text-muted-foreground font-mono block mb-4 uppercase">Journal — Entry 02 · 4 Min Read</span>
-                  <h3 className="font-display text-3xl group-hover:text-foreground/80 transition-colors">
-                    {t("journal.entry2.title")}
-                  </h3>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed font-light">
-                    {t("journal.entry2.desc")}
-                  </p>
-                </div>
-                <div className="mt-8 text-[10px] tracking-brand uppercase border-b border-foreground w-max pb-0.5 group-hover:opacity-75 transition-opacity font-semibold">
-                  {isAr ? "اقرأ التدوينة ←" : "Read Entry →"}
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* 11. COMMUNITY VOICES (Refined for real Moroccan narratives) */}
-      <section id="community" className="theme-dark bg-background text-foreground py-24 lg:py-36 border-b border-border/50 text-center relative grain">
+      {/* 9.2 COMMUNITY VOICES */}
+      <section id="community" className="theme-dark bg-background text-foreground py-20 lg:py-32 border-b border-border/50 text-center relative grain">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10 relative z-10">
           <Reveal>
             <span className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">{t("community.title")}</span>
-            <h2 className="mt-6 font-display text-4xl md:text-6xl text-balance">{t("community.title")}</h2>
-            <p className="mt-4 text-sm text-foreground/80 leading-relaxed font-light max-w-lg mx-auto text-balance">
+            <h2 className="mt-4 font-display text-4xl md:text-5xl lg:text-6xl text-balance">{t("community.title")}</h2>
+            <p className="mt-3 text-sm text-foreground/80 leading-relaxed font-light max-w-lg mx-auto text-balance">
               {t("community.desc")}
             </p>
           </Reveal>
 
           {/* Moroccan Youth Reflections */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto text-start">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto text-start">
             {communityQuotes.map((c, index) => (
               <Reveal key={index} delay={index * 120}>
                 <div className="border border-border/50 bg-secondary/10 p-8 rounded-xs h-full flex flex-col justify-between">
@@ -1306,10 +1098,12 @@ function Index() {
           </div>
 
           <Reveal delay={400}>
-            <div className="mt-16">
+            <div className="mt-12">
               <a
-                href="#"
-                className="inline-block border border-foreground bg-foreground text-background px-7 py-3.5 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs"
+                href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "+212652617044").replace(/[^0-9]/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block border border-foreground bg-foreground text-background px-7 py-3.5 text-[10px] tracking-brand uppercase hover:bg-transparent hover:text-foreground transition-all duration-300 font-semibold rounded-xs font-mono"
               >
                 {isAr ? "شاركنا صوتك" : "Share Your Voice"}
               </a>
@@ -1318,14 +1112,14 @@ function Index() {
         </div>
       </section>
 
-      {/* 12. PACKAGING & LABELS */}
-      <section className="py-24 lg:py-36 border-b border-border/40">
+      {/* 9.3 PACKAGING & LABELS */}
+      <section className="py-20 lg:py-32 border-b border-border/40">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10 text-start">
           <Reveal>
-            <div className="max-w-2xl mb-16">
+            <div className="max-w-2xl mb-14">
               <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">{t("packaging.title")}</p>
-              <h2 className="mt-3 font-display text-4xl md:text-6xl text-balance">{t("packaging.title")}</h2>
-              <p className="mt-4 text-xs text-muted-foreground font-light leading-relaxed max-w-md">
+              <h2 className="mt-3 font-display text-4xl md:text-5xl text-balance">{t("packaging.title")}</h2>
+              <p className="mt-3 text-xs text-muted-foreground font-light leading-relaxed max-w-md">
                 {t("packaging.desc")}
               </p>
             </div>
@@ -1363,42 +1157,6 @@ function Index() {
               </div>
             </Reveal>
           </div>
-        </div>
-      </section>
-
-      {/* PEACE & LOVE SEGMENT */}
-      <section className="mx-auto max-w-[1400px] px-6 lg:px-10 py-24 lg:py-36 border-b border-border/40">
-        <Reveal>
-          <div className="text-center max-w-3xl mx-auto">
-            <p className="text-[10px] tracking-brand uppercase text-muted-foreground font-mono">{t("peace.tag")}</p>
-            <h2 className="mt-6 font-display text-4xl md:text-6xl text-balance">
-              {t("peace.title")}
-            </h2>
-          </div>
-        </Reveal>
-        <div className="mt-20 grid md:grid-cols-3 gap-8 text-start">
-          {[
-            {
-              t: t("peace.h1"),
-              d: t("peace.d1"),
-            },
-            {
-              t: t("peace.h2"),
-              d: t("peace.d2"),
-            },
-            {
-              t: t("peace.h3"),
-              d: t("peace.d3"),
-            },
-          ].map((c, i) => (
-            <Reveal key={c.t} delay={i * 100}>
-              <div className="border-t border-foreground pt-6">
-                <p className="font-mono text-[10px] text-muted-foreground">0{i + 1}</p>
-                <h3 className="mt-4 font-display text-3xl">{c.t}</h3>
-                <p className="mt-3 text-xs text-muted-foreground leading-relaxed font-light">{c.d}</p>
-              </div>
-            </Reveal>
-          ))}
         </div>
       </section>
 

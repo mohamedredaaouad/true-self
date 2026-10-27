@@ -318,4 +318,7 @@
     animation: none !important;
     transform: none !important;
   }
+  .hero-video {
+    display: none !important;
+  }
 }

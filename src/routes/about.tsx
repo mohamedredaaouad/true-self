@@ -202,7 +202,7 @@ function About() {
       </section>
 
       {/* The Manifesto & Values */}
-      <section className="py-20 lg:py-32 border-b border-border/40">
+      <section id="manifesto" className="py-20 lg:py-32 border-b border-border/40">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <Reveal>
             <div className="text-center max-w-2xl mx-auto mb-16">

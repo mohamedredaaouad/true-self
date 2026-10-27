@@ -22,17 +22,45 @@ export function Reveal({
   const [prefersReduced, setPrefersReduced] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-      setPrefersReduced(mediaQuery.matches);
-      if (mediaQuery.matches) {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReduced(mediaQuery.matches);
+
+    const handleMotionChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setPrefersReduced(e.matches);
+      if (e.matches) {
         setVisible(true);
-        return;
       }
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleMotionChange);
+    } else if ("addListener" in mediaQuery) {
+      (mediaQuery as { addListener: (cb: (e: MediaQueryListEvent | MediaQueryList) => void) => void }).addListener(handleMotionChange);
+    }
+
+    if (mediaQuery.matches) {
+      setVisible(true);
+      return () => {
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener("change", handleMotionChange);
+        } else if ("removeListener" in mediaQuery) {
+          (mediaQuery as { removeListener: (cb: (e: MediaQueryListEvent | MediaQueryList) => void) => void }).removeListener(handleMotionChange);
+        }
+      };
     }
 
     const el = ref.current;
-    if (!el) return;
+    if (!el) {
+      return () => {
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener("change", handleMotionChange);
+        } else if ("removeListener" in mediaQuery) {
+          (mediaQuery as { removeListener: (cb: (e: MediaQueryListEvent | MediaQueryList) => void) => void }).removeListener(handleMotionChange);
+        }
+      };
+    }
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -46,7 +74,15 @@ export function Reveal({
       { threshold },
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    return () => {
+      io.disconnect();
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleMotionChange);
+      } else if ("removeListener" in mediaQuery) {
+        (mediaQuery as { removeListener: (cb: (e: MediaQueryListEvent | MediaQueryList) => void) => void }).removeListener(handleMotionChange);
+      }
+    };
   }, [threshold]);
 
   if (prefersReduced) {
@@ -56,8 +92,6 @@ export function Reveal({
   // Define styles based on variant
   let initialTransform = "translateY(24px)";
   let targetTransform = "translateY(0)";
-  let initialScale = "1";
-  let targetScale = "1";
 
   if (variant === "scale") {
     initialTransform = "scale(0.96)";
@@ -79,7 +113,7 @@ export function Reveal({
 
   if (variant === "mask") {
     return (
-      <div className={`overflow-hidden ${className}`}>
+      <div ref={ref} className={`overflow-hidden ${className}`}>
         <div style={baseStyle}>{children}</div>
       </div>
     );

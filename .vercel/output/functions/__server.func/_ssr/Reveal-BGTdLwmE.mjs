@@ -1,6 +1,6 @@
 import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
-import { f as useLanguage, e as useCart, L as Logo } from "./router-MTDi5Sqt.mjs";
+import { f as useLanguage, e as useCart, L as Logo } from "./router-lR-N5aK3.mjs";
 function Nav({ wishlistCount = 0, onOpenWishlist }) {
   const [scrolled, setScrolled] = reactExports.useState(false);
   const { t, language, setLanguage } = useLanguage();
@@ -107,16 +107,40 @@ function Reveal({
   const [visible, setVisible] = reactExports.useState(false);
   const [prefersReduced, setPrefersReduced] = reactExports.useState(false);
   reactExports.useEffect(() => {
-    if (typeof window !== "undefined") {
-      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-      setPrefersReduced(mediaQuery.matches);
-      if (mediaQuery.matches) {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReduced(mediaQuery.matches);
+    const handleMotionChange = (e) => {
+      setPrefersReduced(e.matches);
+      if (e.matches) {
         setVisible(true);
-        return;
       }
+    };
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleMotionChange);
+    } else if ("addListener" in mediaQuery) {
+      mediaQuery.addListener(handleMotionChange);
+    }
+    if (mediaQuery.matches) {
+      setVisible(true);
+      return () => {
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener("change", handleMotionChange);
+        } else if ("removeListener" in mediaQuery) {
+          mediaQuery.removeListener(handleMotionChange);
+        }
+      };
     }
     const el = ref.current;
-    if (!el) return;
+    if (!el) {
+      return () => {
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener("change", handleMotionChange);
+        } else if ("removeListener" in mediaQuery) {
+          mediaQuery.removeListener(handleMotionChange);
+        }
+      };
+    }
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -129,7 +153,14 @@ function Reveal({
       { threshold }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleMotionChange);
+      } else if ("removeListener" in mediaQuery) {
+        mediaQuery.removeListener(handleMotionChange);
+      }
+    };
   }, [threshold]);
   if (prefersReduced) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className, children });
@@ -153,7 +184,7 @@ function Reveal({
     willChange: visible ? "auto" : "opacity, transform"
   };
   if (variant === "mask") {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `overflow-hidden ${className}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: baseStyle, children }) });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref, className: `overflow-hidden ${className}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: baseStyle, children }) });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref, className, style: baseStyle, children });
 }
